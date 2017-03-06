@@ -211,6 +211,11 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
+Docs/
+Upgrade/
+Component/
+Output/
+Output_Client/
 
 Output/MongoDB/
 Output/ServerLog/
@@ -218,6 +223,6 @@ Output/FileStore/
 Output/CodeTemplate/
 Output/ModulePlugin/
 Output/Http/
-Docs/
-Output_Client/
-/Output/nginx/html/upgrade/
+Output/nginx/
+
+

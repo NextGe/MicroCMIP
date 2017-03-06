@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CACAFDBF-9B17-403A-A3CA-C123A94E2C19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EFWCoreLib.WcfFrame</RootNamespace>
+    <AssemblyName>EFWCoreLib.WcfFrame</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="fastJSON">
+      <HintPath>..\Component\fastJSON.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching">
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging">
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.PolicyInjection">
+      <HintPath>..\Component\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\Component\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Component\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\Component\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\Component\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\Component\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\Component\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Component\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\Component\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net-data">
+      <HintPath>..\Component\protobuf-net-data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientProxy\BaseServiceClient.cs" />
+    <Compile Include="ClientProxy\FileServiceClient.cs" />
+    <Compile Include="Controller\WcfClientController.cs" />
+    <Compile Include="ClientProxy\CHDEPConnection.cs" />
+    <Compile Include="ClientProxy\ClientLink.cs" />
+    <Compile Include="ClientProxy\ClientLinkManage.cs" />
+    <Compile Include="ClientProxy\ClientLinkPool.cs" />
+    <Compile Include="ClientProxy\ClientLinkPoolCache.cs" />
+    <Compile Include="DataSerialize\CacheObject.cs" />
+    <Compile Include="DataSerialize\ClientRequestData.cs" />
+    <Compile Include="DataSerialize\FileTransfer.cs" />
+    <Compile Include="DataSerialize\MNodeObject.cs" />
+    <Compile Include="DataSerialize\MNodeTree.cs" />
+    <Compile Include="DataSerialize\SerializeType.cs" />
+    <Compile Include="DataSerialize\ServerConfigObject.cs" />
+    <Compile Include="DataSerialize\ServiceResponseData.cs" />
+    <Compile Include="MiddlewareLogHelper.cs" />
+    <Compile Include="ServerManage\MNodeStateManage.cs" />
+    <Compile Include="Utility\MiddlewareTask.cs" />
+    <Compile Include="Controller\ModulePluginExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDMessageHeader\HeaderOperater.cs" />
+    <Compile Include="SDMessageHeader\HeaderParameter.cs" />
+    <Compile Include="Controller\ControllerHelper.cs" />
+    <Compile Include="ServerManage\ClientManage.cs" />
+    <Compile Include="ServerManage\DataManage.cs" />
+    <Compile Include="ServerManage\FileManage.cs" />
+    <Compile Include="ServerManage\DistributedCacheManage.cs" />
+    <Compile Include="Controller\WcfServerController.cs" />
+    <Compile Include="ServerManage\MiddlewareConfigManage.cs" />
+    <Compile Include="ServerManage\PublishSubscribeManage.cs" />
+    <Compile Include="ServerManage\RemotePluginManage.cs" />
+    <Compile Include="ServerManage\RouterManage.cs" />
+    <Compile Include="ServerManage\SuperClient.cs" />
+    <Compile Include="Utility\Mongodb\MongoHelper.cs" />
+    <Compile Include="Utility\MonitorPlatform\MidNode.cs" />
+    <Compile Include="Utility\MonitorPlatform\MNodePService.cs" />
+    <Compile Include="Utility\MonitorPlatform\MonitorPlatformManage.cs" />
+    <Compile Include="Utility\MonitorPlatform\PluginService.cs" />
+    <Compile Include="Utility\MonitorPlatform\User.cs" />
+    <Compile Include="Utility\SSO\AuthResult.cs" />
+    <Compile Include="Utility\SSO\ConvertHelper.cs" />
+    <Compile Include="Utility\SSO\SsoHelper.cs" />
+    <Compile Include="Utility\SSO\TokenInfo.cs" />
+    <Compile Include="Utility\SSO\TokenManager.cs" />
+    <Compile Include="Utility\SSO\Utility.cs" />
+    <Compile Include="Utility\Upgrade\ClientUpgradeManager.cs" />
+    <Compile Include="WcfGlobal.cs" />
+    <Compile Include="WcfHandler\BaseService.cs" />
+    <Compile Include="WcfHandler\Callback\ReplyDataCallback.cs" />
+    <Compile Include="WcfHandler\Callback\ReplyRouterBaseCallback.cs" />
+    <Compile Include="WcfHandler\Contract\IClientHandler.cs" />
+    <Compile Include="WcfHandler\Contract\IHttpDataHandler.cs" />
+    <Compile Include="WcfHandler\Contract\IFileHandler.cs" />
+    <Compile Include="WcfHandler\Contract\IRouterHandler.cs" />
+    <Compile Include="WcfHandler\FileService.cs" />
+    <Compile Include="WcfHandler\RouterBaseService.cs" />
+    <Compile Include="WcfHandler\RouterFileService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
+      <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
+      <Name>EFWCoreLib.CoreFrame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
+      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
+      <Name>EFWCoreLib.WinformFrame</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utility\Nginx\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output"
+Copy "$(TargetPath)" "$(SolutionDir)Output_Client"
+Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Component"
+Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Output"
+Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Output_Client"
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
