@@ -214,15 +214,36 @@ ModelManifest.xml
 Docs/
 Upgrade/
 Component/
-Output/
+# Output/
 Output_Client/
 
+Output/*.dll
+Output/*.exe
 Output/MongoDB/
 Output/ServerLog/
 Output/FileStore/
 Output/CodeTemplate/
 Output/ModulePlugin/
 Output/Http/
-Output/nginx/
+Output/nginx/conf/
+Output/nginx/contrib/
+Output/nginx/docs/
+Output/nginx/logs/
+Output/nginx/temp/
 
 
+/Output/zh-Hans/SvcConfigEditor.resources.dll
+/Output/zh-Hans/System.Net.Http.Formatting.resources.dll
+/Output/zh-Hans/System.Web.Http.resources.dll
+
+/Output/System.Web.Http.xml
+/Output/System.Web.Http.SelfHost.xml
+/Output/System.Net.Http.Formatting.xml
+/Output/startlog.txt
+/Output/protobuf-net.xml
+/Output/Newtonsoft.Json.xml
+/Output/DevComponents.DotNetBar2.xml
+/Output/SvcConfigEditor_4.0.chm
+/Output/zh-Hans/SvcConfigEditor_4.0.chm
+/Output/nginx/html/install/setup_CloudHISClientV2.0.exe
+/Output/nginx/nginx.exe
