@@ -16,6 +16,8 @@ namespace EFWCoreLib.WebApiFrame
     /// </summary>
     public class WebApiGlobal
     {
+        public static bool IsRootMNode = false;//是否中间件根节点
+
         public static NormalIPCManager normalIPC;
         public static bool IsDebug = false;
         public static bool IsToken = false;
@@ -24,6 +26,7 @@ namespace EFWCoreLib.WebApiFrame
         public static string MongoConnStr;
         public static void Main()
         {
+            IsRootMNode = HostSettingConfig.GetValue("rootmnode") == "1" ? true : false;
             PluginPath = AppDomain.CurrentDomain.BaseDirectory + @"\ModulePlugin";
             IsDebug = HostSettingConfig.GetValue("debug") == "1" ? true : false;
             IsToken = HostSettingConfig.GetValue("token") == "1" ? true : false;

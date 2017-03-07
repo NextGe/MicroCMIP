@@ -214,9 +214,9 @@ ModelManifest.xml
 Docs/
 Upgrade/
 Component/
-# Output/
 Output_Client/
 
+# Output/
 Output/*.dll
 Output/*.exe
 Output/MongoDB/

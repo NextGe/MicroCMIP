@@ -8,8 +8,9 @@
     },
     shim: {
         "jquery.cookie": ["jquery"],
+        "amazeui.tree.min": ["jquery"],
         "app": ["jquery"],
-        "index": ["jquery", "jquery.cookie", "director.min"]
+        "index": ["jquery", "jquery.cookie", "director.min", "amazeui.tree.min"]
     }
 });
 

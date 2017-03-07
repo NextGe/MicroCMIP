@@ -169,6 +169,7 @@ namespace efwplusBase
                         break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);
+                retData = retData.Substring(0, retData.Length > 5000 ? 5000 : retData.Length);
                 return retData;
             }
             catch (Exception e)

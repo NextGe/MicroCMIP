@@ -118,6 +118,18 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "html", "Output\nginx\html\"
 		SlnRelativePath = "Output\nginx\html\"
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin", "Plugin", "{0DF86357-92FE-42B9-BDD6-D0E0E50D874C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Books_Wcf", "Books_Wcf", "{CB8A80F9-CF13-4F9E-9E1D-7E3A8B52825D}"
+	ProjectSection(SolutionItems) = preProject
+		Output\ModulePlugin\Books_Wcf\plugin.xml = Output\ModulePlugin\Books_Wcf\plugin.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WcfMainUIFrame", "WcfMainUIFrame", "{60A9B25E-F177-407F-A73C-374C94D15779}"
+	ProjectSection(SolutionItems) = preProject
+		Output\ModulePlugin\WcfMainUIFrame\plugin.xml = Output\ModulePlugin\WcfMainUIFrame\plugin.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -357,5 +369,8 @@ Global
 		{CEA1DF99-7924-4391-B543-11566D571334} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{E0638E27-0159-4AF0-A0BA-BF9B6E5A2B39} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{4746D82E-57E8-4DD6-BBCC-1162D42C3E93} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
+		{0DF86357-92FE-42B9-BDD6-D0E0E50D874C} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
+		{CB8A80F9-CF13-4F9E-9E1D-7E3A8B52825D} = {0DF86357-92FE-42B9-BDD6-D0E0E50D874C}
+		{60A9B25E-F177-407F-A73C-374C94D15779} = {0DF86357-92FE-42B9-BDD6-D0E0E50D874C}
 	EndGlobalSection
 EndGlobal

@@ -6,10 +6,9 @@
     urls = new Array();
     templates = new Array();//handlebars模板对象
     labmenus = new Array();
-
-    //身份验证
+    //初始化
     $(document).ready(function () {
-        common.validateuser();
+        common.validateuser();//身份验证
         loadsysmenus();
         loadrouter();
     });
@@ -33,8 +32,10 @@
             if (menuId == 'home') {
 
             } else if (menuId == 'quit') {
-                $.cookie("token", null);//注销就删除cookie
-                window.location.href = 'login.html';
+                if ($.cookie("token")) {
+                    $.cookie("token", null);//注销就删除cookie
+                    window.location.href = 'login.html';
+                }
             } else {
                 showpage(menuId);
             }
@@ -50,16 +51,7 @@
     //加载系统菜单
     function loadsysmenus() {
         //系统菜单Json对象
-        sysmenus = [{
-            "moudleid": "root", "moudlename": "中心监控平台", "child": [
-            { "Id": "mnodelist", "Name": "中间件管理" },
-            { "Id": "pluginlist", "Name": "服务插件管理" },
-            { "Id": "mnodestate", "Name": "节点监控图" },
-            { "Id": "upgrade", "Name": "发布升级包" },
-            { "Id": "testremoteservice", "Name": "远程测试服务" },
-            { "Id": "remotecmd", "Name": "远程执行命令" }
-            ]
-        },
+        sysmenus = [
             {
                 "moudleid": "node", "moudlename": "节点配置管理", "child": [
                 { "Id": "debug", "Name": "日志输出" },
@@ -72,7 +64,19 @@
                 { "Id": "localcmd", "Name": "执行命令" }
                 ]
             }];
-
+        if ($.cookie("token"))
+        {
+            sysmenus=$.merge([{
+                "moudleid": "root", "moudlename": "中心监控平台", "child": [
+                { "Id": "mnodelist", "Name": "中间件管理" },
+                { "Id": "pluginlist", "Name": "服务插件管理" },
+                { "Id": "mnodestate", "Name": "节点监控图" },
+                { "Id": "upgrade", "Name": "发布升级包" },
+                { "Id": "testremoteservice", "Name": "远程测试服务" },
+                { "Id": "remotecmd", "Name": "远程执行命令" }
+                ]
+            }], sysmenus);
+        }
        
         $.each(sysmenus, function (i, n) {
             $.each(n.child, function (k, m) {
@@ -106,6 +110,12 @@
             case "sevicelist":
                 show_default(menuId, "mnodeconfig/sevicelist");
                 break;
+            case "task":
+                show_task(menuId);
+                break;
+            case "testsevice":
+                show_testsevice(menuId);
+                break;
             default:
                 show_default(menuId);
                 break;
@@ -113,19 +123,30 @@
         
     }
 
-    //默认页面
-    function show_default(menuId,para) {
+    //通用
+    function show_common(menuId, para, callback, errorcallback) {
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
             urls[menuId] = "http://127.0.0.1:8021/" + para;
             templates[menuId] = Handlebars.compile($("#" + menuId + "-template").html());
         }
+
         common.simpleAjax(urls[menuId], {}, function (data) {
             var context = { data: common.toJson(data) };
             var html = templates[menuId](context);
             $('#content_body').html(html);
-        }, function () {
+
+            if (callback) {
+                callback(data);
+            }
+        }, errorcallback);
+    }
+
+    //默认页面
+    function show_default(menuId, para) {
+        
+        show_common(menuId, para, null, function () {
             var context = { data: [] };
             var html = templates[menuId](context);
             $('#content_body').html(html);
@@ -134,17 +155,7 @@
 
     //客户端列表
     function show_clientlist(menuId) {
-        if (!urls[menuId] || !templates[menuId]) {
-            $('#content_body').html(html_template);//加载html模板文本
-            //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/mnodeconfig/clientlist";
-            templates[menuId] = Handlebars.compile($("#clientlist-template").html());
-        }
-        common.simpleAjax(urls[menuId], {}, function (data) {
-            var context = { data: common.toJson(data) };
-            var html = templates[menuId](context);
-            $('#content_body').html(html);
-
+        show_common(menuId, "mnodeconfig/clientlist", function () {
             $('.btn-clientlist-refresh').click(function () {
                 show_clientlist(menuId);
             });
@@ -153,18 +164,8 @@
 
     //日志
     function show_debuglog(menuId) {
-        if (!urls[menuId] || !templates[menuId]) {
-            $('#content_body').html(html_template);//加载html模板文本
-            //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/mnodeconfig/debuglog?logtype=&date=";
-            templates[menuId] = Handlebars.compile($("#debug-template").html());
-        }
-
-        common.simpleAjax(urls[menuId], {}, function (data) {
-            var context = { data: common.toJson(data) };
-            var html = templates[menuId](context);
-            $('#content_body').html(html);
-
+        
+        show_common(menuId, "mnodeconfig/debuglog?logtype=MidLog&date=", function () {
             $('#logdate').datepicker('setValue', new Date());
             if ($('body').data('logtype')) {
                 $('#logtype').val($('body').data('logtype'));
@@ -176,6 +177,46 @@
                 $('body').data('logtype', $('#logtype').val());
                 urls[menuId] = "http://127.0.0.1:8021/mnodeconfig/debuglog?logtype=" + $('#logtype').val() + "&date=" + $('#logdate').data('date');
                 show_debuglog(menuId);
+            });
+        });
+    }
+
+    //任务
+    function show_task(menuId) {
+        show_common(menuId, "mnodeconfig/GetTaskList", function () {
+            
+        });
+    }
+
+    //测试服务
+    function show_testsevice(menuId) {
+
+        show_common(menuId, "mnodeconfig/GetAllServices", function (data) {
+            $('#firstTree').tree({
+                dataSource: function (options, callback) {
+                    // 模拟异步加载
+                    setTimeout(function () {
+                        callback({ data: options.childs || data });
+                    }, 40);
+                },
+                multiSelect: false,
+                cacheItems: true,
+                folderSelect: false
+            }).on('selected.tree.amui', function (e, selected) {
+                //console.log('Select Event: ', selected);
+                //console.log($('#firstTree').tree('selectedItems'));
+                $('#txt_plugin').val(selected.target.attr.plugin);
+                $('#txt_controller').val(selected.target.attr.controller);
+                $('#txt_method').val(selected.target.attr.method);
+            });
+
+            $('#btn_request').click(function () {
+                var para = { plugin: $('#txt_plugin').val(), controller: $('#txt_controller').val(), method: $('#txt_method').val(), para: $('#txt_parajson').val() };
+                if (para.method && para.controller && para.plugin) {
+                    common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/TestServices", para, function (data) {
+                        $('#txt_responsejson').val(data);
+                    });
+                }
             });
         });
     }

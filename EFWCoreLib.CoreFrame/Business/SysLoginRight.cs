@@ -13,6 +13,14 @@ namespace EFWCoreLib.CoreFrame.Business
     [DataContract]
     public class SysLoginRight
     {
+        public SysLoginRight()
+        {
+
+        }
+        public SysLoginRight(int workId)
+        {
+            _workId = workId;
+        }
         private int _userId;
         [XmlElement]
         [ProtoMember(1)]

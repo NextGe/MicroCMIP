@@ -85,10 +85,25 @@ namespace EFWCoreLib.WebAPI.Utility
         [HttpGet]
         public object validatetoken(string token)
         {
-            string ret = WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "ssovalidatetoken", "token=" + token);
-            AuthResult ar = JsonConvert.DeserializeObject<AuthResult>(ret);
-            if (string.IsNullOrEmpty(ar.ErrorMsg))
-                return new { flag = true, username = ar.User.EmpName };
+            if(WebApiGlobal.IsRootMNode==false)
+            {
+                return new { flag = true, username = "管理员" };
+            }
+
+            if(string.IsNullOrEmpty(token) && WebApiGlobal.IsRootMNode)
+            {
+                return new { flag = false, username = "" };
+            }
+
+            if (string.IsNullOrEmpty(token) == false && WebApiGlobal.IsRootMNode)
+            {
+                string ret = WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "ssovalidatetoken", "token=" + token);
+                AuthResult ar = JsonConvert.DeserializeObject<AuthResult>(ret);
+                if (string.IsNullOrEmpty(ar.ErrorMsg))
+                    return new { flag = true, username = ar.User.EmpName };
+                return new { flag = false, username = "" };
+            }
+
             return new { flag = false, username = "" };
         }
     }

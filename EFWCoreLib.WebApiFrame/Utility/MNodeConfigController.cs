@@ -19,7 +19,7 @@ namespace EFWCoreLib.WebAPI.Utility
 {
     /// <summary>
     /// 主机配置
-    /// http://localhost:8021/hostconfig/hostconfig/showconfiginfo
+    /// http://localhost:8021/MNodeConfig/{action}/{id}
     /// </summary>
     [efwplusApiController(PluginName = "coresys")]
     public class MNodeConfigController : WebApiController
@@ -52,7 +52,7 @@ namespace EFWCoreLib.WebAPI.Utility
                 throw e;
             }
         }
-
+        //获取客户端列表
         [HttpGet]
         public string ClientList()
         {
@@ -65,7 +65,7 @@ namespace EFWCoreLib.WebAPI.Utility
                 throw e;
             }
         }
-
+        //获取插件服务
         [HttpGet]
         public string SeviceList()
         {
@@ -78,18 +78,19 @@ namespace EFWCoreLib.WebAPI.Utility
                 throw e;
             }
         }
-
+        //获取日志
         [HttpGet]
-        public string DebugLog(string logtype,string date)
+        public string DebugLog(string logtype, string date)
         {
             try
             {
-                if (string.IsNullOrEmpty(logtype) || string.IsNullOrEmpty(date))
+                if (string.IsNullOrEmpty(logtype))
                 {
                     return "";
                 }
                 else {
-                    string args = "logtype=" + logtype + "&date=" + date.Replace("-","");
+                    date = string.IsNullOrEmpty(date) ? DateTime.Now.ToString("yyyy-MM") : date;
+                    string args = "logtype=" + logtype + "&date=" + date.Replace("-", "");
                     return WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "debuglog", args);
                 }
             }
@@ -113,5 +114,97 @@ namespace EFWCoreLib.WebAPI.Utility
                 throw e;
             }
         }
+
+        //获取所有服务
+        [HttpGet]
+        public Object GetAllServices()
+        {
+            try
+            {
+                List<amazeuitreenode> tree = new List<amazeuitreenode>();
+                List<WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
+                foreach(var p in plist)
+                {
+                    amazeuitreenode nodep = new amazeuitreenode();
+                    nodep.title = p.pluginname;
+                    nodep.type = "folder";
+                    nodep.childs = new List<amazeuitreenode>();
+                    tree.Add(nodep);
+                    foreach(var c in p.controllerlist)
+                    {
+                        amazeuitreenode nodec = new amazeuitreenode();
+                        nodec.title = c.controllername;
+                        nodec.type = "folder";
+                        nodec.childs = new List<amazeuitreenode>();
+                        nodep.childs.Add(nodec);
+
+                        foreach (var m in c.methodlist)
+                        {
+                            amazeuitreenode nodem = new amazeuitreenode();
+                            nodem.title = m;
+                            nodem.type = "item";
+                            nodem.attr = new Dictionary<string, string>();
+                            nodem.attr.Add("plugin", p.pluginname);
+                            nodem.attr.Add("controller", c.controllername);
+                            nodem.attr.Add("method", m);
+                            nodec.childs.Add(nodem);
+                        }
+                    }
+                }
+                return tree;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        //测试服务
+        [HttpGet]
+        public string TestServices(string plugin,string controller,string method,string para)
+        {
+            try
+            {
+                Action<ClientRequestData> requestAction = ((ClientRequestData request) =>
+                {
+                    request.Iscompressjson = false;
+                    request.Isencryptionjson = false;
+                    request.Serializetype = SerializeType.Newtonsoft;
+                    request.LoginRight = new CoreFrame.Business.SysLoginRight(1);
+                    request.SetJsonData(para);
+                });
+
+                ServiceResponseData response = InvokeWcfService(plugin, controller, method, requestAction);
+                return response.GetJsonData();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        //获取任务列表
+        [HttpGet]
+        public Object GetTaskList()
+        {
+            try
+            {
+                List<TaskConfig> tasklist = TaskConfigManage.LoadXML();
+                return tasklist;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+    }
+    /// <summary>
+    /// 树控件数据结构
+    /// </summary>
+    public class amazeuitreenode
+    {
+        public string title { get; set; }
+        public string type { get; set; }
+        public List<amazeuitreenode> childs { get; set; }
+        public Dictionary<string, string> attr { get; set; }
     }
 }

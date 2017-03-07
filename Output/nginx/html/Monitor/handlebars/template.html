@@ -121,91 +121,172 @@
     </div>
 </script>
 <script id="testsevice-template" type="text/x-handlebars-template">
-    <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+    <div class="am-u-sm-12 am-u-md-4 am-u-md-push-4 am-u-lg-reset-order">
         <div class="am-panel am-panel-default">
             <div class="am-panel-bd">
-                <div class="am-g">
-                    <div class="am-u-md-4">
-                        <img class="am-img-circle am-img-thumbnail" src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/200/h/200/q/80" alt="" />
-                    </div>
-                    <div class="am-u-md-8">
-                        <p>你可以使用<a href="#">gravatar.com</a>提供的头像或者使用本地上传头像。 </p>
-                        <form class="am-form">
-                            <div class="am-form-group">
-                                <input type="file" id="user-pic">
-                                <p class="am-form-help">请选择要上传的文件...</p>
-                                <button type="button" class="am-btn am-btn-primary am-btn-xs">保存</button>
+                <div class="am-g am-padding-xs">
+                    <ul class="am-tree" id="firstTree">
+                        <li class="am-tree-branch am-hide" data-template="treebranch">
+                            <div class="am-tree-branch-header">
+                                <button class="am-tree-branch-name">
+                                    <span class="am-tree-icon am-tree-icon-folder"></span>
+                                    <span class="am-tree-label"></span>
+                                </button>
                             </div>
-                        </form>
-                    </div>
+                            <ul class="am-tree-branch-children"></ul>
+                            <div class="am-tree-loader"><span class="am-icon-spin am-icon-spinner"></span></div>
+                        </li>
+                        <li class="am-tree-item am-hide" data-template="treeitem">
+                            <button class="am-tree-item-name">
+                                <span class="am-tree-icon am-tree-icon-item"></span>
+                                <span class="am-tree-label"></span>
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="am-panel am-panel-default">
-            <div class="am-panel-bd">
-                <div class="user-info">
-                    <p>等级信息</p>
-                    <div class="am-progress am-progress-sm">
-                        <div class="am-progress-bar" style="width: 60%"></div>
-                    </div>
-                    <p class="user-info-order">当前等级：<strong>LV8</strong> 活跃天数：<strong>587</strong> 距离下一级别：<strong>160</strong></p>
-                </div>
-                <div class="user-info">
-                    <p>信用信息</p>
-                    <div class="am-progress am-progress-sm">
-                        <div class="am-progress-bar am-progress-bar-success" style="width: 80%"></div>
-                    </div>
-                    <p class="user-info-order">信用等级：正常当前 信用积分：<strong>80</strong></p>
-                </div>
-            </div>
-        </div>
+        
     </div>
-    <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
-        <form class="am-form am-form-horizontal">
+    <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-8 am-u-lg-reset-order">
+        <form class="am-form am-form-horizontal am-text-xs">
             <div class="am-form-group">
-                <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
-                <div class="am-u-sm-9">
-                    <input type="text" id="user-name" placeholder="姓名 / Name">
-                    <small>输入你的名字，让我们记住你。</small>
+                <label for="user-name" class="am-u-sm-2 am-form-label">选择插件</label>
+                <div class="am-u-sm-10">
+                    <input type="text" id="txt_plugin" class="am-input-sm" disabled>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="user-email" class="am-u-sm-3 am-form-label">电子邮件 / Email</label>
-                <div class="am-u-sm-9">
-                    <input type="email" id="user-email" placeholder="输入你的电子邮件 / Email">
-                    <small>邮箱你懂得...</small>
+                <label for="user-email" class="am-u-sm-2 am-form-label">选择控制器</label>
+                <div class="am-u-sm-10">
+                    <input type="text" id="txt_controller" class="am-input-sm" disabled>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="user-phone" class="am-u-sm-3 am-form-label">电话 / Telephone</label>
-                <div class="am-u-sm-9">
-                    <input type="tel" id="user-phone" placeholder="输入你的电话号码 / Telephone">
+                <label for="user-phone" class="am-u-sm-2 am-form-label">选择方法</label>
+                <div class="am-u-sm-10">
+                    <input type="text" id="txt_method" class="am-input-sm" disabled>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="user-QQ" class="am-u-sm-3 am-form-label">QQ</label>
-                <div class="am-u-sm-9">
-                    <input type="number" pattern="[0-9]*" id="user-QQ" placeholder="输入你的QQ号码">
+                <label for="user-QQ" class="am-u-sm-2 am-form-label">输入参数</label>
+                <div class="am-u-sm-10">
+                    <input type="text" id="txt_parajson" class="am-input-sm">
+                    <small>(Json格式)</small>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="user-weibo" class="am-u-sm-3 am-form-label">微博 / Twitter</label>
-                <div class="am-u-sm-9">
-                    <input type="text" id="user-weibo" placeholder="输入你的微博 / Twitter">
+                <div class="am-u-sm-10 am-u-sm-push-2">
+                    <button type="button" class="am-btn am-btn-primary" id="btn_request">请求</button>
                 </div>
             </div>
             <div class="am-form-group">
-                <label for="user-intro" class="am-u-sm-3 am-form-label">简介 / Intro</label>
-                <div class="am-u-sm-9">
-                    <textarea class="" rows="5" id="user-intro" placeholder="输入个人简介"></textarea>
-                    <small>250字以内写出你的一生...</small>
-                </div>
-            </div>
-            <div class="am-form-group">
-                <div class="am-u-sm-9 am-u-sm-push-3">
-                    <button type="button" class="am-btn am-btn-primary">保存修改</button>
+                <label for="user-intro" class="am-u-sm-2 am-form-label">返回结果</label>
+                <div class="am-u-sm-10">
+                    <textarea class="" rows="18" id="txt_responsejson" style="font-size:9px;"></textarea>
                 </div>
             </div>
         </form>
+    </div>
+</script>
+
+<script id="register-template" type="text/x-handlebars-template">
+    <form class="am-form am-form-horizontal">
+        <div class="am-form-group">
+            <label for="user-name" class="am-u-sm-2 am-form-label">机器码</label>
+            <div class="am-u-sm-10">
+                <input type="text" id="user-name">
+                <small>(每台电脑都有自动生成唯一的机器码)</small>
+            </div>
+        </div>
+        <div class="am-form-group">
+            <label for="user-intro" class="am-u-sm-2 am-form-label">注册码</label>
+            <div class="am-u-sm-10">
+                <textarea class="" rows="5" id="user-intro"></textarea>
+            </div>
+        </div>
+        <div class="am-form-group">
+            <div class="am-u-sm-10 am-u-sm-push-2">
+                <button type="button" class="am-btn am-btn-primary">激活中间件</button>
+            </div>
+        </div>
+    </form>
+</script>
+<script id="localcmd-template" type="text/x-handlebars-template">
+    <div class="am-u-sm-12 am-text-xs">
+        <h2>常用命令</h2>
+        <table class="am-table am-table-striped am-table-hover">
+            <tbody>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启中间件</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启数据服务</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启路由服务</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启WebApi</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启MongoDB</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">重启Nginx</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+                <tr>
+                    <td><button type="button" class="am-btn am-btn-primary" style="width:200px;">退出中间件</button></td>
+                    <td>将自动重启中间件所有服务，包括数据服务、文件服务、路由服务、WebApi、MongoDB、Nginx等</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+
+<script id="task-template" type="text/x-handlebars-template">
+    <div class="am-u-sm-12">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-refresh"></span> 刷新</button>
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-play-circle"></span> 执行</button>
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-play"></span> 开启</button>
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-stop"></span> 关闭</button>
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-plus-square"></span> 添加</button>
+                <button type="button" class="am-btn am-btn-default btn-clientlist-refresh"><span class="am-icon-close"></span> 删除</button>
+            </div>
+        </div>
+        <table class="am-table am-table-striped am-table-hover table-main">
+            <thead>
+                <tr>
+                    <th class="table-0">开启</th>
+                    <th class="table-1">任务名称</th>
+                    <th class="table-2">执行频率</th>
+                    <th class="table-3">具体时间</th>
+                    <th class="table-4">串行/并行</th>
+                    <th class="table-5">执行次数</th>
+                    <th class="table-6">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr>
+                    <td>{{qswitch}}</td>
+                    <td>{{taskname}}</td>
+                    <td>{{execfrequencyName}}</td>
+                    <td>{{shorttimeName}}</td>
+                    <td>{{serialorparallelName}}</td>
+                    <td>{{exectimes}}</td>
+                    <td></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </script>

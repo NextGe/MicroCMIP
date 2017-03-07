@@ -15,7 +15,6 @@ namespace EFWCoreLib.CoreFrame.Common
     /// </summary>
     public class MiddlewareTask
     {
-        public static string taskfile = System.Windows.Forms.Application.StartupPath + "\\Config\\TaskTiming.xml";
         public static List<TaskConfig> TaskConfigList=new List<TaskConfig>();
 
         static List<TimingTask> taskList;
@@ -25,7 +24,7 @@ namespace EFWCoreLib.CoreFrame.Common
         /// </summary>
         private static void LoadTask(List<TimingTask> _taskList)
         {
-            TaskConfigList = LoadXML();
+            TaskConfigList = TaskConfigManage.LoadXML();
             foreach (var item in TaskConfigList)
             {
                 TaskContent task = new TaskContent(item);
@@ -71,73 +70,8 @@ namespace EFWCoreLib.CoreFrame.Common
             }
         }
 
-        private static List<TaskConfig> LoadXML()
-        {
-            List<TaskConfig> taskConfigList = new List<TaskConfig>();
-
-            try
-            {
-                XmlDocument xmlDoc = new System.Xml.XmlDocument();
-                xmlDoc.Load(MiddlewareTask.taskfile);
-
-                XmlNodeList tasklist = xmlDoc.DocumentElement.SelectNodes("task");
-                foreach (XmlNode xe in tasklist)
-                {
-                    TaskConfig taskconfig = new TaskConfig();
-                    taskconfig.taskname = xe.Attributes["name"].Value;
-                    taskconfig.qswitch = xe.Attributes["switch"].Value == "1" ? true : false;
-                    taskconfig.execfrequency = (TimingTaskType)Convert.ToInt32(xe.Attributes["execfrequency"].Value);
-                    string[] vals = xe.Attributes["shorttime"].Value.Split(':');
-                    taskconfig.shorttime = new ShortTime(Convert.ToInt32(vals[0]), Convert.ToInt32(vals[1]), Convert.ToInt32(vals[2]));
-                    taskconfig.serialorparallel = Convert.ToInt32(xe.Attributes["serialorparallel"].Value);
-                    taskconfig.taskService = new List<TackServiceConfig>();
-
-                    XmlNodeList servicelist = xe.SelectNodes("service");
-                    foreach (XmlNode se in servicelist)
-                    {
-                        TackServiceConfig serviceconfig = new TackServiceConfig();
-                        serviceconfig.pluginname = se.Attributes["pluginname"].Value;
-                        serviceconfig.controller = se.Attributes["controller"].Value;
-                        serviceconfig.method = se.Attributes["method"].Value;
-                        serviceconfig.argument = se.Attributes["argument"].Value;
-
-                        taskconfig.taskService.Add(serviceconfig);
-
-                    }
-                    taskConfigList.Add(taskconfig);
-                }
-            }
-            catch (Exception e)
-            {
-                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, "加载定时任务配置文件错误！");
-                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, e.Message);
-            }
-            return taskConfigList;
-        }
-
-        /// <summary>
-        /// 设置开始或关闭任务
-        /// </summary>
-        public static void SettingTask(TaskConfig _taskconfig)
-        {
-            XmlDocument xmlDoc = new System.Xml.XmlDocument();
-            xmlDoc.Load(MiddlewareTask.taskfile);
-            XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("task[@name='"+_taskconfig.taskname+"']");
-            if (xn != null)
-            {
-                xn.Attributes["switch"].Value = _taskconfig.qswitch ? "1" : "0";
-            }
-            xmlDoc.Save(MiddlewareTask.taskfile);
-        }
-     
-        public static void ExecuteTask(TaskConfig _taskConfig)
-        {
-            TaskContent task = new TaskContent(_taskConfig);
-            new Task(() =>
-            {
-                task.Excute(true);
-            }).Start();
-        }
+        
+        
     }
 
     /// <summary>
@@ -328,5 +262,83 @@ namespace EFWCoreLib.CoreFrame.Common
         public string controller { get; set; }
         public string method { get; set; }
         public string argument { get; set; }
+    }
+
+    /// <summary>
+    /// 定时任务配置文件管理
+    /// </summary>
+    public class TaskConfigManage
+    {
+        public static string taskfile = System.Windows.Forms.Application.StartupPath + "\\Config\\TaskTiming.xml";
+        public static List<TaskConfig> LoadXML()
+        {
+            List<TaskConfig> taskConfigList = new List<TaskConfig>();
+
+            try
+            {
+                XmlDocument xmlDoc = new System.Xml.XmlDocument();
+                xmlDoc.Load(TaskConfigManage.taskfile);
+
+                XmlNodeList tasklist = xmlDoc.DocumentElement.SelectNodes("task");
+                foreach (XmlNode xe in tasklist)
+                {
+                    TaskConfig taskconfig = new TaskConfig();
+                    taskconfig.taskname = xe.Attributes["name"].Value;
+                    taskconfig.qswitch = xe.Attributes["switch"].Value == "1" ? true : false;
+                    taskconfig.execfrequency = (TimingTaskType)Convert.ToInt32(xe.Attributes["execfrequency"].Value);
+                    string[] vals = xe.Attributes["shorttime"].Value.Split(':');
+                    taskconfig.shorttime = new ShortTime(Convert.ToInt32(vals[0]), Convert.ToInt32(vals[1]), Convert.ToInt32(vals[2]));
+                    taskconfig.serialorparallel = Convert.ToInt32(xe.Attributes["serialorparallel"].Value);
+                    taskconfig.taskService = new List<TackServiceConfig>();
+
+                    XmlNodeList servicelist = xe.SelectNodes("service");
+                    foreach (XmlNode se in servicelist)
+                    {
+                        TackServiceConfig serviceconfig = new TackServiceConfig();
+                        serviceconfig.pluginname = se.Attributes["pluginname"].Value;
+                        serviceconfig.controller = se.Attributes["controller"].Value;
+                        serviceconfig.method = se.Attributes["method"].Value;
+                        serviceconfig.argument = se.Attributes["argument"].Value;
+
+                        taskconfig.taskService.Add(serviceconfig);
+
+                    }
+                    taskConfigList.Add(taskconfig);
+                }
+            }
+            catch (Exception e)
+            {
+                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, "加载定时任务配置文件错误！");
+                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, e.Message);
+            }
+            return taskConfigList;
+        }
+
+        /// <summary>
+        /// 设置开始或关闭任务
+        /// </summary>
+        public static void SettingTask(TaskConfig _taskconfig)
+        {
+            XmlDocument xmlDoc = new System.Xml.XmlDocument();
+            xmlDoc.Load(TaskConfigManage.taskfile);
+            XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("task[@name='" + _taskconfig.taskname + "']");
+            if (xn != null)
+            {
+                xn.Attributes["switch"].Value = _taskconfig.qswitch ? "1" : "0";
+            }
+            xmlDoc.Save(TaskConfigManage.taskfile);
+        }
+        /// <summary>
+        /// 执行任务
+        /// </summary>
+        /// <param name="_taskConfig"></param>
+        public static void ExecuteTask(TaskConfig _taskConfig)
+        {
+            TaskContent task = new TaskContent(_taskConfig);
+            new Task(() =>
+            {
+                task.Excute(true);
+            }).Start();
+        }
     }
 }

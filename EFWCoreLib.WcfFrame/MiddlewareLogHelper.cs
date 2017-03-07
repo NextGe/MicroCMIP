@@ -78,7 +78,8 @@ namespace EFWCoreLib.CoreFrame.Common
                 //显示最后50条
                 string[] data = File.ReadAllLines(filepath);
                 string[] newdata = data.Where((x, y) => y >= (data.Length > 50 ? (data.Length - 50) : 0)).ToArray();
-                return string.Join("\r", newdata);
+                string log = string.Join("\r", newdata);
+                return log;
             }
             return "";
         }
