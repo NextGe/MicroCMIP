@@ -56,7 +56,7 @@ namespace efwplusBase
             string expireDate;
             MiddlewareLogHelper.hostwcfMsg = new MiddlewareMsgHandler(ShowMsg);
             MiddlewareLogHelper.StartWriteFileLog();//开放中间件日志
-            int res = efwplus.configuration.TimeCDKEY.InitRegedit(out expireDate, out identify);
+            int res = TimeCDKEY.InitRegedit(out expireDate, out identify);
             if (res == 0)
             {
                 MiddlewareLogHelper.WriterLog("软件已注册，到期时间【" + expireDate + "】");

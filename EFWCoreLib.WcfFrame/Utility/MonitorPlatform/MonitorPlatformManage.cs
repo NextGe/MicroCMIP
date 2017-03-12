@@ -50,6 +50,8 @@ namespace EFWCoreLib.WcfFrame.Utility.MonitorPlatform
             node.machinecode = "";
             node.regcode = CoreFrame.Init.HostSettingConfig.GetValue("cdkey");
             node.identify = WcfGlobal.Identify;
+            node.createdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            node.delflag = 0;
             helperNode.Insert(node);
 
         }

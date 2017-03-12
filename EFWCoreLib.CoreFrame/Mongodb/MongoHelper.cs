@@ -5,6 +5,7 @@ using System.Text;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
+using Newtonsoft.Json;
 
 namespace EFWCoreLib.CoreFrame.Mongodb
 {
@@ -119,8 +120,10 @@ namespace EFWCoreLib.CoreFrame.Mongodb
         }
     }
 
+    [JsonObject(MemberSerialization.OptOut)]
     public abstract class AbstractMongoModel
     {
+        [JsonIgnore]
         public ObjectId id { get; set; }
         //[BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         //public DateTime created_at { get; set; }

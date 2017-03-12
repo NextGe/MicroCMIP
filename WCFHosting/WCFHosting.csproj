@@ -83,7 +83,6 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="configuration\TimeCDKEY.cs" />
     <Compile Include="frmCDKEY.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,7 +156,9 @@
       <Name>EFWCoreLib.CoreFrame</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="configuration\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)Output"

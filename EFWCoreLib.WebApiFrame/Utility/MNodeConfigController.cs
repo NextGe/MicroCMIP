@@ -123,14 +123,14 @@ namespace EFWCoreLib.WebAPI.Utility
             {
                 List<amazeuitreenode> tree = new List<amazeuitreenode>();
                 List<WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
-                foreach(var p in plist)
+                foreach (var p in plist)
                 {
                     amazeuitreenode nodep = new amazeuitreenode();
                     nodep.title = p.pluginname;
                     nodep.type = "folder";
                     nodep.childs = new List<amazeuitreenode>();
                     tree.Add(nodep);
-                    foreach(var c in p.controllerlist)
+                    foreach (var c in p.controllerlist)
                     {
                         amazeuitreenode nodec = new amazeuitreenode();
                         nodec.title = c.controllername;
@@ -160,7 +160,7 @@ namespace EFWCoreLib.WebAPI.Utility
         }
         //测试服务
         [HttpGet]
-        public string TestServices(string plugin,string controller,string method,string para)
+        public string TestServices(string plugin, string controller, string method, string para)
         {
             try
             {
@@ -190,6 +190,34 @@ namespace EFWCoreLib.WebAPI.Utility
             {
                 List<TaskConfig> tasklist = TaskConfigManage.LoadXML();
                 return tasklist;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        //获取机器码
+        [HttpGet]
+        public string GetMachineCode()
+        {
+            try
+            {
+                return TimeCDKEY.GetCpuId();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        //激活注册码
+        [HttpGet]
+        public bool ActivateRegCode(string regcode)
+        {
+            try
+            {
+                return TimeCDKEY.ActivateRegCode(regcode);
             }
             catch (Exception e)
             {

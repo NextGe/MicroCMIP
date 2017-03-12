@@ -13,6 +13,7 @@
         loadrouter();
     });
 
+   
     //加载路由
     function loadrouter() {
         //菜单通过路由方式打开页面
@@ -94,30 +95,55 @@
         $('#content_body').html("");//清空
     }
 
-    //显示菜单页面
+    //动态加载页面
     function showpage(menuId) {
         $('#content_body').html("");//先清空
         switch (menuId) {
             case "clientlist":
-                show_clientlist(menuId);
+                require(["../../handlebars/clientlist"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "debug":
-                show_debuglog(menuId);
+                require(["../../handlebars/debuglog"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "showmnodeconfig":
-                show_default(menuId,"mnodeconfig/showtext");
+                require(["../../handlebars/showmnodeconfig"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "sevicelist":
-                show_default(menuId, "mnodeconfig/sevicelist");
+                require(["../../handlebars/sevicelist"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "task":
-                show_task(menuId);
+                require(["../../handlebars/task"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "testsevice":
-                show_testsevice(menuId);
+                require(["../../handlebars/testsevice"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
             case "localcmd":
-                show_localcmd(menuId);
+                require(["../../handlebars/localcmd"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
+                break;
+            
+            case "register":
+                require(["../../handlebars/register"], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
+                break;
+            case "mnodelist":
+                require(["../../handlebars/mnodelist"], function (page) {
+                    page.showpage(menuId,urls,templates);
+                });
                 break;
             default:
                 show_default(menuId);
@@ -126,12 +152,19 @@
         
     }
 
+
+
     //通用
     function show_common(menuId, para, callback, errorcallback) {
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
             urls[menuId] = "http://127.0.0.1:8021/" + para;
+
+            //时间格式化
+            Handlebars.registerHelper("todate", function (value) {
+                return $.formatDateTime('yy-mm-dd g:ii:ss', new Date(value));
+            });
             templates[menuId] = Handlebars.compile($("#" + menuId + "-template").html());
         }
 
@@ -156,137 +189,4 @@
         });
     }
 
-    //客户端列表
-    function show_clientlist(menuId) {
-        show_common(menuId, "mnodeconfig/clientlist", function () {
-            $('.btn-clientlist-refresh').click(function () {
-                show_clientlist(menuId);
-            });
-        });
-    }
-
-    //日志
-    function show_debuglog(menuId) {
-        
-        show_common(menuId, "mnodeconfig/debuglog?logtype=MidLog&date=", function () {
-            $('#logdate').datepicker('setValue', new Date());
-            if ($('body').data('logtype')) {
-                $('#logtype').val($('body').data('logtype'));
-                //$('#logtype').find('option[value="' + $('body').data('logtype') + '"]').attr('selected', true);
-            }
-            $('#logtype').selected();
-
-            $('#btn_logsearch').click(function () {
-                $('body').data('logtype', $('#logtype').val());
-                urls[menuId] = "http://127.0.0.1:8021/mnodeconfig/debuglog?logtype=" + $('#logtype').val() + "&date=" + $('#logdate').data('date');
-                show_debuglog(menuId);
-            });
-        });
-    }
-
-    //任务
-    function show_task(menuId) {
-        show_common(menuId, "mnodeconfig/GetTaskList", function () {
-            
-        });
-    }
-
-    //测试服务
-    function show_testsevice(menuId) {
-
-        show_common(menuId, "mnodeconfig/GetAllServices", function (data) {
-            $('#firstTree').tree({
-                dataSource: function (options, callback) {
-                    // 模拟异步加载
-                    setTimeout(function () {
-                        callback({ data: options.childs || data });
-                    }, 40);
-                },
-                multiSelect: false,
-                cacheItems: true,
-                folderSelect: false
-            }).on('selected.tree.amui', function (e, selected) {
-                //console.log('Select Event: ', selected);
-                //console.log($('#firstTree').tree('selectedItems'));
-                $('#txt_plugin').val(selected.target.attr.plugin);
-                $('#txt_controller').val(selected.target.attr.controller);
-                $('#txt_method').val(selected.target.attr.method);
-            });
-
-            $('#btn_request').click(function () {
-                var para = { plugin: $('#txt_plugin').val(), controller: $('#txt_controller').val(), method: $('#txt_method').val(), para: $('#txt_parajson').val() };
-                if (para.method && para.controller && para.plugin) {
-                    common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/TestServices", para, function (data) {
-                        $('#txt_responsejson').val(data);
-                    });
-                }
-            });
-        });
-    }
-
-    //执行命令
-    function show_localcmd(menuId) {
-        if (!urls[menuId] || !templates[menuId]) {
-            $('#content_body').html(html_template);//加载html模板文本
-            //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/";
-            templates[menuId] = Handlebars.compile($("#" + menuId + "-template").html());
-        }
-        var context = { data: [] };
-        var html = templates[menuId](context);
-        $('#content_body').html(html);
-
-        $('#btn_restart').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "quitall", arg: "" }, function (data) {
-                    if (data) {
-                        common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "startall", arg: "" });
-                    }
-                });
-            }
-        });
-
-        $('#btn_restartbase').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartbase", arg: "" });
-            }
-        });
-
-        $('#btn_restartroute').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartroute", arg: "" });
-            }
-        });
-
-        $('#btn_restartwebapi').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartwebapi", arg: "" });
-            }
-        });
-
-        $('#btn_restartmongodb').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartmongodb", arg: "" });
-            }
-        });
-
-        $('#btn_restartnginx').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartnginx", arg: "" });
-            }
-        });
-
-        $('#btn_exit').click(function () {
-            var result = confirm('是否执行此操作？');
-            if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "exit", arg: "" });
-            }
-        });
-    }
 });
