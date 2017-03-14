@@ -107,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\MNodeConfigController.cs" />
     <Compile Include="Utility\MonitorController.cs" />
+    <Compile Include="Utility\ViewModel.cs" />
     <Compile Include="WebApiGlobal.cs" />
     <Compile Include="Utility\ClientUpgradeController.cs" />
     <Compile Include="Utility\FileController.cs" />

@@ -11,6 +11,7 @@ namespace EFWCoreLib.WcfFrame.Utility.MonitorPlatform
     /// </summary>
     public class MNodePService : AbstractMongoModel
     {
+        //public string nodename { get; set; }
         public string identify { get; set; }
         /// <summary>
         /// 路径策略 0随机 1最短路径

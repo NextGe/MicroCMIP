@@ -167,6 +167,9 @@ namespace efwplusBase
                     case "debuglog":
                         retData = MiddlewareLogHelper.ReadFile(a["logtype"], a["date"]);
                         break;
+                    case "getmnodetree"://获取节点状态树
+                        retData = JsonConvert.SerializeObject(EFWCoreLib.WcfFrame.ServerManage.MNodeStateManage.GetMNodeTree());
+                        break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);
                 retData = retData.Substring(0, retData.Length > 5000 ? 5000 : retData.Length);

@@ -106,8 +106,8 @@ namespace EFWCoreLib.WebAPI.Utility
         {
             try
             {
-                WebApiGlobal.normalIPC.CallCmd(eprocess, method, arg);
-                return true;
+                return WebApiGlobal.normalIPC.CallCmd(eprocess, method, arg);
+                //return true;
             }
             catch (Exception e)
             {
@@ -225,14 +225,5 @@ namespace EFWCoreLib.WebAPI.Utility
             }
         }
     }
-    /// <summary>
-    /// 树控件数据结构
-    /// </summary>
-    public class amazeuitreenode
-    {
-        public string title { get; set; }
-        public string type { get; set; }
-        public List<amazeuitreenode> childs { get; set; }
-        public Dictionary<string, string> attr { get; set; }
-    }
+    
 }

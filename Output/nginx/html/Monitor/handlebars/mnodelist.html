@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 {{#each data}}
-                <tr value="{{id_string}}" delflag="{{delflag}}">
+                <tr value="{{tojson this}}">
                     <td>{{nodename}}({{identify}})</td>
                     <td>{{machinecode}}</td>
                     <td>{{createdate}}</td>
@@ -40,14 +40,16 @@
             </div>
             <div class="am-modal-bd">
                 <div class="am-g">
-                    <form class="am-form am-form-horizontal">
-                        <label class="am-u-sm-3 am-form-label" style="text-align:right;">中间件名称：</label>
-                        <div class="am-u-sm-9"><input type="text" class="am-modal-prompt-input" required /></div>
-                        <label class="am-u-sm-3 am-form-label" style="text-align:right;">机器码：</label>
-                        <div class="am-u-sm-9"><input type="text" class="am-modal-prompt-input" required /></div>
-                        <label class="am-u-sm-3 am-form-label" style="text-align:right;">备注：</label>
-                        <div class="am-u-sm-9"><textarea rows="5" class="am-modal-prompt-input" required /></div>
+                    <form id="form_addnode" class="am-form am-form-horizontal">
+                        <div class="am-u-sm-4 am-u-md-3 am-form-label">名称：</div>
+                        <div class="am-u-sm-8 am-u-md-9"><input id="txt_nodename" type="text" class="am-form-field am-modal-prompt-input" required /></div>
+                        <div class="am-u-sm-4 am-u-md-3 am-form-label">机器码：</div>
+                        <div class="am-u-sm-8 am-u-md-9"><input id="txt_maccode" type="text" class="am-form-field am-modal-prompt-input" required /></div>
+                        <div class="am-u-sm-4 am-u-md-3 am-form-label">备注：</div>
+                        <div class="am-u-sm-8 am-u-md-9"><textarea id="txt_memo" rows="5" class="am-form-field am-modal-prompt-input" required /></div>
+                        <div id="vld-tooltip" class="am-u-sm-10 am-u-md-10 am-u-sm-pull-1 am-u-md-pull-1 am-alert am-alert-danger">提示信息！</div>
                     </form>
+                    
                 </div>
             </div>
             <div class="am-modal-footer">
@@ -66,12 +68,16 @@
                 <div class="am-g">
                     <form class="am-form am-form-horizontal">
                         <div class="">
-                            <label class="am-u-sm-3 am-form-label" style="text-align:right;">机器码：</label>
-                            <div class="am-u-sm-9"><input type="text" class="am-modal-prompt-input" required /></div>
+                            <div class="am-u-sm-4 am-u-md-3 am-form-label" style="text-align:right;">机器码：</div>
+                            <div class="am-u-sm-8 am-u-md-9"><input id="txt_maccode2" type="text" class="am-modal-prompt-input" disabled /></div>
                         </div>
                         <div class="">
-                            <label class="am-u-sm-3 am-form-label" style="text-align:right;">到期时间：</label>
-                            <div class="am-u-sm-9">
+                            <div class="am-u-sm-4 am-u-md-3 am-form-label" style="text-align:right;">注册码：</div>
+                            <div class="am-u-sm-8 am-u-md-9"><textarea id="txt_regcode" rows="5" class="am-modal-prompt-input" required /></div>
+                        </div>
+                        <div class="">
+                            <div class="am-u-sm-4 am-u-md-3 am-form-label" style="text-align:right;">到期日：</div>
+                            <div class="am-u-sm-8 am-u-md-9">
                                 <div id="regdate" class="am-input-group am-datepicker-date" style="padding-top:5px;" data-am-datepicker="{format: 'yyyy-mm-dd'}">
                                     <input type="text" class="am-form-field" readonly>
                                     <span class="am-input-group-btn am-datepicker-add-on">
@@ -81,14 +87,11 @@
                             </div>
                         </div>
                         <div class="">
-                            <label class="am-u-sm-3 am-form-label" style="text-align:right;">注册码：</label>
-                            <div class="am-u-sm-9"><textarea rows="5" class="am-modal-prompt-input" required /></div>
-                        </div>
-                        <div class="">
-                            <div class="am-u-sm-9" style="padding-left:30px;padding-top:5px;">
-                                <button id="btn_activate" type="button" class="am-btn am-btn-primary">生成注册码</button>
+                            <div class="am-u-sm-10 am-u-md-10 am-u-sm-push-2 am-u-md-push-2" style="padding-top:5px;">
+                                <button id="btn_createregcode" type="button" class="am-btn am-btn-primary">生成注册码</button>
                             </div>
                         </div>
+                        <div id="vld-tooltip2" class="am-u-sm-10 am-u-md-10 am-u-sm-push-1 am-u-md-push-1 am-alert am-alert-danger">提示信息！</div>
                     </form>
                 </div>
             </div>

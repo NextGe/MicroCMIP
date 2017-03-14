@@ -1,0 +1,37 @@
+﻿<script id="mnodeplugin-template" type="text/x-handlebars-template">
+    <div class="am-u-sm-12">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+                        <button id="btn_plugin_addlocal" type="button" class="am-btn am-btn-default"><span class="am-icon-search"></span> 查看配置</button>
+                    </div>
+                </div>
+                <div class="am-panel am-panel-default">
+                    <div class="am-panel-bd">
+                        <div class="am-g am-padding-xs">
+                            <ul class="am-tree" id="firstTree">
+                                <li class="am-tree-branch am-hide" data-template="treebranch">
+                                    <div class="am-tree-branch-header">
+                                        <button class="am-tree-branch-name">
+                                            <span class="am-tree-icon am-tree-icon-folder"></span>
+                                            <span class="am-tree-label"></span>
+                                        </button>
+                                    </div>
+                                    <ul class="am-tree-branch-children"></ul>
+                                    <div class="am-tree-loader"><span class="am-icon-spin am-icon-spinner"></span></div>
+                                </li>
+                                <li class="am-tree-item am-hide" data-template="treeitem">
+                                    <button class="am-tree-item-name">
+                                        <span class="am-tree-icon am-tree-icon-item"></span>
+                                        <span class="am-tree-label"></span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

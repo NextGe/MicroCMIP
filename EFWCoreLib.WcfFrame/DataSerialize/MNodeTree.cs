@@ -58,9 +58,13 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
                     mnodeobj.ServerName = n.Value;
                     mnodeobj.IsConnect = false;//默认未开启
                     if (WcfGlobal.IsRootMNode == true && WcfGlobal.Identify == n.Key)//根节点
+                    {
                         mnodeobj.PointToMNode = n.Key;
+                        mnodeobj.IsConnect = true;//根节点默认开启
+                    }
                     else
                         mnodeobj.PointToMNode = null;
+                    _allMNodeList.Add(mnodeobj);
                 }
             }
 

@@ -6,12 +6,13 @@
     urls = new Array();
     templates = new Array();//handlebars模板对象
     labmenus = new Array();
+
     //初始化
-    $(document).ready(function () {
+    function init () {
         common.validateuser();//身份验证
         loadsysmenus();
         loadrouter();
-    });
+    }
 
    
     //加载路由
@@ -71,6 +72,7 @@
                 "moudleid": "root", "moudlename": "中心监控平台", "child": [
                 { "Id": "mnodelist", "Name": "中间件管理" },
                 { "Id": "pluginlist", "Name": "服务插件管理" },
+                { "Id": "mnodeplugin", "Name": "节点配置插件" },
                 { "Id": "mnodestate", "Name": "节点监控图" },
                 { "Id": "upgrade", "Name": "发布升级包" },
                 { "Id": "testremoteservice", "Name": "远程测试服务" },
@@ -99,57 +101,17 @@
     function showpage(menuId) {
         $('#content_body').html("");//先清空
         switch (menuId) {
-            case "clientlist":
-                require(["../../handlebars/clientlist"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
             case "debug":
                 require(["../../handlebars/debuglog"], function (page) {
                     page.showpage(menuId, urls, templates);
                 });
                 break;
-            case "showmnodeconfig":
-                require(["../../handlebars/showmnodeconfig"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            case "sevicelist":
-                require(["../../handlebars/sevicelist"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            case "task":
-                require(["../../handlebars/task"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            case "testsevice":
-                require(["../../handlebars/testsevice"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            case "localcmd":
-                require(["../../handlebars/localcmd"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            
-            case "register":
-                require(["../../handlebars/register"], function (page) {
-                    page.showpage(menuId, urls, templates);
-                });
-                break;
-            case "mnodelist":
-                require(["../../handlebars/mnodelist"], function (page) {
-                    page.showpage(menuId,urls,templates);
-                });
-                break;
             default:
-                show_default(menuId);
+                require(["../../handlebars/"+menuId], function (page) {
+                    page.showpage(menuId, urls, templates);
+                });
                 break;
         }
-        
     }
 
 
@@ -189,4 +151,7 @@
         });
     }
 
+    return {
+        init: init
+    };
 });
