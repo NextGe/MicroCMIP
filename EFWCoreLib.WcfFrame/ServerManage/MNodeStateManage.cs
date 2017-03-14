@@ -70,9 +70,10 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 MongoHelper<MidNode> helper = new MongoHelper<MidNode>(WcfGlobal.MongoConnStr, MonitorPlatformManage.dbName);
                 List<MidNode> Nlist = helper.FindAll(null);
                 Dictionary<string, string> Ndic = new Dictionary<string, string>();
-                foreach(var n in Nlist)
+                foreach (var n in Nlist)
                 {
-                    Ndic.Add(n.identify, n.nodename);
+                    if (string.IsNullOrEmpty(n.identify) == false)
+                        Ndic.Add(n.identify, n.nodename);
                 }
 
                 MNodeTree mtree = new MNodeTree();
@@ -110,7 +111,9 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 SyncMNodeTree();
                 timer.Enabled = true;
             }
-            catch { }
+            catch {
+                timer.Enabled = true;
+            }
         }
     }
 
@@ -181,7 +184,9 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 SendMNodeStateToSup();//第二步，发送中间件节点状态到上级节点
                 timer.Enabled = true;
             }
-            catch { }
+            catch {
+                timer.Enabled = true;
+            }
         }
     }
 }

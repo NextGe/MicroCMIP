@@ -109,6 +109,7 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
         public void SyncToCache()
         {
             Dictionary<string, string> sync_adddata = new Dictionary<string, string>();//需要同步的数据
+            Dictionary<string, string> sync_updatedata = new Dictionary<string, string>();//需要同步的数据
             List<string> sync_deldata = new List<string>();//需要同步的数据
 
             CacheObject cobj = DistributedCacheManage.GetLocalCache(cacheName);
@@ -122,6 +123,7 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
                     {
                         sync_adddata.Add(n.ServerIdentify, JsonConvert.SerializeObject(n));
                     }
+
                 }
                 //删除的
                 foreach (var o in cdatalist)
@@ -131,6 +133,18 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
                         sync_deldata.Add(o.key);
                     }
                 }
+
+                //更新的
+                foreach (var o in cdatalist)
+                {
+                    MNodeObject o1 = JsonConvert.DeserializeObject<MNodeObject>(o.value);
+                    MNodeObject o2 = _allMNodeList.Find(x => x.ServerIdentify == o.key);
+                    if(o2!=null && o1.IsConnect!=o2.IsConnect)
+                    {
+                        sync_updatedata.Add(o.key, JsonConvert.SerializeObject(o2));
+                    }
+                }
+
             }
             else
             {
@@ -141,7 +155,7 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
                 }
             }
 
-            DistributedCacheManage.SetCache(cacheName, sync_adddata, sync_deldata);
+            DistributedCacheManage.SetCache(cacheName, sync_adddata,sync_updatedata, sync_deldata);
         }
 
         /// <summary>

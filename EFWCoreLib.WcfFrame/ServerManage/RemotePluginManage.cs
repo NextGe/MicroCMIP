@@ -119,7 +119,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     }
                 }
 
-                DistributedCacheManage.SetCache(cacheName, sync_adddata, sync_deldata);
+                DistributedCacheManage.SetCache(cacheName, sync_adddata,null, sync_deldata);
             }
         }
 
@@ -168,7 +168,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 SyncMNodePlugin();
                 timer.Enabled = true;
             }
-            catch { }
+            catch { timer.Enabled = true; }
         }
     }
 

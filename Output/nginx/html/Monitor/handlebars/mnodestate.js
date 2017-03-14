@@ -28,6 +28,7 @@
     //
     function showpage(menuId, urls, templates) {
         show_common(menuId, "Monitor/GetMonitorMap", urls, templates, function (data) {
+            //data = { childs: data };
             $('#firstTree').tree({
                 dataSource: function (options, callback) {
                     // 模拟异步加载

@@ -133,7 +133,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// </summary>
         /// <param name="cacheName"></param>
         /// <param name="data"></param>
-        public static void SetCache(string cacheName, Dictionary<string, string> adddata, List<string> deldata)
+        public static void SetCache(string cacheName, Dictionary<string, string> adddata, Dictionary<string, string> updatedata, List<string> deldata)
         {
             bool isChanged = false;
             if (adddata != null && adddata.Count > 0)
@@ -149,6 +149,15 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 foreach (var i in deldata)
                 {
                     RemoveCache(cacheName, i, false);
+                }
+                isChanged = true;
+            }
+
+            if(updatedata!=null && updatedata.Count>0)
+            {
+                foreach (var i in updatedata)
+                {
+                    SetCache(cacheName, i.Key, i.Value, false);
                 }
                 isChanged = true;
             }

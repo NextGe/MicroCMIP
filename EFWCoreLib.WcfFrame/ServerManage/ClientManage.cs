@@ -208,7 +208,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 }
                 timer.Enabled = true;
             }
-            catch { }
+            catch { timer.Enabled = true; }
         }
         #endregion
 
@@ -270,7 +270,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             get
             {
-                if (plugin == "SuperPlugin" && string.IsNullOrEmpty(ServerIdentify))
+                if (plugin == "SuperPlugin" && string.IsNullOrEmpty(ServerIdentify)==false)
                 {
                     return true;
                 }
@@ -286,7 +286,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             get
             {
-                if (plugin == "DataPlugin" && string.IsNullOrEmpty(ServerIdentify))
+                if (plugin == "DataPlugin" && string.IsNullOrEmpty(ServerIdentify)==false)
                 {
                     return true;
                 }
