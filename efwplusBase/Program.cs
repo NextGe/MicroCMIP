@@ -170,6 +170,20 @@ namespace efwplusBase
                     case "getmnodetree"://获取节点状态树
                         retData = JsonConvert.SerializeObject(EFWCoreLib.WcfFrame.ServerManage.MNodeStateManage.GetMNodeTree());
                         break;
+                    case "getallservices"://获取本地所有服务
+                        List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
+                        retData = JsonConvert.SerializeObject(plist);
+                        break;
+                    case "gettasklist"://获取任务列表
+                        List<TaskConfig> tasklist = TaskConfigManage.LoadXML();
+                        retData = JsonConvert.SerializeObject(tasklist);
+                        break;
+                    case "getmachinecode"://获取机器码
+                        retData = TimeCDKEY.GetCpuId();
+                        break;
+                    case "activateregcode"://激活注册码
+                        TimeCDKEY.ActivateRegCode(a["regcode"]);
+                        break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);
                 retData = retData.Substring(0, retData.Length > 5000 ? 5000 : retData.Length);

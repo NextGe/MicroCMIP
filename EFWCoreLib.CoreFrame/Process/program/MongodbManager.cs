@@ -12,25 +12,30 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     /// </summary>
     public class MongodbManager
     {
+        private static bool Ismongodb = false;
         //private static System.Diagnostics.Process pro;
         /// <summary>
         /// 开启Mongodb
         /// </summary>
         public static void StartDB()
         {
-            string mongodExe = HostSettingConfig.GetValue("mongodb_binpath") + @"\mongod.exe";
-            string mongoConf = AppDomain.CurrentDomain.BaseDirectory + @"\Config\mongo.conf";
+            Ismongodb = HostSettingConfig.GetValue("mongodb") == "1" ? true : false;
+            if (Ismongodb)
+            {
+                string mongodExe = HostSettingConfig.GetValue("mongodb_binpath") + @"\mongod.exe";
+                string mongoConf = AppDomain.CurrentDomain.BaseDirectory + @"\Config\mongo.conf";
 
-            System.Diagnostics.Process pro = new System.Diagnostics.Process();
-            pro.StartInfo.FileName = mongodExe;
-            pro.StartInfo.Arguments = "--config " + mongoConf;
-            pro.StartInfo.UseShellExecute = false;
-            //pro.StartInfo.RedirectStandardInput = true;
-            //pro.StartInfo.RedirectStandardOutput = true;
-            //pro.StartInfo.RedirectStandardError = true;
-            pro.StartInfo.CreateNoWindow = true;
-            pro.Start();
-            //pro.WaitForExit();
+                System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                pro.StartInfo.FileName = mongodExe;
+                pro.StartInfo.Arguments = "--config " + mongoConf;
+                pro.StartInfo.UseShellExecute = false;
+                //pro.StartInfo.RedirectStandardInput = true;
+                //pro.StartInfo.RedirectStandardOutput = true;
+                //pro.StartInfo.RedirectStandardError = true;
+                pro.StartInfo.CreateNoWindow = true;
+                pro.Start();
+                //pro.WaitForExit();
+            }
         }
         /// <summary>
         /// 停止Mongodb

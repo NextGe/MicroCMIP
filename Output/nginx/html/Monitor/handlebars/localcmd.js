@@ -6,7 +6,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/";
+            urls[menuId] ="";
             templates[menuId] = Handlebars.compile($("#" + menuId + "-template").html());
         }
         var context = { data: [] };
@@ -16,9 +16,9 @@
         $('#btn_restart').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "quitall", arg: "" }, function (data) {
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "quitall", arg: "" }, function (data) {
                     if (data) {
-                        common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "startall", arg: "" });
+                        common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "startall", arg: "" });
                     }
                 });
             }
@@ -27,42 +27,42 @@
         $('#btn_restartbase').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartbase", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartbase", arg: "" });
             }
         });
 
         $('#btn_restartroute').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartroute", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartroute", arg: "" });
             }
         });
 
         $('#btn_restartwebapi').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartwebapi", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartwebapi", arg: "" });
             }
         });
 
         $('#btn_restartmongodb').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartmongodb", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartmongodb", arg: "" });
             }
         });
 
         $('#btn_restartnginx').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartnginx", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restartnginx", arg: "" });
             }
         });
 
         $('#btn_exit').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "exit", arg: "" });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "exit", arg: "" });
             }
         });
     }

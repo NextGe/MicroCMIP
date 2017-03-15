@@ -71,6 +71,7 @@ namespace EFWCoreLib.WebAPI.Utility
                     node.delflag = 0;
                     node.identify = null;
                     node.regcode = null;
+                    node.identify = DateTime.Now.Ticks.ToString();//新增的时候生成标识码
                     node.createdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     helperNode.Insert(node);
                 }
@@ -81,7 +82,7 @@ namespace EFWCoreLib.WebAPI.Utility
                     _node.machinecode = node.machinecode;
                     _node.memo = node.memo;
                     _node.regcode = node.regcode;
-                    _node.identify = node.identify;
+                    //_node.identify = node.identify;
                     helperNode.Update(_node);
                 }
 
@@ -94,13 +95,13 @@ namespace EFWCoreLib.WebAPI.Utility
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public Object CreateRegCode(string machinecode, string regdate)
+        public Object CreateRegCode(string identify, string machinecode, string regdate)
         {
             try
             {
                 if (WebApiGlobal.IsRootMNode)
                 {
-                    string identify = DateTime.Now.Ticks.ToString();
+                    //string identify = DateTime.Now.Ticks.ToString();
                     regdate = Convert.ToDateTime(regdate).ToString("yyyyMMdd");
                     string regcode = Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(identify, machinecode, regdate), "kakake!@#123");
                     return new { identify = identify, regcode = regcode };

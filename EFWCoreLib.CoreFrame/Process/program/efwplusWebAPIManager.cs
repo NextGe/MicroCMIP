@@ -4,27 +4,33 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EFWCoreLib.CoreFrame.Init;
 
 namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusWebAPIManager
     {
+        private static bool Iswebapi = false;
         /// <summary>
         /// 开启efwplusWebAPI
         /// </summary>
         public static void StartAPI()
         {
-            string apiExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusWebAPI.exe";
+            Iswebapi = HostSettingConfig.GetValue("webapi") == "1" ? true : false;
+            if (Iswebapi)
+            {
+                string apiExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusWebAPI.exe";
 
-            System.Diagnostics.Process pro = new System.Diagnostics.Process();
-            pro.StartInfo.FileName = apiExe;
-            pro.StartInfo.UseShellExecute = false;
-            //pro.StartInfo.RedirectStandardInput = true;
-            //pro.StartInfo.RedirectStandardOutput = true;
-            //pro.StartInfo.RedirectStandardError = true;
-            pro.StartInfo.CreateNoWindow = true;
-            pro.Start();
-            //pro.WaitForExit();
+                System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                pro.StartInfo.FileName = apiExe;
+                pro.StartInfo.UseShellExecute = false;
+                //pro.StartInfo.RedirectStandardInput = true;
+                //pro.StartInfo.RedirectStandardOutput = true;
+                //pro.StartInfo.RedirectStandardError = true;
+                pro.StartInfo.CreateNoWindow = true;
+                pro.Start();
+                //pro.WaitForExit();
+            }
         }
         /// <summary>
         /// 停止efwplusBase

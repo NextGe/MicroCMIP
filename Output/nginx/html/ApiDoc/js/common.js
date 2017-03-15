@@ -31,7 +31,7 @@
     }
     function validateuser() {
         var token = $.cookie("token");
-        simpleAjax('http://127.0.0.1:8021/login/validatetoken', { token: token }, function (data) {
+        simpleAjax('login/validatetoken', { token: token }, function (data) {
             if (!data.flag) {
                 $.cookie("token", null);//注销就删除cookie
                 window.location.href = 'login.html';

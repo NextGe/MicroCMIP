@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] = para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {
@@ -31,7 +31,7 @@
         show_common(menuId, "mnodeconfig/GetMachineCode",urls,templates, function (data) {
             $('#txt_machinecode').val(data);
             $('#btn_activate').click(function () {
-                common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/ActivateRegCode", { regcode: $('#txt_regcode').val() }, function (flag) {
+                common.simpleAjax("mnodeconfig/ActivateRegCode", { regcode: $('#txt_regcode').val() }, function (flag) {
                     if (flag) {
                         //alert("激活成功！");
                         $('#errorinfo').text('激活成功！');

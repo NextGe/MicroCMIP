@@ -3,7 +3,7 @@
         $('#errorinfo').hide();
         $("#login").submit(function (e) {
             e.preventDefault();
-            common.postAjax('http://127.0.0.1:8021/login/submit', $(this).serialize(), function (data) {
+            common.postAjax('login/submit', $(this).serialize(), function (data) {
                 var retobj = data;
                 if (retobj.flag) {
                     $.cookie("token", retobj.token);

@@ -21,13 +21,16 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// <returns></returns>
         public static string GetServiceConfig()
         {
+            MNodePlugin mp= RemotePluginManage.GetLocalPlugin();
+
             List<dwPlugin> pluginlist = new List<dwPlugin>();
-            foreach (var item in CoreFrame.Init.AppPluginManage.PluginDic)
+            foreach (var pname in mp.LocalPlugin)
             {
+                CoreFrame.Plugin.ModulePlugin item = CoreFrame.Init.AppPluginManage.PluginDic[pname];
                 dwPlugin p = new dwPlugin();
-                p.pluginname = item.Key;
+                p.pluginname = pname;
                 p.controllerlist = new List<dwController>();
-                List<WcfControllerAttributeInfo> cmdControllerList = (List<WcfControllerAttributeInfo>)item.Value.cache.GetData(item.Key + "@" + "wcfControllerAttributeList");
+                List<WcfControllerAttributeInfo> cmdControllerList = (List<WcfControllerAttributeInfo>)item.cache.GetData(pname + "@" + "wcfControllerAttributeList");
                 foreach (var cmd in cmdControllerList)
                 {
                     dwController c = new dwController();

@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] =para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {

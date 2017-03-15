@@ -1,8 +1,9 @@
-﻿define(['jquery','jquery.cookie'], function ($) {
+﻿define(['jquery', 'jquery.cookie'], function ($) {
+    var baseUrl = "http://127.0.0.1:8021/";
     function simpleAjax(requestUrl, requestData, callback,errorback) {
         $.ajax({
             type: "get",
-            url: requestUrl,
+            url: baseUrl+requestUrl,
             data: requestData,
             success: function (retdata) {
                 if (callback)
@@ -17,7 +18,7 @@
     function postAjax(requestUrl, requestData, callback, errorback) {
         $.ajax({
             type: "post",
-            url: requestUrl,
+            url: baseUrl+requestUrl,
             data: requestData,
             success: function (retdata) {
                 if (callback)
@@ -31,7 +32,7 @@
     }
     function validateuser() {
         var token = $.cookie("token");
-        simpleAjax('http://127.0.0.1:8021/login/validatetoken', { token: token }, function (data) {
+        simpleAjax('login/validatetoken', { token: token }, function (data) {
             if (!data.flag) {
                 $.cookie("token", null);//注销就删除cookie
                 window.location.href = 'login.html';
@@ -61,6 +62,7 @@
     }
 
     return {
+        baseUrl:baseUrl,
         simpleAjax: simpleAjax,
         postAjax:postAjax,
         validateuser: validateuser,

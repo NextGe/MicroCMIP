@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] = para;
             templates[menuId] = Handlebars.compile($("#" + menuId + "-template").html());
         }
 
@@ -22,7 +22,7 @@
 
     function query(menuId, urls, templates) {
         var identify = $('#mnodelist').val();
-        common.simpleAjax("http://127.0.0.1:8021/Monitor/GetMNodePService", { identify: identify }, function (data) {
+        common.simpleAjax("Monitor/GetMNodePService", { identify: identify }, function (data) {
             //$('#firstTree').tree('closeAll');
             $('#firstTree').tree({
                 dataSource: function (options, callback) {
@@ -55,7 +55,7 @@
 
                 var identify = $('#mnodelist').val();
 
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/AddMNodePService", { identify: identify, type: 0, data: $.toJSON(selectdata) }, function (flag) {
+                common.simpleAjax("Monitor/AddMNodePService", { identify: identify, type: 0, data: $.toJSON(selectdata) }, function (flag) {
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
@@ -88,7 +88,7 @@
                 }
                 var data = { pluginname: selectplugin, mnodeidentify: selectnode };
                 var identify = $('#mnodelist').val();
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/AddMNodePService", { identify: identify, type: 1, data: $.toJSON(data) }, function (flag) {
+                common.simpleAjax("Monitor/AddMNodePService", { identify: identify, type: 1, data: $.toJSON(data) }, function (flag) {
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
@@ -109,7 +109,7 @@
                 if ($('body').data('type') == 'remoteplugin')
                     type = 1;
                 var pluginname = $('body').data('value');
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/DelMNodePService", { identify: identify, type: type, pluginname: pluginname }, function (flag) {
+                common.simpleAjax("Monitor/DelMNodePService", { identify: identify, type: type, pluginname: pluginname }, function (flag) {
                     if (flag) {
                         showpage(menuId, urls, templates);
                     }
@@ -152,7 +152,7 @@
             $('#btn_query').click(function () {
                 $('body').data('mnodelist', $('#mnodelist').val());
                 //query(menuId, urls, templates);
-                urls[menuId] = "http://127.0.0.1:8021/Monitor/GetMNodePluginViewData?identify=" + $('#mnodelist').val();
+                urls[menuId] = "Monitor/GetMNodePluginViewData?identify=" + $('#mnodelist').val();
                 showpage(menuId, urls, templates);
             });
 

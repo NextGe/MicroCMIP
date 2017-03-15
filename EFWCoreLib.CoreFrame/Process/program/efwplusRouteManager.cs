@@ -4,27 +4,33 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EFWCoreLib.CoreFrame.Init;
 
 namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusRouteManager
     {
+        private static bool Isrouter = false;
         /// <summary>
         /// 开启efwplusRoute
         /// </summary>
         public static void StartRoute()
         {
-            string routeExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusRoute.exe";
+            Isrouter = HostSettingConfig.GetValue("router") == "1" ? true : false;
+            if (Isrouter)
+            {
+                string routeExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusRoute.exe";
 
-            System.Diagnostics.Process pro = new System.Diagnostics.Process();
-            pro.StartInfo.FileName = routeExe;
-            pro.StartInfo.UseShellExecute = false;
-            //pro.StartInfo.RedirectStandardInput = true;
-            //pro.StartInfo.RedirectStandardOutput = true;
-            //pro.StartInfo.RedirectStandardError = true;
-            pro.StartInfo.CreateNoWindow = true;
-            pro.Start();
-            //pro.WaitForExit();
+                System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                pro.StartInfo.FileName = routeExe;
+                pro.StartInfo.UseShellExecute = false;
+                //pro.StartInfo.RedirectStandardInput = true;
+                //pro.StartInfo.RedirectStandardOutput = true;
+                //pro.StartInfo.RedirectStandardError = true;
+                pro.StartInfo.CreateNoWindow = true;
+                pro.Start();
+                //pro.WaitForExit();
+            }
         }
         /// <summary>
         /// 停止efwplusBase

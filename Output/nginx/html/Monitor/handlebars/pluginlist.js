@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] =  para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {
@@ -77,7 +77,7 @@
                 formdata.versions = $('#txt_versions').val();
                 formdata.author = $('#txt_author').val();
                 formdata.introduce = $('#txt_introduce').val();
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/SavePlugin", { para: $.toJSON(formdata) }, function (flag) {
+                common.simpleAjax("Monitor/SavePlugin", { para: $.toJSON(formdata) }, function (flag) {
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
@@ -123,7 +123,7 @@
                 if (value.id_string) {
                     var result = confirm('是否停用此插件服务？');
                     if (result) {
-                        common.simpleAjax("http://127.0.0.1:8021/Monitor/OnOffPlugin", { id: value.id_string }, function (flag) {
+                        common.simpleAjax("Monitor/OnOffPlugin", { id: value.id_string }, function (flag) {
                             if (flag) {
                                 showpage(menuId,urls,templates);
                             }

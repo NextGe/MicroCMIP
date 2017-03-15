@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] =  para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {
@@ -59,7 +59,7 @@
                 formdata.nodename = $('#txt_nodename').val();
                 formdata.machinecode = $('#txt_maccode').val();
                 formdata.memo = $('#txt_memo').val();
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/SaveMNode", formdata, function (flag) {
+                common.simpleAjax("Monitor/SaveMNode", formdata, function (flag) {
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
@@ -89,7 +89,7 @@
                 }
                
                 formdata.regcode = $('#txt_regcode').val();
-                common.simpleAjax("http://127.0.0.1:8021/Monitor/SaveMNode", formdata, function (flag) {
+                common.simpleAjax("Monitor/SaveMNode", formdata, function (flag) {
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
@@ -103,7 +103,8 @@
         $('#btn_createregcode').unbind('click').click(function () {
             var regdate = $('#regdate').data('date');
             var machinecode = $('#txt_maccode2').val();
-            common.simpleAjax("http://127.0.0.1:8021/Monitor/CreateRegCode", { machinecode: machinecode, regdate: regdate }, function (data) {
+            var identify = formdata.identify;
+            common.simpleAjax("Monitor/CreateRegCode", { identify: identify, machinecode: machinecode, regdate: regdate }, function (data) {
                 if (data) {
                     $('#txt_regcode').val(data.regcode);
                     formdata.regcode = data.regcode;
@@ -152,7 +153,7 @@
                 if (value.id_string) {
                     var result = confirm('是否停用此中间件节点？');
                     if (result) {
-                        common.simpleAjax("http://127.0.0.1:8021/Monitor/OnOffMidNode", { id: value.id_string }, function (flag) {
+                        common.simpleAjax("Monitor/OnOffMidNode", { id: value.id_string }, function (flag) {
                             if (flag) {
                                 showpage(menuId,urls,templates);
                             }

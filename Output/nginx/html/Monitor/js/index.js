@@ -59,7 +59,7 @@
                 { "Id": "debug", "Name": "日志输出" },
                 { "Id": "clientlist", "Name": "客户端列表" },
                 { "Id": "showmnodeconfig", "Name": "配置信息" },
-                { "Id": "sevicelist", "Name": "本地插件服务" },
+                { "Id": "sevicelist", "Name": "本地有效插件" },
                 { "Id": "testsevice", "Name": "测试插件服务" },
                 { "Id": "task", "Name": "定时任务" },
                 { "Id": "register", "Name": "注册中间件" },
@@ -121,7 +121,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] = para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {

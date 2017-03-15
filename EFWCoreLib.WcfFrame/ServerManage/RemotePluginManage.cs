@@ -87,6 +87,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             {
                 List<MNodePlugin> mpList = LoadMongodb();//从Mongodb加载节点服务配置
                 Dictionary<string, string> sync_adddata = new Dictionary<string, string>();//需要同步的数据
+                Dictionary<string, string> sync_updatedata = new Dictionary<string, string>();//需要同步的数据
                 List<string> sync_deldata = new List<string>();//需要同步的数据
 
                 CacheObject cobj = DistributedCacheManage.GetLocalCache(cacheName);
@@ -109,6 +110,17 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                             sync_deldata.Add(o.key);
                         }
                     }
+
+                    //更新的
+                    foreach (var o in cdatalist)
+                    {
+                        MNodePlugin mp = mpList.Find(x => x.ServerIdentify == o.key);
+                        if (mp != null && JsonConvert.SerializeObject(mp) != o.value)
+                        {
+                            sync_updatedata.Add(o.key, JsonConvert.SerializeObject(mp));
+                        }
+                    }
+
                 }
                 else
                 {
@@ -119,7 +131,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     }
                 }
 
-                DistributedCacheManage.SetCache(cacheName, sync_adddata,null, sync_deldata);
+                DistributedCacheManage.SetCache(cacheName, sync_adddata, sync_updatedata, sync_deldata);
             }
         }
 

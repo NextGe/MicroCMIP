@@ -5,7 +5,7 @@
         if (!urls[menuId] || !templates[menuId]) {
             $('#content_body').html(html_template);//加载html模板文本
             //设置多个url和模板
-            urls[menuId] = "http://127.0.0.1:8021/" + para;
+            urls[menuId] =  para;
 
             //时间格式化
             Handlebars.registerHelper("todate", function (value) {
@@ -49,7 +49,7 @@
             $('#btn_request').click(function () {
                 var para = { plugin: $('#txt_plugin').val(), controller: $('#txt_controller').val(), method: $('#txt_method').val(), para: $('#txt_parajson').val() };
                 if (para.method && para.controller && para.plugin) {
-                    common.simpleAjax("http://127.0.0.1:8021/mnodeconfig/TestServices", para, function (data) {
+                    common.simpleAjax("mnodeconfig/TestServices", para, function (data) {
                         $('#txt_responsejson').val(data);
                     });
                 }

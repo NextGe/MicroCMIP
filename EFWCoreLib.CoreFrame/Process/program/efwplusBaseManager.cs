@@ -4,28 +4,34 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EFWCoreLib.CoreFrame.Init;
 
 namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusBaseManager
     {
+        private static bool Iswcfservice = false;
         /// <summary>
         /// 开启efwplusBase
         /// </summary>
         public static void StartBase()
         {
-            string baseExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusBase.exe";
+            Iswcfservice = HostSettingConfig.GetValue("wcfservice") == "1" ? true : false;
+            if (Iswcfservice)
+            {
+                string baseExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusBase.exe";
 
-            System.Diagnostics.Process pro = new System.Diagnostics.Process();
-            pro.StartInfo.FileName = baseExe;
-            pro.StartInfo.UseShellExecute = false;
-            //pro.StartInfo.RedirectStandardInput = true;
-            //pro.StartInfo.RedirectStandardOutput = true;
-            //pro.StartInfo.RedirectStandardError = true;
-            pro.StartInfo.CreateNoWindow = true;
-            pro.Start();
-            //pro.WaitForExit();
-            //pro.StandardInput.AutoFlush = true;
+                System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                pro.StartInfo.FileName = baseExe;
+                pro.StartInfo.UseShellExecute = false;
+                //pro.StartInfo.RedirectStandardInput = true;
+                //pro.StartInfo.RedirectStandardOutput = true;
+                //pro.StartInfo.RedirectStandardError = true;
+                pro.StartInfo.CreateNoWindow = true;
+                pro.Start();
+                //pro.WaitForExit();
+                //pro.StandardInput.AutoFlush = true;
+            }
         }
         /// <summary>
         /// 停止efwplusBase

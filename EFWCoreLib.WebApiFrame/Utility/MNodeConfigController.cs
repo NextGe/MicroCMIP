@@ -14,6 +14,7 @@ using EFWCoreLib.WcfFrame;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using EFWCoreLib.WebApiFrame;
 using EFWCoreLib.WebFrame.WebAPI;
+using Newtonsoft.Json;
 
 namespace EFWCoreLib.WebAPI.Utility
 {
@@ -121,8 +122,11 @@ namespace EFWCoreLib.WebAPI.Utility
         {
             try
             {
+                //string data= WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "getallservices", null);
+                //List<WcfFrame.ServerManage.dwPlugin> plist = JsonConvert.DeserializeObject<List<WcfFrame.ServerManage.dwPlugin>>(data);
+                List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
+
                 List<amazeuitreenode> tree = new List<amazeuitreenode>();
-                List<WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
                 foreach (var p in plist)
                 {
                     amazeuitreenode nodep = new amazeuitreenode();
@@ -188,7 +192,8 @@ namespace EFWCoreLib.WebAPI.Utility
         {
             try
             {
-                List<TaskConfig> tasklist = TaskConfigManage.LoadXML();
+                string data = WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "gettasklist", null);
+                List<TaskConfig> tasklist = JsonConvert.DeserializeObject<List<TaskConfig>>(data);
                 return tasklist;
             }
             catch (Exception e)
@@ -203,7 +208,8 @@ namespace EFWCoreLib.WebAPI.Utility
         {
             try
             {
-                return TimeCDKEY.GetCpuId();
+                string data = WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "getmachinecode", null);
+                return data;
             }
             catch (Exception e)
             {
@@ -217,7 +223,9 @@ namespace EFWCoreLib.WebAPI.Utility
         {
             try
             {
-                return TimeCDKEY.ActivateRegCode(regcode);
+                string args = "regcode=" + regcode;
+                WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "activateregcode", args);
+                return true;
             }
             catch (Exception e)
             {
