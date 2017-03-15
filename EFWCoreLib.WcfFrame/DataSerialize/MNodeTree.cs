@@ -119,16 +119,15 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
                 //新增的
                 foreach (var n in _allMNodeList)
                 {
-                    if (cdatalist.FindIndex(x => x.key == n.ServerIdentify) == -1)
+                    if (cdatalist.FindIndex(x => x.key == n.ServerIdentify && x.deleteflag==false) == -1)
                     {
                         sync_adddata.Add(n.ServerIdentify, JsonConvert.SerializeObject(n));
                     }
-
                 }
                 //删除的
                 foreach (var o in cdatalist)
                 {
-                    if (_allMNodeList.FindIndex(x => x.ServerIdentify == o.key) == -1)
+                    if (o.deleteflag==false && _allMNodeList.FindIndex(x => x.ServerIdentify == o.key) == -1)
                     {
                         sync_deldata.Add(o.key);
                     }

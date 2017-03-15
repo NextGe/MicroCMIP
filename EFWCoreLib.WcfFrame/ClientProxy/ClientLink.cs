@@ -56,6 +56,11 @@ namespace EFWCoreLib.WcfFrame
         {
             get { return clientObj; }
         }
+        //重新连接处理
+        public Action ReConnectionAction
+        {
+            get; set;
+        }
         #endregion
 
         #region 变量
@@ -559,6 +564,11 @@ namespace EFWCoreLib.WcfFrame
                 //        createconnAction();
                 //    }
                 //}
+
+                if(ReConnectionAction!=null)
+                {
+                    ReConnectionAction();
+                }
                 if (isRequest == true)//避免死循环
                     Heartbeat();//重连之后必须再次调用心跳
                 MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "重新连接上级中间件成功！");
@@ -619,9 +629,10 @@ namespace EFWCoreLib.WcfFrame
 
                 if (ret == false)//表示服务主机关闭过，丢失了clientId，必须重新创建连接
                 {
-                    _wcfService.Abort();
-                    CreateConnection();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
+                    ReConnection(false);//连接服务主机失败，重连
+                    //_wcfService.Abort();
+                    //CreateConnection();
+                    //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
                 }
                 return ret;
             }
@@ -691,10 +702,13 @@ namespace EFWCoreLib.WcfFrame
             {
                 try
                 {
+                    timer.Enabled = false;
                     Heartbeat();
+                    timer.Enabled = true;
                 }
                 catch
                 {
+                    timer.Enabled = true;
                     //throw new Exception(err.Message);
                 }
             }

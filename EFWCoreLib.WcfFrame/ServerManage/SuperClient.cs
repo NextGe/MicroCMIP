@@ -27,7 +27,13 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             //初始化连接池,默认10分钟清理连接
             ClientLinkPoolCache.Init(true, 500, 30, 600, "dataclient", 30);
 
-
+            if (superClientLink != null)
+            {
+                superClientLink.ReConnectionAction = (()=>
+                {
+                    SubscriberManager.ReSubscribeAll();//重新订阅
+                });
+            }
         }
 
         public static void Stop()

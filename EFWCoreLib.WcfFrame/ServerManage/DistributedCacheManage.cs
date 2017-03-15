@@ -389,6 +389,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 }
             });
             SubscriberManager.Subscribe(ssObject);
+
         }
 
         public static void Stop()

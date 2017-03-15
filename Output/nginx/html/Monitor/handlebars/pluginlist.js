@@ -81,7 +81,7 @@
                     if (flag) {
                         //$(this).modal('toggle');
                         $(this).modal('close');
-                        $('.am-dimmer').remove();
+                        $('.am-dimmer').hide();
                         showpage(menuId, urls, templates);
                     }
                 });

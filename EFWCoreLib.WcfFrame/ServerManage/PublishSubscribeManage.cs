@@ -97,7 +97,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 subscriberList.Add(sub);
             }
             ShowHostMsg(Color.Blue, DateTime.Now, "订阅者[" + ServerIdentify + "]订阅“" + publishServiceName + "”服务成功！");
-            //SendNotify(sub);
+            SendNotify(sub);
         }
         /// <summary>
         /// 客户端取消订阅
@@ -261,6 +261,18 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             {
                 ServerManage.SuperClient.superClientLink.Subscribe(ssObject.publishServiceName);
                 ssoList.Add(ssObject);
+            }
+        }
+
+        /// <summary>
+        /// 重新订阅所有
+        /// </summary>
+        /// <param name="ssObject"></param>
+        public static void ReSubscribeAll()
+        {
+            foreach(var sso in ssoList)
+            {
+                ServerManage.SuperClient.superClientLink.Subscribe(sso.publishServiceName);
             }
         }
         /// <summary>

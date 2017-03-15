@@ -72,7 +72,8 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 Dictionary<string, string> Ndic = new Dictionary<string, string>();
                 foreach (var n in Nlist)
                 {
-                    if (string.IsNullOrEmpty(n.identify) == false)
+                    //未停用
+                    if (string.IsNullOrEmpty(n.identify) == false && n.delflag==0)
                         Ndic.Add(n.identify, n.nodename);
                 }
 
