@@ -403,11 +403,12 @@ namespace EFWCoreLib.WebAPI.Utility
 
                 List<amazeuitreenode> tree = new List<amazeuitreenode>();
                 amazeuitreenode root = new amazeuitreenode();
-                root.title = nodetree.RootMNode.ServerName;
+                root.title = nodetree.RootMNode.ServerName+"("+ nodetree.RootMNode.ServerIdentify + ")";
                 root.type = "folder";
                 root.childs = new List<amazeuitreenode>();
                 root.attr = new Dictionary<string, string>();
                 root.attr.Add("identify", nodetree.RootMNode.ServerIdentify);
+                root.attr.Add("icon", "am-icon-home");
                 tree.Add(root);
 
                 //在线并排除根节点
@@ -418,15 +419,18 @@ namespace EFWCoreLib.WebAPI.Utility
                 offroot.title = "离线中间件节点";
                 offroot.type = "folder";
                 offroot.childs = new List<amazeuitreenode>();
+                offroot.attr = new Dictionary<string, string>();
+                offroot.attr.Add("icon", "am-icon-power-off");
                 tree.Add(offroot);
                 List<MNodeObject> offmnodelist = nodetree.AllMNodeList.FindAll(x => x.IsConnect == false);
-                foreach(var o in offmnodelist)
+                foreach (var o in offmnodelist)
                 {
                     amazeuitreenode node = new amazeuitreenode();
-                    node.title = o.ServerName;
+                    node.title = o.ServerName + "(" + o.ServerIdentify + ")";
                     node.type = "item";
                     node.attr = new Dictionary<string, string>();
                     node.attr.Add("identify", o.ServerIdentify);
+                    node.attr.Add("icon", "am-icon-desktop");
                     offroot.childs.Add(node);
                 }
                 return tree;
@@ -440,10 +444,11 @@ namespace EFWCoreLib.WebAPI.Utility
             foreach(var o in nodelist)
             {
                 amazeuitreenode node = new amazeuitreenode();
-                node.title = o.ServerName;
+                node.title = o.ServerName + "(" + o.ServerIdentify + ")";
                 node.type = "folder";
                 node.attr = new Dictionary<string, string>();
                 node.attr.Add("identify", o.ServerIdentify);
+                node.attr.Add("icon", "am-icon-desktop");
                 p_node.childs.Add(node);
 
                 loadMonitorMap(o.ServerIdentify, node, onmnodelist);

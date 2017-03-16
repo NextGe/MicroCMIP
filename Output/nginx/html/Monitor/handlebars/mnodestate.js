@@ -38,8 +38,9 @@
                 },
                 multiSelect: false,
                 cacheItems: true,
-                folderSelect: false
-            })
+                folderSelect: true
+            });
+            //$('#firstTree').tree('discloseAll');
         });
     }
 

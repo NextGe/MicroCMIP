@@ -33,7 +33,7 @@
                 },
                 multiSelect: false,
                 cacheItems: true,
-                folderSelect: false
+                folderSelect: true
             });
         });
     }
@@ -141,12 +141,17 @@
                 },
                 multiSelect: false,
                 cacheItems: true,
-                folderSelect: false
+                folderSelect: true
             }).on('selected.tree.amui', function (e, selected) {
                 //console.log('Select Event: ', selected);
                 //console.log($('#firstTree').tree('selectedItems'));
-                $('body').data('type',selected.target.attr.type);
-                $('body').data('value', selected.target.attr.value);
+                if (selected.target.attr) {
+                    $('body').data('type', selected.target.attr.type);
+                    $('body').data('value', selected.target.attr.value);
+                } else {
+                    $('body').data('type', null);
+                    $('body').data('value', null);
+                }
             });
 
             $('#btn_query').click(function () {

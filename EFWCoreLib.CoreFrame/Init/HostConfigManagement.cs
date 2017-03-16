@@ -59,14 +59,26 @@ namespace EFWCoreLib.CoreFrame.Init
     /// </summary>
     public class HostAddressConfig
     {
-        private static string appconfig = AppGlobal.AppRootPath + "efwplusServer.exe.config";
+        private static string appconfig = AppGlobal.AppRootPath + "efwplusBase.exe.config";
         private static XmlDocument xmldoc_app;
+
+        private static string routeconfig = AppGlobal.AppRootPath + "efwplusRoute.exe.config";
+        private static XmlDocument xmldoc_route;
+
+        private static string webapiconfig = AppGlobal.AppRootPath + "efwplusWebAPI.exe.config";
+        private static XmlDocument xmldoc_webapi;
 
         private static void InitConfig()
         {
-            appconfig = AppGlobal.AppRootPath + System.IO.Path.GetFileName(Application.ExecutablePath) + ".config";
+            //appconfig = AppGlobal.AppRootPath + System.IO.Path.GetFileName(Application.ExecutablePath) + ".config";
             xmldoc_app = new XmlDocument();
             xmldoc_app.Load(appconfig);
+
+            xmldoc_route = new XmlDocument();
+            xmldoc_route.Load(routeconfig);
+
+            xmldoc_webapi = new XmlDocument();
+            xmldoc_webapi.Load(webapiconfig);
         }
 
         public static string GetWcfAddress()
@@ -114,8 +126,8 @@ namespace EFWCoreLib.CoreFrame.Init
 
         public static string GetRouterAddress()
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterBaseService']/host/baseAddresses/add");
+            if (xmldoc_route == null) InitConfig();
+            XmlNode node = xmldoc_route.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterBaseService']/host/baseAddresses/add");
             if (node != null)
             {
                 return node.Attributes["baseAddress"].Value;
@@ -125,8 +137,8 @@ namespace EFWCoreLib.CoreFrame.Init
 
         public static void SetRouterAddress(string url)
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterBaseService']/host/baseAddresses/add");
+            if (xmldoc_route == null) InitConfig();
+            XmlNode node = xmldoc_route.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterBaseService']/host/baseAddresses/add");
             if (node != null)
             {
                 node.Attributes["baseAddress"].Value = url;
@@ -135,8 +147,8 @@ namespace EFWCoreLib.CoreFrame.Init
 
         public static string GetfileRouterAddress()
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterFileService']/host/baseAddresses/add");
+            if (xmldoc_route == null) InitConfig();
+            XmlNode node = xmldoc_route.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterFileService']/host/baseAddresses/add");
             if (node != null)
             {
                 return node.Attributes["baseAddress"].Value;
@@ -146,8 +158,8 @@ namespace EFWCoreLib.CoreFrame.Init
 
         public static void SetfileRouterAddress(string url)
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterFileService']/host/baseAddresses/add");
+            if (xmldoc_route == null) InitConfig();
+            XmlNode node = xmldoc_route.DocumentElement.SelectSingleNode("system.serviceModel/services/service[@name='EFWCoreLib.WcfFrame.WcfHandler.RouterFileService']/host/baseAddresses/add");
             if (node != null)
             {
                 node.Attributes["baseAddress"].Value = url;
@@ -219,8 +231,8 @@ namespace EFWCoreLib.CoreFrame.Init
 
         public static string GetWebapiAddress()
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
             if (node != null)
             {
                 return node.Attributes["value"].Value;
@@ -228,13 +240,55 @@ namespace EFWCoreLib.CoreFrame.Init
             return null;
         }
 
+        public static string GetWebapiClientBase()
+        {
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
+            if (node != null)
+            {
+                return node.Attributes["address"].Value;
+            }
+            return null;
+        }
+
+        public static string GetWebapiClientFile()
+        {
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
+            if (node != null)
+            {
+                return node.Attributes["address"].Value;
+            }
+            return null;
+        }
+
         public static void SetWebapiAddress(string url)
         {
-            if (xmldoc_app == null) InitConfig();
-            XmlNode node = xmldoc_app.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
             if (node != null)
             {
                 node.Attributes["value"].Value = url;
+            }
+        }
+
+        public static void SetWebapiClientBase(string url)
+        {
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
+            if (node != null)
+            {
+                node.Attributes["address"].Value = url;
+            }
+        }
+
+        public static void SetWebapiClientFile(string url)
+        {
+            if (xmldoc_webapi == null) InitConfig();
+            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
+            if (node != null)
+            {
+                node.Attributes["address"].Value = url;
             }
         }
 
@@ -347,11 +401,28 @@ namespace EFWCoreLib.CoreFrame.Init
     public class HostMongoDBConfig
     {
         private static string mongoconf = System.Windows.Forms.Application.StartupPath + "\\Config\\mongo.conf";
+        private static string mongoconf_temp = System.Windows.Forms.Application.StartupPath + "\\Config\\mongo_temp.conf";
 
         public static string GetConfig()
         {
             string conf = null;
             FileInfo file = new FileInfo(mongoconf);
+            if (file.Exists)
+            {
+                using (FileStream fsteam = file.OpenRead())
+                {
+                    byte[] buff = new byte[fsteam.Length];
+                    fsteam.Read(buff, 0, buff.Length);
+                    conf = Encoding.GetEncoding("gb2312").GetString(buff);
+                }
+            }
+            return conf;
+        }
+
+        public static string GetConfig_Temp()
+        {
+            string conf = null;
+            FileInfo file = new FileInfo(mongoconf_temp);
             if (file.Exists)
             {
                 using (FileStream fsteam = file.OpenRead())

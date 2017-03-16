@@ -22,6 +22,7 @@ namespace WCFHosting
         private void btnOk_Click(object sender, EventArgs e)
         {
             HostSettingConfig.SetValue("hostname", txthostname.Text);
+            HostSettingConfig.SetValue("rootmnode", ckRoot.Checked ? "1" : "0");
             HostSettingConfig.SetValue("debug", ckdebug.Checked ? "1" : "0");
             HostSettingConfig.SetValue("timingtask", cktask.Checked ? "1" : "0");
             HostSettingConfig.SetValue("wcfservice", ckwcf.Checked ? "1" : "0");
@@ -53,6 +54,8 @@ namespace WCFHosting
             HostAddressConfig.SetClientFileAddress(txtfileurl.Text);
             HostAddressConfig.SetClientLocalAddress(txtlocalurl.Text);
             HostAddressConfig.SetWebapiAddress(txtweb.Text);
+            HostAddressConfig.SetWebapiClientBase(txtclientwcf.Text);
+            HostAddressConfig.SetWebapiClientFile(txtclientfile.Text);
             HostAddressConfig.SetUpdaterUrl(txtupdate.Text);
             HostAddressConfig.SaveConfig();
 
@@ -75,6 +78,7 @@ namespace WCFHosting
         private void FrmSetting_Load(object sender, EventArgs e)
         {
             txthostname.Text = HostSettingConfig.GetValue("hostname");
+            ckRoot.Checked=HostSettingConfig.GetValue("rootmnode") == "1" ? true : false;
             ckdebug.Checked = HostSettingConfig.GetValue("debug") == "1" ? true : false;
             cktask.Checked = HostSettingConfig.GetValue("timingtask") == "1" ? true : false;
             ckwcf.Checked = HostSettingConfig.GetValue("wcfservice") == "1" ? true : false;
@@ -102,6 +106,8 @@ namespace WCFHosting
             txtfileurl.Text = HostAddressConfig.GetClientFileAddress();
             txtlocalurl.Text = HostAddressConfig.GetClientLocalAddress();
             txtweb.Text = HostAddressConfig.GetWebapiAddress();
+            txtclientwcf.Text = HostAddressConfig.GetWebapiClientBase();
+            txtclientfile.Text = HostAddressConfig.GetWebapiClientFile();
             txtupdate.Text = HostAddressConfig.GetUpdaterUrl();
 
             txtconnstr.Text = HostDataBaseConfig.GetConnString();
@@ -112,7 +118,7 @@ namespace WCFHosting
 
         private void btnSvcConfig_Click(object sender, EventArgs e)
         {
-            string appconfig = AppGlobal.AppRootPath + "efwplusServer.exe.config";
+            string appconfig = AppGlobal.AppRootPath + "efwplusBase.exe.config";
             string svcconfigExe = AppGlobal.AppRootPath + "SvcConfigEditor.exe";
 
             System.Diagnostics.Process.Start(svcconfigExe,appconfig);

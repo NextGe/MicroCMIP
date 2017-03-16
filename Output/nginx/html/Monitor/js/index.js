@@ -74,9 +74,9 @@
                 { "Id": "pluginlist", "Name": "服务插件管理" },
                 { "Id": "mnodeplugin", "Name": "节点配置插件" },
                 { "Id": "mnodestate", "Name": "节点监控图" },
-                { "Id": "upgrade", "Name": "发布升级包" },
-                { "Id": "testremoteservice", "Name": "远程测试服务" },
-                { "Id": "remotecmd", "Name": "远程执行命令" }
+                { "Id": "upgrade", "Name": "发布升级包" }
+                //{ "Id": "testremoteservice", "Name": "远程测试服务" },
+                //{ "Id": "remotecmd", "Name": "远程执行命令" }
                 ]
             }], sysmenus);
         }

@@ -10,18 +10,19 @@
                 <div class="am-panel am-panel-default">
                     <div class="am-panel-bd">
                         <div class="am-g am-padding-xs">
-                            <ul class="am-tree" id="firstTree">
-                                <li class="am-tree-branch am-hide" data-template="treebranch">
+                            <ul class="am-tree am-tree-folder-select" role="tree" id="firstTree">
+                                <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
                                     <div class="am-tree-branch-header">
+                                        <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
                                         <button class="am-tree-branch-name">
                                             <span class="am-tree-icon am-tree-icon-folder"></span>
                                             <span class="am-tree-label"></span>
                                         </button>
                                     </div>
-                                    <ul class="am-tree-branch-children"></ul>
-                                    <div class="am-tree-loader"><span class="am-icon-spin am-icon-spinner"></span></div>
+                                    <ul class="am-tree-branch-children" role="group"></ul>
+                                    <div class="am-tree-loader" role="alert">Loading...</div>
                                 </li>
-                                <li class="am-tree-item am-hide" data-template="treeitem">
+                                <li class="am-tree-item am-hide" data-template="treeitem" role="treeitem">
                                     <button class="am-tree-item-name">
                                         <span class="am-tree-icon am-tree-icon-item"></span>
                                         <span class="am-tree-label"></span>

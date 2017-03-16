@@ -72,7 +72,7 @@ namespace WCFHosting
             this.notifyIcon1.Text = this.Text;
 
             RunState = HostState.NoOpen;
-            //lsServerUrl.Text = ReadConfig.GetWcfServerUrl();
+            lsServerUrl.Text = "http://localhost:8088/Monitor/index.html";
             btnStart_Click(null, null);//打开服务主机后自动启动服务
         }
 
@@ -216,27 +216,6 @@ namespace WCFHosting
         //退出
         private void FrmHosting_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (MessageBox.Show("您确定要退出中间件服务器吗？", "询问窗", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-            //{
-            //    try
-            //    {
-            //        efwplusBaseManager.StopBase();
-            //        efwplusRouteManager.StopRoute();
-            //        efwplusWebAPIManager.StopAPI();
-            //        MongodbManager.StopDB();
-            //        NginxManager.StopWeb();
-
-            //        RunState = HostState.NoOpen;
-            //    }
-            //    catch { }
-            //    this.notifyIcon1.Dispose();
-            //    //System.Environment.Exit(System.Environment.ExitCode);
-            //    Process.GetCurrentProcess().Kill();
-            //}
-            //else
-            //{
-            //    e.Cancel = true;
-            //}
             e.Cancel = true;
             this.Hide();
         }
@@ -276,7 +255,12 @@ namespace WCFHosting
             }
         }
 
-
+        //设置
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            FrmSetting frmsetting = new FrmSetting();
+            frmsetting.ShowDialog();
+        }
         private void 清除日志ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //msgList.Clear();
@@ -313,6 +297,10 @@ namespace WCFHosting
             new AboutBox().ShowDialog();
         }
 
+        private void lsServerUrl_Click(object sender, EventArgs e)
+        {
+            Process.Start(this.lsServerUrl.Text);
+        }
     }
 
     public enum HostState

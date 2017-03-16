@@ -629,10 +629,10 @@ namespace EFWCoreLib.WcfFrame
 
                 if (ret == false)//表示服务主机关闭过，丢失了clientId，必须重新创建连接
                 {
-                    ReConnection(false);//连接服务主机失败，重连
-                    //_wcfService.Abort();
-                    //CreateConnection();
-                    //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
+                    //ReConnection(false);//连接服务主机失败，重连
+                    _wcfService.Abort();
+                    CreateConnection();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
                 }
                 return ret;
             }

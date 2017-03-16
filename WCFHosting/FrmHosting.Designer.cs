@@ -30,12 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmHosting));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnStart = new System.Windows.Forms.ToolStripButton();
             this.btnStop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnrestart = new System.Windows.Forms.ToolStripButton();
+            this.btnSetting = new System.Windows.Forms.ToolStripButton();
             this.btnInfo = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,6 +102,7 @@
             this.btnStop,
             this.toolStripSeparator3,
             this.btnrestart,
+            this.btnSetting,
             this.btnInfo,
             this.toolStripDropDownButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -141,6 +143,15 @@
             this.btnrestart.Text = "一键重启";
             this.btnrestart.Click += new System.EventHandler(this.btnrestart_Click);
             // 
+            // btnSetting
+            // 
+            this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
+            this.btnSetting.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSetting.Name = "btnSetting";
+            this.btnSetting.Size = new System.Drawing.Size(52, 22);
+            this.btnSetting.Text = "设置";
+            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            // 
             // btnInfo
             // 
             this.btnInfo.Image = ((System.Drawing.Image)(resources.GetObject("btnInfo.Image")));
@@ -167,26 +178,26 @@
             // 帮助ToolStripMenuItem
             // 
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.帮助ToolStripMenuItem.Text = "帮助";
             this.帮助ToolStripMenuItem.Click += new System.EventHandler(this.帮助ToolStripMenuItem_Click);
             // 
             // 注册ToolStripMenuItem
             // 
             this.注册ToolStripMenuItem.Name = "注册ToolStripMenuItem";
-            this.注册ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.注册ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.注册ToolStripMenuItem.Text = "注册";
             this.注册ToolStripMenuItem.Click += new System.EventHandler(this.注册ToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(97, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
@@ -324,9 +335,9 @@
             // Column3
             // 
             this.Column3.DataPropertyName = "startTime";
-            dataGridViewCellStyle1.Format = "G";
-            dataGridViewCellStyle1.NullValue = null;
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "G";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column3.HeaderText = "连接时间";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
@@ -520,8 +531,8 @@
             // 
             this.toolStripStatusLabel3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripStatusLabel3.Image")));
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(72, 25);
-            this.toolStripStatusLabel3.Text = "服务地址";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(96, 25);
+            this.toolStripStatusLabel3.Text = "打开配置站点";
             // 
             // lsServerUrl
             // 
@@ -531,9 +542,11 @@
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.lsServerUrl.ForeColor = System.Drawing.Color.Blue;
             this.lsServerUrl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lsServerUrl.LinkVisited = true;
             this.lsServerUrl.Name = "lsServerUrl";
-            this.lsServerUrl.Size = new System.Drawing.Size(324, 25);
+            this.lsServerUrl.Size = new System.Drawing.Size(269, 25);
             this.lsServerUrl.Spring = true;
+            this.lsServerUrl.Click += new System.EventHandler(this.lsServerUrl_Click);
             // 
             // toolStripStatusLabel2
             // 
@@ -541,6 +554,7 @@
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(84, 25);
             this.toolStripStatusLabel2.Text = "客户端数量";
+            this.toolStripStatusLabel2.Visible = false;
             // 
             // lbClientCount
             // 
@@ -551,6 +565,7 @@
             this.lbClientCount.ForeColor = System.Drawing.Color.Blue;
             this.lbClientCount.Name = "lbClientCount";
             this.lbClientCount.Size = new System.Drawing.Size(110, 25);
+            this.lbClientCount.Visible = false;
             // 
             // toolStripStatusLabel5
             // 
@@ -662,6 +677,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.ToolStripButton btnSetting;
     }
 }
 

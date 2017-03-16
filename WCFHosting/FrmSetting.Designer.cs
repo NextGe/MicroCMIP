@@ -79,6 +79,8 @@
             this.txtMongodb = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.txtupdate = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.txtlocalurl = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtfileurl = new System.Windows.Forms.TextBox();
@@ -87,8 +89,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSvcConfig = new System.Windows.Forms.Button();
-            this.txtupdate = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
+            this.ckRoot = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtclientwcf = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtclientfile = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -96,6 +104,9 @@
             this.tabPage5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // ckdebug
@@ -161,7 +172,7 @@
             this.txthostname.ForeColor = System.Drawing.Color.Blue;
             this.txthostname.Location = new System.Drawing.Point(87, 11);
             this.txthostname.Name = "txthostname";
-            this.txthostname.Size = new System.Drawing.Size(322, 23);
+            this.txthostname.Size = new System.Drawing.Size(213, 23);
             this.txthostname.TabIndex = 5;
             // 
             // ckwcf
@@ -299,11 +310,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(430, 314);
+            this.tabControl1.Size = new System.Drawing.Size(430, 352);
             this.tabControl1.TabIndex = 18;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.ckRoot);
             this.tabPage1.Controls.Add(this.ckNginx);
             this.tabPage1.Controls.Add(this.ckmongo);
             this.tabPage1.Controls.Add(this.cktask);
@@ -331,7 +343,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(422, 288);
+            this.tabPage1.Size = new System.Drawing.Size(422, 326);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "基本参数";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -429,20 +441,14 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.txtfilerouter);
-            this.tabPage2.Controls.Add(this.label10);
-            this.tabPage2.Controls.Add(this.txtweb);
-            this.tabPage2.Controls.Add(this.label8);
-            this.tabPage2.Controls.Add(this.txtfile);
-            this.tabPage2.Controls.Add(this.label7);
-            this.tabPage2.Controls.Add(this.txtrouter);
-            this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.txtwcf);
-            this.tabPage2.Controls.Add(this.label5);
+            this.tabPage2.AutoScroll = true;
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Controls.Add(this.groupBox2);
+            this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(422, 288);
+            this.tabPage2.Size = new System.Drawing.Size(422, 326);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "发布通讯地址";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -451,16 +457,16 @@
             // 
             this.txtfilerouter.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtfilerouter.ForeColor = System.Drawing.Color.Blue;
-            this.txtfilerouter.Location = new System.Drawing.Point(10, 170);
+            this.txtfilerouter.Location = new System.Drawing.Point(16, 82);
             this.txtfilerouter.Name = "txtfilerouter";
-            this.txtfilerouter.Size = new System.Drawing.Size(404, 23);
+            this.txtfilerouter.Size = new System.Drawing.Size(376, 23);
             this.txtfilerouter.TabIndex = 9;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(8, 152);
+            this.label10.Location = new System.Drawing.Point(14, 64);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(116, 17);
             this.label10.TabIndex = 8;
@@ -470,16 +476,16 @@
             // 
             this.txtweb.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtweb.ForeColor = System.Drawing.Color.Blue;
-            this.txtweb.Location = new System.Drawing.Point(9, 214);
+            this.txtweb.Location = new System.Drawing.Point(18, 38);
             this.txtweb.Name = "txtweb";
-            this.txtweb.Size = new System.Drawing.Size(404, 23);
+            this.txtweb.Size = new System.Drawing.Size(374, 23);
             this.txtweb.TabIndex = 7;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(7, 196);
+            this.label8.Location = new System.Drawing.Point(16, 20);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(114, 17);
             this.label8.TabIndex = 6;
@@ -489,16 +495,16 @@
             // 
             this.txtfile.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtfile.ForeColor = System.Drawing.Color.Blue;
-            this.txtfile.Location = new System.Drawing.Point(10, 82);
+            this.txtfile.Location = new System.Drawing.Point(17, 79);
             this.txtfile.Name = "txtfile";
-            this.txtfile.Size = new System.Drawing.Size(404, 23);
+            this.txtfile.Size = new System.Drawing.Size(375, 23);
             this.txtfile.TabIndex = 5;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(8, 64);
+            this.label7.Location = new System.Drawing.Point(15, 61);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(116, 17);
             this.label7.TabIndex = 4;
@@ -508,16 +514,16 @@
             // 
             this.txtrouter.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtrouter.ForeColor = System.Drawing.Color.Blue;
-            this.txtrouter.Location = new System.Drawing.Point(10, 126);
+            this.txtrouter.Location = new System.Drawing.Point(16, 38);
             this.txtrouter.Name = "txtrouter";
-            this.txtrouter.Size = new System.Drawing.Size(404, 23);
+            this.txtrouter.Size = new System.Drawing.Size(376, 23);
             this.txtrouter.TabIndex = 3;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(8, 108);
+            this.label6.Location = new System.Drawing.Point(14, 20);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(116, 17);
             this.label6.TabIndex = 2;
@@ -527,16 +533,16 @@
             // 
             this.txtwcf.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.txtwcf.ForeColor = System.Drawing.Color.Blue;
-            this.txtwcf.Location = new System.Drawing.Point(10, 38);
+            this.txtwcf.Location = new System.Drawing.Point(17, 35);
             this.txtwcf.Name = "txtwcf";
-            this.txtwcf.Size = new System.Drawing.Size(404, 23);
+            this.txtwcf.Size = new System.Drawing.Size(375, 23);
             this.txtwcf.TabIndex = 1;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(8, 20);
+            this.label5.Location = new System.Drawing.Point(15, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(116, 17);
             this.label5.TabIndex = 0;
@@ -548,7 +554,7 @@
             this.tabPage3.Controls.Add(this.label9);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(422, 288);
+            this.tabPage3.Size = new System.Drawing.Size(422, 326);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "数据库连接";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -584,7 +590,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(422, 288);
+            this.tabPage5.Size = new System.Drawing.Size(422, 326);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "MongoDB配置";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -661,10 +667,28 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(422, 288);
+            this.tabPage4.Size = new System.Drawing.Size(422, 326);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "与上级通讯地址";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // txtupdate
+            // 
+            this.txtupdate.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtupdate.Location = new System.Drawing.Point(9, 187);
+            this.txtupdate.Name = "txtupdate";
+            this.txtupdate.Size = new System.Drawing.Size(405, 23);
+            this.txtupdate.TabIndex = 12;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label18.Location = new System.Drawing.Point(6, 167);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(104, 17);
+            this.label18.TabIndex = 11;
+            this.label18.Text = "中间件升级地址：";
             // 
             // txtlocalurl
             // 
@@ -727,7 +751,7 @@
             this.panel1.Controls.Add(this.btnOk);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 314);
+            this.panel1.Location = new System.Drawing.Point(0, 352);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(430, 61);
             this.panel1.TabIndex = 19;
@@ -742,29 +766,101 @@
             this.btnSvcConfig.UseVisualStyleBackColor = true;
             this.btnSvcConfig.Click += new System.EventHandler(this.btnSvcConfig_Click);
             // 
-            // txtupdate
+            // ckRoot
             // 
-            this.txtupdate.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtupdate.Location = new System.Drawing.Point(9, 187);
-            this.txtupdate.Name = "txtupdate";
-            this.txtupdate.Size = new System.Drawing.Size(405, 23);
-            this.txtupdate.TabIndex = 12;
+            this.ckRoot.AutoSize = true;
+            this.ckRoot.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ckRoot.Location = new System.Drawing.Point(306, 13);
+            this.ckRoot.Name = "ckRoot";
+            this.ckRoot.Size = new System.Drawing.Size(63, 21);
+            this.ckRoot.TabIndex = 26;
+            this.ckRoot.Text = "根节点";
+            this.ckRoot.UseVisualStyleBackColor = true;
             // 
-            // label18
+            // groupBox1
             // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label18.Location = new System.Drawing.Point(6, 167);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(104, 17);
-            this.label18.TabIndex = 11;
-            this.label18.Text = "中间件升级地址：";
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.txtwcf);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.txtfile);
+            this.groupBox1.Location = new System.Drawing.Point(11, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(398, 114);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "基础通讯";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.txtrouter);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.txtfilerouter);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Location = new System.Drawing.Point(11, 126);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(398, 120);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "路由通讯";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label19);
+            this.groupBox3.Controls.Add(this.txtclientwcf);
+            this.groupBox3.Controls.Add(this.label20);
+            this.groupBox3.Controls.Add(this.txtclientfile);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.txtweb);
+            this.groupBox3.Location = new System.Drawing.Point(11, 252);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(398, 161);
+            this.groupBox3.TabIndex = 12;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "WebAPI通讯";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label19.Location = new System.Drawing.Point(16, 64);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(116, 17);
+            this.label19.TabIndex = 8;
+            this.label19.Text = "基础数据服务地址：";
+            // 
+            // txtclientwcf
+            // 
+            this.txtclientwcf.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtclientwcf.ForeColor = System.Drawing.Color.Blue;
+            this.txtclientwcf.Location = new System.Drawing.Point(18, 82);
+            this.txtclientwcf.Name = "txtclientwcf";
+            this.txtclientwcf.Size = new System.Drawing.Size(375, 23);
+            this.txtclientwcf.TabIndex = 9;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.Location = new System.Drawing.Point(16, 108);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(116, 17);
+            this.label20.TabIndex = 10;
+            this.label20.Text = "文件传输服务地址：";
+            // 
+            // txtclientfile
+            // 
+            this.txtclientfile.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.txtclientfile.ForeColor = System.Drawing.Color.Blue;
+            this.txtclientfile.Location = new System.Drawing.Point(18, 126);
+            this.txtclientfile.Name = "txtclientfile";
+            this.txtclientfile.Size = new System.Drawing.Size(375, 23);
+            this.txtclientfile.TabIndex = 11;
             // 
             // FrmSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 375);
+            this.ClientSize = new System.Drawing.Size(430, 413);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -780,7 +876,6 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage5.ResumeLayout(false);
@@ -788,6 +883,12 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -854,5 +955,13 @@
         private System.Windows.Forms.CheckBox ckNginx;
         private System.Windows.Forms.TextBox txtupdate;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox ckRoot;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtclientwcf;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtclientfile;
     }
 }
