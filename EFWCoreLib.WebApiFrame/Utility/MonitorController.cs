@@ -429,7 +429,7 @@ namespace EFWCoreLib.WebAPI.Utility
                     node.title = o.ServerName + "(" + o.ServerIdentify + ")";
                     node.type = "item";
                     node.attr = new Dictionary<string, string>();
-                    node.attr.Add("identify", o.ServerIdentify);
+                    //node.attr.Add("identify", o.ServerIdentify);
                     node.attr.Add("icon", "am-icon-desktop");
                     offroot.childs.Add(node);
                 }
@@ -438,10 +438,10 @@ namespace EFWCoreLib.WebAPI.Utility
             return null;
         }
 
-        private void loadMonitorMap(string p_identify, amazeuitreenode p_node,List<MNodeObject> onmnodelist)
+        private void loadMonitorMap(string p_identify, amazeuitreenode p_node, List<MNodeObject> onmnodelist)
         {
             List<MNodeObject> nodelist = onmnodelist.FindAll(x => x.PointToMNode == p_identify);
-            foreach(var o in nodelist)
+            foreach (var o in nodelist)
             {
                 amazeuitreenode node = new amazeuitreenode();
                 node.title = o.ServerName + "(" + o.ServerIdentify + ")";
@@ -451,8 +451,21 @@ namespace EFWCoreLib.WebAPI.Utility
                 node.attr.Add("icon", "am-icon-desktop");
                 p_node.childs.Add(node);
 
-                loadMonitorMap(o.ServerIdentify, node, onmnodelist);
+                if (onmnodelist.FindIndex(x => x.PointToMNode == o.ServerIdentify) == -1)
+                {
+                    node.type = "item";
+                }
+                else {
+                    loadMonitorMap(o.ServerIdentify, node, onmnodelist);
+                }
             }
+        }
+
+        [HttpGet]
+        public Object GetRemoteNodeConfig(string identify)
+        {
+            string args = "identify=" + identify + "&eprocess=efwplusbase&method=rootremotecommand&arg=";
+            return WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "rootremotecommand", args);
         }
     }
 }

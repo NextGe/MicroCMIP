@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EFWCoreLib.CoreFrame.Common;
 using EFWCoreLib.CoreFrame.Init;
+using EFWCoreLib.CoreFrame.ProcessManage;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using EFWCoreLib.WcfFrame.ServerManage;
 using EFWCoreLib.WcfFrame.Utility;
@@ -17,6 +18,7 @@ namespace EFWCoreLib.WcfFrame
 {
     public class WcfGlobal
     {
+        public static NormalIPCManager normalIPC;
         public static string ns = "http://www.efwplus.cn/";
         private static bool IsStartBase = false;//是否开启数据服务
         private static bool IsStartRoute = false;//是否开启路由服务 

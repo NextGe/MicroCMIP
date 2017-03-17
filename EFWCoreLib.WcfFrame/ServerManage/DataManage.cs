@@ -109,10 +109,10 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     //执行本地数据请求
                     retJson = LocalDataRequest(plugin, controller, method, jsondata, para);
                 }
-                else if (localPlugin.RemotePlugin.FindIndex(x=>x.PluginName==plugin) != -1)//远程插件
+                else if (localPlugin.RemotePlugin.FindIndex(x => x.PluginName == plugin) != -1)//远程插件
                 {
                     List<MNodePath> pathlist = new List<MNodePath>();
-                    string[] remoteNodeId = localPlugin.RemotePlugin.Find(x=>x.PluginName==plugin).MNodeIdentify.ToArray();
+                    string[] remoteNodeId = localPlugin.RemotePlugin.Find(x => x.PluginName == plugin).MNodeIdentify.ToArray();
                     MNodeTree mtree = new MNodeTree();
                     mtree.LoadCache();
                     foreach (string Id in remoteNodeId)
@@ -125,6 +125,10 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                         Random ro = new Random();
                         int index = ro.Next(0, pathlist.Count);
                         nodePath = pathlist[index];
+                    }
+                    else//最短路径?
+                    {
+                        nodePath = pathlist[0];
                     }
                     para.NodePath = nodePath;
                     retJson = PathNextRequest(plugin, controller, method, jsondata, para);
@@ -392,13 +396,49 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     case "sso_signout":
                     case "sso_useractivity":
                         return SsoHelper.ForwardData(key, jsonpara);
-                    
+
                 }
                 return null;
             }
             else
             {
                 return SuperClient.superClientLink.RootRequest(key, jsonpara);
+            }
+        }
+        //远程执行命令
+        public static string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
+        {
+            if (WcfGlobal.Identify == ServerIdentify)
+            {
+                return WcfGlobal.normalIPC.CallCmd(eprocess, method, arg);
+            }
+            else
+            {
+                MNodePath NodePath = null;
+                MNodeTree mtree = new MNodeTree();
+                mtree.LoadCache();
+                NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, ServerIdentify);
+                return ReplyRemoteCommand(eprocess, method, arg, NodePath);
+            }
+        }
+
+        public static string ReplyRemoteCommand(string eprocess, string method, string arg, MNodePath NodePath)
+        {
+            NodePath.NextStep();//节点路径下一步
+            if (NodePath.IsEndMNode)//到达终节点
+            {
+                return WcfGlobal.normalIPC.CallCmd(eprocess, method, arg);
+            }
+            else
+            {
+                foreach (var client in ClientManage.ClientDic)
+                {
+                    if (client.Value.IsMNode && client.Value.ServerIdentify == NodePath.nextMNode)
+                    {
+                        return client.Value.dataReply.ReplyRemoteCommand(eprocess, method, arg, NodePath);
+                    }
+                }
+                return null;
             }
         }
     }

@@ -41,5 +41,10 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
 
             return cl.ClientObj.ClientID;
         }
+
+        public string ReplyRemoteCommand(string eprocess, string method, string arg, MNodePath NodePath)
+        {
+            return DataManage.ReplyRemoteCommand(eprocess, method, arg, NodePath);
+        }
     }
 }

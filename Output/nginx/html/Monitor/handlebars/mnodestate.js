@@ -39,8 +39,23 @@
                 multiSelect: false,
                 cacheItems: true,
                 folderSelect: true
+            }).on('selected.tree.amui', function (e, selected) {
+                if (selected.target.attr && selected.target.attr.identify) {
+                    $('body').data('identify', selected.target.attr.identify);
+                } else {
+                    $('body').data('identify', null);
+                }
             });
             //$('#firstTree').tree('discloseAll');
+            //刷新
+            $('#btn_refresh').click(function () {
+                showpage(menuId, urls, templates);
+            });
+            //查看配置
+            $('#btn_config').click(function () {
+                var identify = $('body').data('identify');
+
+            });
         });
     }
 

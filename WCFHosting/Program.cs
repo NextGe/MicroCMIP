@@ -41,11 +41,12 @@ namespace WCFHosting
                 switch (m)
                 {
                     case "startall":
+                        MongodbManager.StartDB();
+                        NginxManager.StartWeb();
+
                         efwplusBaseManager.StartBase();
                         efwplusRouteManager.StartRoute();
                         efwplusWebAPIManager.StartAPI();
-                        MongodbManager.StartDB();
-                        NginxManager.StartWeb();
                         break;
                     case "quitall":
                         efwplusBaseManager.StopBase();

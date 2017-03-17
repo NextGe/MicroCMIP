@@ -37,7 +37,7 @@ namespace efwplusBase
                     Console.WriteLine(text);
                 });
                 normalIPC=new NormalIPCManager(IPCType.efwplusBase,_funcExecCmd, _actionReceiveData);
-
+                WcfGlobal.normalIPC = normalIPC;
                 btnStart();
                 while (true)
                 {
@@ -182,7 +182,10 @@ namespace efwplusBase
                         retData = TimeCDKEY.GetCpuId();
                         break;
                     case "activateregcode"://激活注册码
-                        TimeCDKEY.ActivateRegCode(a["regcode"]);
+                        retData = TimeCDKEY.ActivateRegCode(a["regcode"]) ? "true" : "false";
+                        break;
+                    case "rootremotecommand"://远程命令
+                        retData = EFWCoreLib.WcfFrame.ServerManage.DataManage.RootRemoteCommand(a["identify"], a["eprocess"], a["method"], a["arg"]);
                         break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);

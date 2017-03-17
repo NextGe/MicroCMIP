@@ -224,8 +224,11 @@ namespace EFWCoreLib.WebAPI.Utility
             try
             {
                 string args = "regcode=" + regcode;
-                WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "activateregcode", args);
-                return true;
+                string data = WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "activateregcode", args);
+                if (data == "true")
+                    return true;
+                else
+                    return false;
             }
             catch (Exception e)
             {

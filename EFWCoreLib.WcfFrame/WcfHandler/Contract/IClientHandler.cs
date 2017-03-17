@@ -105,6 +105,17 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns>返回json数据</returns>
         [OperationContract(IsOneWay = false)]
         string RootMNodeProcessRequest(string key, string jsonpara);
+
+        /// <summary>
+        /// 根节点中间件执行远程命令
+        /// </summary>
+        /// <param name="ServerIdentify">目标节点</param>
+        /// <param name="eprocess"></param>
+        /// <param name="method"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        [OperationContract(IsOneWay = false)]
+        string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg);
         #endregion
 
         #region 注册远程插件
@@ -180,5 +191,17 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         [OperationContract(IsOneWay = true)]
         void Notify(string publishServiceName);
         #endregion
+
+        /// <summary>
+        /// 根节点回调执行远程命令
+        /// </summary>
+        /// <param name="ServerIdentify"></param>
+        /// <param name="eprocess"></param>
+        /// <param name="method"></param>
+        /// <param name="arg"></param>
+        /// <param name="NodePath"></param>
+        /// <returns></returns>
+        [OperationContract(IsOneWay = false)]
+        string ReplyRemoteCommand(string eprocess, string method, string arg, MNodePath NodePath);
     }
 }

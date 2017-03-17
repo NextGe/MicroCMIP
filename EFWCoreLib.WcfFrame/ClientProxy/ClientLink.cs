@@ -506,6 +506,27 @@ namespace EFWCoreLib.WcfFrame
                 throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
             }
         }
+        /// <summary>
+        /// 根节点执行远程命令
+        /// </summary>
+        /// <param name="ServerIdentify">目标节点</param>
+        /// <param name="eprocess"></param>
+        /// <param name="method"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        public string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
+        {
+            if (clientObj == null) throw new Exception("还没有创建连接！");
+            try
+            {
+                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                return _wcfService.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
+            }
+        }
 
         /// <summary>
         /// 卸载连接

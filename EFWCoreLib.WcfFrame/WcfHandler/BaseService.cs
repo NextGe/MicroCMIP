@@ -111,5 +111,10 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         {
             return DataManage.RootMNodeProcessRequest(key, jsonpara);
         }
+
+        public string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
+        {
+            return DataManage.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
+        }
     }
 }

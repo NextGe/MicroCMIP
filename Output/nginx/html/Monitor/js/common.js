@@ -1,5 +1,5 @@
 ﻿define(['jquery', 'jquery.cookie'], function ($) {
-    var baseUrl = "http://127.0.0.1:8021/";
+    var baseUrl = "http://"+window.location.hostname+":8021/";
     function simpleAjax(requestUrl, requestData, callback,errorback) {
         $.ajax({
             type: "get",

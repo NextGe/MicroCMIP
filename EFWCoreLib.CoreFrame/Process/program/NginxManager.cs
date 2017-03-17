@@ -18,29 +18,36 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StartWeb()
         {
-            Isnginx = HostSettingConfig.GetValue("nginx") == "1" ? true : false;
-            if (Isnginx)
+            try
             {
-                string nginxExe = AppDomain.CurrentDomain.BaseDirectory + @"\nginx\nginx.exe";
-                System.IO.FileInfo file = new System.IO.FileInfo(nginxExe);
+                Isnginx = HostSettingConfig.GetValue("nginx") == "1" ? true : false;
+                if (Isnginx)
+                {
+                    string nginxExe = AppDomain.CurrentDomain.BaseDirectory + @"\nginx\nginx.exe";
+                    System.IO.FileInfo file = new System.IO.FileInfo(nginxExe);
 
-                System.Diagnostics.Process pro = new System.Diagnostics.Process();
-                pro.StartInfo.FileName = "cmd.exe";
-                //pro.StartInfo.Arguments = "--config " + mongoConf;
-                pro.StartInfo.UseShellExecute = false;
-                pro.StartInfo.RedirectStandardInput = true;
-                pro.StartInfo.RedirectStandardOutput = true;
-                pro.StartInfo.RedirectStandardError = true;
-                pro.StartInfo.CreateNoWindow = true;
-                pro.Start();
-                //pro.WaitForExit();
-                pro.StandardInput.WriteLine("cd " + file.Directory.Root);
-                pro.StandardInput.WriteLine("cd " + file.DirectoryName);
-                pro.StandardInput.WriteLine("start " + file.Name);
-                pro.StandardInput.WriteLine("exit");
-                pro.StandardInput.AutoFlush = true;
-                //string output = pro.StandardOutput.ReadToEnd();
-                //pro.Close();
+                    System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                    pro.StartInfo.FileName = "cmd.exe";
+                    //pro.StartInfo.Arguments = "--config " + mongoConf;
+                    pro.StartInfo.UseShellExecute = false;
+                    pro.StartInfo.RedirectStandardInput = true;
+                    pro.StartInfo.RedirectStandardOutput = true;
+                    pro.StartInfo.RedirectStandardError = true;
+                    pro.StartInfo.CreateNoWindow = true;
+                    pro.Start();
+                    //pro.WaitForExit();
+                    pro.StandardInput.WriteLine("cd " + file.Directory.Root);
+                    pro.StandardInput.WriteLine("cd " + file.DirectoryName);
+                    pro.StandardInput.WriteLine("start " + file.Name);
+                    pro.StandardInput.WriteLine("exit");
+                    pro.StandardInput.AutoFlush = true;
+                    //string output = pro.StandardOutput.ReadToEnd();
+                    //pro.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
         /// <summary>
