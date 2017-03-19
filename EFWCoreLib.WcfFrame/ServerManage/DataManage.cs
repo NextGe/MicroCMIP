@@ -408,9 +408,18 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         //远程执行命令
         public static string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
         {
+            Dictionary<string, string> argDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(arg);
+            string argstr = "";
+            foreach (var i in argDic)
+            {
+                if (argstr == "")
+                    argstr = i.Key + "=" + i.Value;
+                else
+                    argstr += "&" + i.Key + "=" + i.Value;
+            }
             if (WcfGlobal.Identify == ServerIdentify)
             {
-                return WcfGlobal.normalIPC.CallCmd(eprocess, method, arg);
+                return WcfGlobal.normalIPC.CallCmd(eprocess, method, argstr);
             }
             else
             {
@@ -418,7 +427,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 MNodeTree mtree = new MNodeTree();
                 mtree.LoadCache();
                 NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, ServerIdentify);
-                return ReplyRemoteCommand(eprocess, method, arg, NodePath);
+                return ReplyRemoteCommand(eprocess, method, argstr, NodePath);
             }
         }
 

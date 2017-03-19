@@ -54,7 +54,9 @@
             //查看配置
             $('#btn_config').click(function () {
                 var identify = $('body').data('identify');
-
+                common.simpleAjax("Monitor/GetRemoteNodeConfig", { identify: identify }, function (data) {
+                    alert(data);
+                });
             });
         });
     }

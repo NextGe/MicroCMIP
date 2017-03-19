@@ -464,7 +464,12 @@ namespace EFWCoreLib.WebAPI.Utility
         [HttpGet]
         public Object GetRemoteNodeConfig(string identify)
         {
-            string args = "identify=" + identify + "&eprocess=efwplusbase&method=rootremotecommand&arg=";
+            string eprocess = "efwplusbase";
+            string method = "getmnodetext";
+            Dictionary<string, string> argDic = new Dictionary<string, string>();
+            string arg = JsonConvert.SerializeObject(argDic);
+
+            string args = string.Format("identify={0}&eprocess={1}&method={2}&arg={3}", identify, eprocess, method, arg);
             return WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "rootremotecommand", args);
         }
     }
