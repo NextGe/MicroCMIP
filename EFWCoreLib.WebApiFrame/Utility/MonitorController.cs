@@ -377,7 +377,7 @@ namespace EFWCoreLib.WebAPI.Utility
                     }
                     else//远程
                     {
-                        RemotePService rps= ps.remoteplugin.Find(x => x.pluginname == pluginname);
+                        RemotePService rps = ps.remoteplugin.Find(x => x.pluginname == pluginname);
                         if (rps != null)
                             ps.remoteplugin.Remove(rps);
                     }
@@ -403,7 +403,7 @@ namespace EFWCoreLib.WebAPI.Utility
 
                 List<amazeuitreenode> tree = new List<amazeuitreenode>();
                 amazeuitreenode root = new amazeuitreenode();
-                root.title = nodetree.RootMNode.ServerName+"("+ nodetree.RootMNode.ServerIdentify + ")";
+                root.title = nodetree.RootMNode.ServerName + "(" + nodetree.RootMNode.ServerIdentify + ")";
                 root.type = "folder";
                 root.childs = new List<amazeuitreenode>();
                 root.attr = new Dictionary<string, string>();
@@ -412,7 +412,7 @@ namespace EFWCoreLib.WebAPI.Utility
                 tree.Add(root);
 
                 //在线并排除根节点
-                List<MNodeObject> onmnodelist = nodetree.AllMNodeList.FindAll(x => x.IsConnect == true && x.ServerIdentify!= nodetree.RootMNode.ServerIdentify);
+                List<MNodeObject> onmnodelist = nodetree.AllMNodeList.FindAll(x => x.IsConnect == true && x.ServerIdentify != nodetree.RootMNode.ServerIdentify);
                 loadMonitorMap(nodetree.RootMNode.ServerIdentify, root, onmnodelist);
 
                 amazeuitreenode offroot = new amazeuitreenode();
@@ -461,16 +461,58 @@ namespace EFWCoreLib.WebAPI.Utility
             }
         }
 
+        private Object CallRemoteCmd(string identify, string eprocess, string method, Dictionary<string, string> argDic)
+        {
+            if (argDic == null)
+                argDic = new Dictionary<string, string>();
+            string arg = JsonConvert.SerializeObject(argDic);
+
+            string args = string.Format("identify={0}&eprocess={1}&method={2}&arg={3}", identify, eprocess, method, arg);
+            return WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "rootremotecommand", args);
+        }
+
+        /// <summary>
+        /// 获取远程节点配置
+        /// </summary>
+        /// <param name="identify">远程节点标识</param>
+        /// <returns></returns>
         [HttpGet]
         public Object GetRemoteNodeConfig(string identify)
         {
             string eprocess = "efwplusbase";
             string method = "getmnodetext";
+            return CallRemoteCmd(identify, eprocess, method, null);
+        }
+        /// <summary>
+        /// 获取远程节点日志
+        /// </summary>
+        /// <param name="identify"></param>
+        /// <param name="logtype"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public Object GetRemoteNodeLog(string identify, string logtype, string date)
+        {
+            string eprocess = "efwplusbase";
+            string method = "debuglog";
             Dictionary<string, string> argDic = new Dictionary<string, string>();
-            string arg = JsonConvert.SerializeObject(argDic);
+            argDic.Add("logtype", logtype);
+            argDic.Add("date", date.Replace("-", ""));
+            return CallRemoteCmd(identify, eprocess, method, argDic);
+        }
 
-            string args = string.Format("identify={0}&eprocess={1}&method={2}&arg={3}", identify, eprocess, method, arg);
-            return WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "rootremotecommand", args);
+        /// <summary>
+        /// 执行远程命令
+        /// </summary>
+        /// <param name="identify"></param>
+        /// <param name="eprocess"></param>
+        /// <param name="method"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public Object ExecuteRemoteCmd(string identify, string eprocess, string method, string arg)
+        {
+            return CallRemoteCmd(identify, eprocess, method, null);
         }
     }
 }

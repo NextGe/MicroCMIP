@@ -25,7 +25,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             CreateSuperClient();
             //初始化连接池,默认10分钟清理连接
-            ClientLinkPoolCache.Init(true, 500, 30, 600, "dataclient", 30);
+            ClientLinkPoolCache.Init(true, 100, 30, 600, "dataclient", 30);
 
             if (superClientLink != null)
             {

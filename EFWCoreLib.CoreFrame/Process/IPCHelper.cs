@@ -664,8 +664,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 string cmdtext = CmdObject.BuildCmdText(IPCName.GetProcessName(IPCType), eprocess, Guid.NewGuid().ToString(), method, arg);
                 string retval = funcExecCmd(CmdObject.AnalysisCmdText(cmdtext).methodstr, CmdObject.AnalysisCmdText(cmdtext).argdic);//执行命令 arg1方法名 arg2参数
-                string datatext = CmdObject.BuildDataText(CmdObject.AnalysisCmdText(cmdtext).pathstr_end, CmdObject.AnalysisCmdText(cmdtext).pathstr_begin, CmdObject.AnalysisCmdText(cmdtext).uniqueid, retval);
-                return datatext;
+                //string datatext = CmdObject.BuildDataText(CmdObject.AnalysisCmdText(cmdtext).pathstr_end, CmdObject.AnalysisCmdText(cmdtext).pathstr_begin, CmdObject.AnalysisCmdText(cmdtext).uniqueid, retval);
+                return retval;
             }
 
             lock (syncObj)

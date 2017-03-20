@@ -63,6 +63,20 @@ namespace WCFHosting
                         NginxManager.StopWeb();
                         Process.GetCurrentProcess().Kill();
                         break;
+                    case "restart":
+                        efwplusBaseManager.StopBase();
+                        efwplusRouteManager.StopRoute();
+                        efwplusWebAPIManager.StopAPI();
+                        MongodbManager.StopDB();
+                        NginxManager.StopWeb();
+
+                        MongodbManager.StartDB();
+                        NginxManager.StartWeb();
+
+                        efwplusBaseManager.StartBase();
+                        efwplusRouteManager.StartRoute();
+                        efwplusWebAPIManager.StartAPI();
+                        break;
                     case "restartbase":
                         efwplusBaseManager.StopBase();
                         efwplusBaseManager.StartBase();

@@ -16,11 +16,7 @@
         $('#btn_restart').click(function () {
             var result = confirm('是否执行此操作？');
             if (result) {
-                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "quitall", arg: "" }, function (data) {
-                    if (data) {
-                        common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "startall", arg: "" });
-                    }
-                });
+                common.simpleAjax("mnodeconfig/ExecuteCmd", { eprocess: "efwplusserver", method: "restart", arg: "" });
             }
         });
 
