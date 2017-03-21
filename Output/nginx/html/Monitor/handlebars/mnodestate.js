@@ -94,7 +94,38 @@
             }
         });
     }
-
+    //测试远程服务
+    function testservices() {
+        common.simpleAjax("Monitor/GetRemoteServices", { identify: $('body').data('identify') }, function (data) {
+            $('#serviceTree').tree({
+                dataSource: function (options, callback) {
+                    // 模拟异步加载
+                    setTimeout(function () {
+                        callback({ data: options.childs || data });
+                    }, 40);
+                },
+                multiSelect: false,
+                cacheItems: true,
+                folderSelect: false
+            }).on('selected.tree.amui', function (e, selected) {
+                //console.log('Select Event: ', selected);
+                //console.log($('#firstTree').tree('selectedItems'));
+                $('#txt_plugin').val(selected.target.attr.plugin);
+                $('#txt_controller').val(selected.target.attr.controller);
+                $('#txt_method').val(selected.target.attr.method);
+            });
+        });
+        
+        $('#modal_remoteservices').modal({width:800});
+        $('#btn_request').unbind('click').click(function () {
+            var para = {identify: $('body').data('identify'), plugin: $('#txt_plugin').val(), controller: $('#txt_controller').val(), method: $('#txt_method').val(), para: $('#txt_parajson').val() };
+            if (para.method && para.controller && para.plugin) {
+                common.simpleAjax("Monitor/TestRemoteService", para, function (data) {
+                    $('#txt_responsejson').val(data);
+                });
+            }
+        });
+    }
     //
     function showpage(menuId, urls, templates) {
         show_common(menuId, "Monitor/GetMonitorMap", urls, templates, function (data) {
@@ -144,6 +175,13 @@
                 var identify = $('body').data('identify');
                 if (identify) {
                     getremotecmd();
+                }
+            });
+
+            $('#btn_services').click(function () {
+                var identify = $('body').data('identify');
+                if (identify) {
+                    testservices();
                 }
             });
         });

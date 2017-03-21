@@ -104,6 +104,11 @@ namespace EFWCoreLib.WcfFrame.ClientProxy
         {
             return this.Channel.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
         }
+
+        public string RootRemoteGetServices(string identify)
+        {
+            return this.Channel.RootRemoteGetServices(identify);
+        }
     }
 
     public class DuplexBaseServiceClient : DuplexClientBase<IClientHandler>, IClientHandler
@@ -198,6 +203,11 @@ namespace EFWCoreLib.WcfFrame.ClientProxy
         public string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
         {
             return this.Channel.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
+        }
+
+        public string RootRemoteGetServices(string identify)
+        {
+            return this.Channel.RootRemoteGetServices(identify);
         }
     }
 }

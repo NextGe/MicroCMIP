@@ -76,6 +76,43 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             return "";
         }
+
+        //根节点远程获取服务
+        public static string RootRemoteGetServices(string identify)
+        {
+            if (WcfGlobal.Identify == identify)
+            {
+                return GetServiceConfig();
+            }
+            else
+            {
+                MNodePath NodePath = null;
+                MNodeTree mtree = new MNodeTree();
+                mtree.LoadCache();
+                NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, identify);
+                return ReplyRemoteGetServices(NodePath);
+            }
+        }
+        //根节点回调获取远程服务
+        public static string ReplyRemoteGetServices(MNodePath NodePath)
+        {
+            NodePath.NextStep();//节点路径下一步
+            if (NodePath.IsEndMNode)//到达终节点
+            {
+                return GetServiceConfig();
+            }
+            else
+            {
+                foreach (var client in ClientManage.ClientDic)
+                {
+                    if (client.Value.IsMNode && client.Value.ServerIdentify == NodePath.nextMNode)
+                    {
+                        return client.Value.dataReply.ReplyRemoteGetServices(NodePath);
+                    }
+                }
+                return null;
+            }
+        }
     }
 
     /// <summary>

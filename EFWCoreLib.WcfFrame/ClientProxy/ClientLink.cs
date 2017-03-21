@@ -548,6 +548,21 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
+        public List<ServerManage.dwPlugin> RootRemoteGetServices(string identify)
+        {
+            if (clientObj == null) throw new Exception("还没有创建连接！");
+            try
+            {
+                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                string data = _wcfService.RootRemoteGetServices(identify);
+                return JsonConvert.DeserializeObject<List<ServerManage.dwPlugin>>(data);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
+            }
+        }
+
         /// <summary>
         /// 卸载连接
         /// </summary>

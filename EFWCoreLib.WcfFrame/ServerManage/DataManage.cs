@@ -40,30 +40,31 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     // 首次请求验证
                     FirstVerification(clientId, plugin, controller, method, jsondata, para);
 
-                    //验证本地执行还是远程执行服务
-                    MNodePlugin localPlugin = RemotePluginManage.GetLocalPlugin();
-                    if (localPlugin.LocalPlugin.ToList().FindIndex(x => x == plugin) != -1)//本地插件
+                    if (string.IsNullOrEmpty(para.endidentify))//计算远程节点路径
                     {
-                        //执行本地数据请求
-                        retJson = LocalDataRequest(plugin, controller, method, jsondata, para);
-                    }
-                    else if (localPlugin.RemotePlugin.FindIndex(x => x.PluginName == plugin) != -1)//远程插件
-                    {
-                        if (string.IsNullOrEmpty(para.endidentify))//计算远程节点路径
+                        //验证本地执行还是远程执行服务
+                        MNodePlugin localPlugin = RemotePluginManage.GetLocalPlugin();
+                        if (localPlugin.LocalPlugin.ToList().FindIndex(x => x == plugin) != -1)//本地插件
+                        {
+                            //执行本地数据请求
+                            retJson = LocalDataRequest(plugin, controller, method, jsondata, para);
+                        }
+                        else if (localPlugin.RemotePlugin.FindIndex(x => x.PluginName == plugin) != -1)//远程插件
                         {
                             para.NodePath = FirstGetNodePath(plugin, localPlugin);
+                            retJson = PathNextRequest(plugin, controller, method, jsondata, para);
                         }
-                        else//计算指定节点的路径
+                        else
                         {
-                            MNodeTree mtree = new MNodeTree();
-                            mtree.LoadCache();
-                            para.NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, para.endidentify);
+                            throw new Exception("本中间件节点中没有配置此插件：" + plugin);
                         }
-                        retJson = PathNextRequest(plugin, controller, method, jsondata, para);
                     }
-                    else
+                    else//计算指定节点的路径
                     {
-                        throw new Exception("本中间件节点中没有配置此插件：" + plugin);
+                        MNodeTree mtree = new MNodeTree();
+                        mtree.LoadCache();
+                        para.NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, para.endidentify);
+                        retJson = PathNextRequest(plugin, controller, method, jsondata, para);
                     }
                 }
                 else//由远程执行服务发送请求

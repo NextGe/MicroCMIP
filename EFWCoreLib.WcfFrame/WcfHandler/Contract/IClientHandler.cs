@@ -116,6 +116,13 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns></returns>
         [OperationContract(IsOneWay = false)]
         string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg);
+        /// <summary>
+        /// 根节点中间件获取远程服务
+        /// </summary>
+        /// <param name="identify"></param>
+        /// <returns></returns>
+        [OperationContract(IsOneWay = false)]
+        string RootRemoteGetServices(string identify);
         #endregion
 
         #region 注册远程插件
@@ -173,7 +180,7 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <summary>
         /// 超级回调中间件
         /// </summary>
-        /// <param name="replyidentify">回调中间件唯一标识</param>
+        /// <param name="para"></param>
         /// <param name="plugin"></param>
         /// <param name="controller"></param>
         /// <param name="method"></param>
@@ -206,5 +213,12 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
 
         //[OperationContract(IsOneWay = false)]
         //string ReplyRemoteRequest(string plugin, string controller, string method, string jsondata, HeaderParameter para);
+        /// <summary>
+        /// 根节点回调获取远程服务
+        /// </summary>
+        /// <param name="NodePath"></param>
+        /// <returns></returns>
+        [OperationContract(IsOneWay = false)]
+        string ReplyRemoteGetServices(MNodePath NodePath);
     }
 }

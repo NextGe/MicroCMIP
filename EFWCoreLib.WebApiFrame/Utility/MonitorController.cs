@@ -7,6 +7,7 @@ using System.Web.Http;
 using EFWCoreLib.CoreFrame.Business.AttributeInfo;
 using EFWCoreLib.CoreFrame.Mongodb;
 using EFWCoreLib.CoreFrame.ProcessManage;
+using EFWCoreLib.WcfFrame;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using EFWCoreLib.WcfFrame.Utility.MonitorPlatform;
 using EFWCoreLib.WebApiFrame;
@@ -513,6 +514,75 @@ namespace EFWCoreLib.WebAPI.Utility
         public Object ExecuteRemoteCmd(string identify, string eprocess, string method, string arg)
         {
             return CallRemoteCmd(identify, eprocess, method, null);
+        }
+
+        /// <summary>
+        /// 获取远程服务
+        /// </summary>
+        /// <param name="identify"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public Object GetRemoteServices(string identify)
+        {
+            ClientLink link = new ClientLink(null, "Test", null, null,identify);
+            link.CreateConnection();
+            List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = link.RootRemoteGetServices(identify);
+
+            List<amazeuitreenode> tree = new List<amazeuitreenode>();
+            foreach (var p in plist)
+            {
+                amazeuitreenode nodep = new amazeuitreenode();
+                nodep.title = p.pluginname;
+                nodep.type = "folder";
+                nodep.childs = new List<amazeuitreenode>();
+                tree.Add(nodep);
+                foreach (var c in p.controllerlist)
+                {
+                    amazeuitreenode nodec = new amazeuitreenode();
+                    nodec.title = c.controllername;
+                    nodec.type = "folder";
+                    nodec.childs = new List<amazeuitreenode>();
+                    nodep.childs.Add(nodec);
+
+                    foreach (var m in c.methodlist)
+                    {
+                        amazeuitreenode nodem = new amazeuitreenode();
+                        nodem.title = m;
+                        nodem.type = "item";
+                        nodem.attr = new Dictionary<string, string>();
+                        nodem.attr.Add("plugin", p.pluginname);
+                        nodem.attr.Add("controller", c.controllername);
+                        nodem.attr.Add("method", m);
+                        nodec.childs.Add(nodem);
+                    }
+                }
+            }
+            return tree;
+        }
+        /// <summary>
+        /// 测试远程服务
+        /// </summary>
+        /// <param name="identify"></param>
+        /// <param name="plugin"></param>
+        /// <param name="controller"></param>
+        /// <param name="method"></param>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string TestRemoteService(string identify, string plugin, string controller, string method, string para)
+        {
+            Action<ClientRequestData> requestAction = ((ClientRequestData request) =>
+            {
+                request.Iscompressjson = false;
+                request.Isencryptionjson = false;
+                request.Serializetype = SerializeType.Newtonsoft;
+                request.LoginRight = new CoreFrame.Business.SysLoginRight(1);
+                request.SetJsonData(para);
+            });
+            ClientLink link = new ClientLink(null, plugin, null, null, identify);
+            link.CreateConnection();
+            ServiceResponseData response = link.Request(controller, method, requestAction);
+            return response.GetJsonData();
         }
     }
 }

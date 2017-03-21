@@ -116,5 +116,10 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         {
             return DataManage.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
         }
+
+        public string RootRemoteGetServices(string identify)
+        {
+            return MiddlewareConfigManage.RootRemoteGetServices(identify);
+        }
     }
 }

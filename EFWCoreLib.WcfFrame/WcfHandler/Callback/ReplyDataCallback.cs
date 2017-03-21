@@ -46,5 +46,10 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         {
             return DataManage.ReplyRemoteCommand(eprocess, method, arg, NodePath);
         }
+
+        public string ReplyRemoteGetServices(MNodePath NodePath)
+        {
+            return MiddlewareConfigManage.ReplyRemoteGetServices(NodePath);
+        }
     }
 }
