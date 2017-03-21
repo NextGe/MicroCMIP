@@ -203,5 +203,8 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns></returns>
         [OperationContract(IsOneWay = false)]
         string ReplyRemoteCommand(string eprocess, string method, string arg, MNodePath NodePath);
+
+        //[OperationContract(IsOneWay = false)]
+        //string ReplyRemoteRequest(string plugin, string controller, string method, string jsondata, HeaderParameter para);
     }
 }

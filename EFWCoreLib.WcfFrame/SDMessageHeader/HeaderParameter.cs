@@ -32,10 +32,14 @@ namespace EFWCoreLib.WcfFrame.SDMessageHeader
         [DataMember]
         public string pluginname { get; set; }
         /// <summary>
-        /// 路由服务重新回调节点标识
+        /// 路由节点标识
         /// </summary>
         [DataMember]
         public string replyidentify { get; set; }
+        [DataMember]
+        public string beginidentify { get; set; }
+        [DataMember]
+        public string endidentify { get; set; }
         /// <summary>
         /// 令牌
         /// </summary>

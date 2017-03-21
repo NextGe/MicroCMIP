@@ -37,18 +37,7 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
-        public string ReplyIdentify
-        {
-            get
-            {
-                if (_pluginName == "SuperPlugin" || _pluginName == "DataPlugin")
-                {
-                    return WcfGlobal.Identify;
-                }
-
-                return "";
-            }
-        }
+        
         /// <summary>
         /// 客户端对象
         /// </summary>
@@ -79,9 +68,31 @@ namespace EFWCoreLib.WcfFrame
 
         private DuplexBaseServiceClient baseServiceClient;//双工通信对象
         private FileServiceClient fileServiceClient = null;//文件通信对象
-        //private readonly string myNamespace = "http://www.efwplus.cn/";
-        //private Action<bool, int> backConfig = null;//参数配置回调
-        //private Action createconnAction = null;//创建连接后回调
+
+        /// <summary>
+        /// 开始节点标识（Client端默认为空，而中间件节点发出请求会默认当前节点）
+        /// </summary>
+        private string BeginIdentify
+        {
+            get
+            {
+                if (_pluginName == "SuperPlugin" || _pluginName == "DataPlugin")
+                {
+                    return WcfGlobal.Identify;
+                }
+
+                return "";
+            }
+        }
+        private string _endIdentify = "";
+        /// <summary>
+        /// 结束节点标识（默认为空会根据配置的服务自动计算结束节点，当然也可以手动指定结束节点）
+        /// </summary>
+        private string EndIdentify
+        {
+            set { _endIdentify = value; }
+            get { return _endIdentify; }
+        }
         #endregion
 
         #region 初始化
@@ -124,6 +135,15 @@ namespace EFWCoreLib.WcfFrame
             _pluginName = pluginname;
             _wcfendpoint = wcfendpoint;
             _token = token;
+        }
+
+        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token,string endidentify)
+        {
+            _clientName = clientname;
+            _pluginName = pluginname;
+            _wcfendpoint = wcfendpoint;
+            _token = token;
+            _endIdentify = endidentify;
         }
 
         private void InitComm()
@@ -256,7 +276,7 @@ namespace EFWCoreLib.WcfFrame
             baseServiceClient.Open();
             //AddMessageHeader(baseServiceClient.InnerDuplexChannel as IContextChannel, "", (() =>
             //{
-            clientObj.ClientID = baseServiceClient.CreateClient(clientObj.ClientName,PluginName, ReplyIdentify);//创建连接获取ClientID
+            clientObj.ClientID = baseServiceClient.CreateClient(clientObj.ClientName,PluginName, BeginIdentify);//创建连接获取ClientID
             if (ServerConfigRequestState == false)
             {
                 //重新获取服务端配置，如：是否压缩Json、是否加密Json
@@ -696,7 +716,9 @@ namespace EFWCoreLib.WcfFrame
                 para.routerid = clientObj.RouterID;
                 para.pluginname = clientObj.PluginName;
                 //ReplyIdentify如果客户端创建连接为空，如果中间件连接上级中间件那就是本地中间件标识
-                para.replyidentify = ReplyIdentify;
+                para.replyidentify = null;
+                para.beginidentify = BeginIdentify;
+                para.endidentify = EndIdentify;
                 para.token = clientObj.Token;
                 para.iscompressjson = iscompressjson;
                 para.isencryptionjson = isencryptionjson;

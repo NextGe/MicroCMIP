@@ -36,6 +36,10 @@ namespace EFWCoreLib.WcfFrame.SDMessageHeader
             requestMessage.Headers.Add(plugin);
             var ReplyHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("ReplyIdentify", ns, para.replyidentify);
             requestMessage.Headers.Add(ReplyHN);
+            var BeginHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("BeginIdentify", ns, para.beginidentify);
+            requestMessage.Headers.Add(BeginHN);
+            var EndHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("EndIdentify", ns, para.endidentify);
+            requestMessage.Headers.Add(EndHN);
             var token = System.ServiceModel.Channels.MessageHeader.CreateHeader("Token", ns, para.token);
             requestMessage.Headers.Add(token);
             var IsCompressJson = System.ServiceModel.Channels.MessageHeader.CreateHeader("IsCompressJson", ns, Convert.ToString(para.iscompressjson ? 1 : 0));
@@ -56,6 +60,8 @@ namespace EFWCoreLib.WcfFrame.SDMessageHeader
             headers.RemoveAll("RouterID", ns);
             headers.RemoveAll("Plugin", ns);
             headers.RemoveAll("ReplyIdentify", ns);
+            headers.RemoveAll("BeginIdentify", ns);
+            headers.RemoveAll("EndIdentify", ns);
             headers.RemoveAll("Token", ns);
             headers.RemoveAll("IsCompressJson", ns);
             headers.RemoveAll("IsEncryptionJson", ns);
@@ -71,6 +77,10 @@ namespace EFWCoreLib.WcfFrame.SDMessageHeader
             headers.Add(plugin);
             var ReplyHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("ReplyIdentify", ns, para.replyidentify);
             headers.Add(ReplyHN);
+            var BeginHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("BeginIdentify", ns, para.beginidentify);
+            headers.Add(BeginHN);
+            var EndHN = System.ServiceModel.Channels.MessageHeader.CreateHeader("EndIdentify", ns, para.endidentify);
+            headers.Add(EndHN);
             var token = System.ServiceModel.Channels.MessageHeader.CreateHeader("Token", ns, para.token);
             headers.Add(token);
             var IsCompressJson = System.ServiceModel.Channels.MessageHeader.CreateHeader("IsCompressJson", ns, Convert.ToString(para.iscompressjson ? 1 : 0));
@@ -103,6 +113,12 @@ namespace EFWCoreLib.WcfFrame.SDMessageHeader
             index = headers.FindHeader("ReplyIdentify", ns);
             if (index > -1)
                 para.replyidentify = headers.GetHeader<string>(index);
+            index = headers.FindHeader("BeginIdentify", ns);
+            if (index > -1)
+                para.beginidentify = headers.GetHeader<string>(index);
+            index = headers.FindHeader("EndIdentify", ns);
+            if (index > -1)
+                para.endidentify = headers.GetHeader<string>(index);
             index = headers.FindHeader("Token", ns);
             if (index > -1)
                 para.token = headers.GetHeader<string>(index);

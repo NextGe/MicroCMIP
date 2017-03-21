@@ -35,10 +35,36 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 if (WcfGlobal.IsDebug == true)
                     ShowHostMsg(Color.Black, DateTime.Now, "服务正在执行：" + controller + "." + method + "(" + jsondata + ")");
 
-                if (para.NodePath == null)//首次请求验证
+                if (para.NodePath == null)
                 {
+                    // 首次请求验证
                     FirstVerification(clientId, plugin, controller, method, jsondata, para);
-                    retJson = PathFirstRequest(plugin, controller, method, jsondata, para);
+
+                    //验证本地执行还是远程执行服务
+                    MNodePlugin localPlugin = RemotePluginManage.GetLocalPlugin();
+                    if (localPlugin.LocalPlugin.ToList().FindIndex(x => x == plugin) != -1)//本地插件
+                    {
+                        //执行本地数据请求
+                        retJson = LocalDataRequest(plugin, controller, method, jsondata, para);
+                    }
+                    else if (localPlugin.RemotePlugin.FindIndex(x => x.PluginName == plugin) != -1)//远程插件
+                    {
+                        if (string.IsNullOrEmpty(para.endidentify))//计算远程节点路径
+                        {
+                            para.NodePath = FirstGetNodePath(plugin, localPlugin);
+                        }
+                        else//计算指定节点的路径
+                        {
+                            MNodeTree mtree = new MNodeTree();
+                            mtree.LoadCache();
+                            para.NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, para.endidentify);
+                        }
+                        retJson = PathNextRequest(plugin, controller, method, jsondata, para);
+                    }
+                    else
+                    {
+                        throw new Exception("本中间件节点中没有配置此插件：" + plugin);
+                    }
                 }
                 else//由远程执行服务发送请求
                 {
@@ -89,55 +115,32 @@ namespace EFWCoreLib.WcfFrame.ServerManage
 
             if (plugin == null || controller == null)
                 throw new Exception("插件名称或控制器名称不能为空!");
-
-            if (WcfGlobal.IsToken == true)//非调试模式下才验证
-            {
-                //验证身份，创建连接的时候验证，请求不验证
-                IsAuth(plugin, controller, method, para.token);
-            }
         }
         //路径首次执行
-        private static string PathFirstRequest(string plugin, string controller, string method, string jsondata, HeaderParameter para)
+        private static MNodePath FirstGetNodePath(string plugin, MNodePlugin localPlugin)
         {
-            string retJson = null;
             try
             {
-                //验证本地执行还是远程执行服务
-                MNodePlugin localPlugin = RemotePluginManage.GetLocalPlugin();
-                if (localPlugin.LocalPlugin.ToList().FindIndex(x => x == plugin) != -1)//本地插件
+                List<MNodePath> pathlist = new List<MNodePath>();
+                string[] remoteNodeId = localPlugin.RemotePlugin.Find(x => x.PluginName == plugin).MNodeIdentify.ToArray();
+                MNodeTree mtree = new MNodeTree();
+                mtree.LoadCache();
+                foreach (string Id in remoteNodeId)
                 {
-                    //执行本地数据请求
-                    retJson = LocalDataRequest(plugin, controller, method, jsondata, para);
+                    pathlist.Add(mtree.CalculateMNodePath(WcfGlobal.Identify, Id));
                 }
-                else if (localPlugin.RemotePlugin.FindIndex(x => x.PluginName == plugin) != -1)//远程插件
+                MNodePath nodePath = null;
+                if (localPlugin.PathStrategy == 0)//随机策略
                 {
-                    List<MNodePath> pathlist = new List<MNodePath>();
-                    string[] remoteNodeId = localPlugin.RemotePlugin.Find(x => x.PluginName == plugin).MNodeIdentify.ToArray();
-                    MNodeTree mtree = new MNodeTree();
-                    mtree.LoadCache();
-                    foreach (string Id in remoteNodeId)
-                    {
-                        pathlist.Add(mtree.CalculateMNodePath(WcfGlobal.Identify, Id));
-                    }
-                    MNodePath nodePath = null;
-                    if (localPlugin.PathStrategy == 0)//随机策略
-                    {
-                        Random ro = new Random();
-                        int index = ro.Next(0, pathlist.Count);
-                        nodePath = pathlist[index];
-                    }
-                    else//最短路径?
-                    {
-                        nodePath = pathlist[0];
-                    }
-                    para.NodePath = nodePath;
-                    retJson = PathNextRequest(plugin, controller, method, jsondata, para);
+                    Random ro = new Random();
+                    int index = ro.Next(0, pathlist.Count);
+                    nodePath = pathlist[index];
                 }
-                else
+                else//最短路径?
                 {
-                    throw new Exception("本中间件节点中没有配置此插件：" + plugin);
+                    nodePath = pathlist[0];
                 }
-                return retJson;
+                return nodePath;
             }
             catch (Exception err)
             {
@@ -186,6 +189,11 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             string retJson = null;
             try
             {
+                if (WcfGlobal.IsToken == true)//非调试模式下才验证
+                {
+                    //验证身份，创建连接的时候验证，请求不验证
+                    IsAuth(plugin, controller, method, para.token);
+                }
 
                 //begintime();
                 //超时计时器
@@ -362,6 +370,9 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         //每次请求的身份验证，分布式情况下验证麻烦
         private static bool IsAuth(string pname, string cname, string methodname, string token)
         {
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("no token");
+
             ModulePlugin mp;
             WcfControllerAttributeInfo cattr = AppPluginManage.GetPluginWcfControllerAttributeInfo(pname, cname, out mp);
             if (cattr == null) throw new Exception("插件中没有此控制器名");
@@ -370,9 +381,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
 
             if (mattr.IsAuthentication)
             {
-                if (token == null)
-                    throw new Exception("no token");
-
                 AuthResult result = SsoHelper.ValidateToken(token);
                 if (result.ErrorMsg != null)
                     throw new Exception(result.ErrorMsg);
@@ -405,8 +413,8 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 return SuperClient.superClientLink.RootRequest(key, jsonpara);
             }
         }
-        //远程执行命令
-        public static string RootRemoteCommand(string ServerIdentify, string eprocess, string method, string arg)
+        //根节点远程执行命令
+        public static string RootRemoteCommand(string identify, string eprocess, string method, string arg)
         {
             Dictionary<string, string> argDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(arg);
             string argstr = "";
@@ -417,7 +425,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 else
                     argstr += "&" + i.Key + "=" + i.Value;
             }
-            if (WcfGlobal.Identify == ServerIdentify)
+            if (WcfGlobal.Identify == identify)
             {
                 return WcfGlobal.normalIPC.CallCmd(eprocess, method, argstr);
             }
@@ -426,11 +434,11 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 MNodePath NodePath = null;
                 MNodeTree mtree = new MNodeTree();
                 mtree.LoadCache();
-                NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, ServerIdentify);
+                NodePath = mtree.CalculateMNodePath(WcfGlobal.Identify, identify);
                 return ReplyRemoteCommand(eprocess, method, argstr, NodePath);
             }
         }
-
+        //根节点回调远程命令
         public static string ReplyRemoteCommand(string eprocess, string method, string arg, MNodePath NodePath)
         {
             NodePath.NextStep();//节点路径下一步
@@ -450,6 +458,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 return null;
             }
         }
+
     }
 
     /// <summary>
