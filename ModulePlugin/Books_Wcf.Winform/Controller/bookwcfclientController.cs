@@ -55,7 +55,9 @@ namespace Books_Wcf.Winform.Controller
         [WinformMethod]
         public void GetBooks()
         {
-            
+            //通过wcf服务调用bookWcfController控制器中的GetBooks方法
+            ServiceResponseData retdata = InvokeWcfService("Books.Service", "bookWcfController", "GetBooks");
+            dt = retdata.GetData<DataTable>(0);
         }
     }
 }

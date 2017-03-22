@@ -97,6 +97,7 @@
     //测试远程服务
     function testservices() {
         common.simpleAjax("Monitor/GetRemoteServices", { identify: $('body').data('identify') }, function (data) {
+            //$('#serviceTree').tree('closeAll');
             $('#serviceTree').tree({
                 dataSource: function (options, callback) {
                     // 模拟异步加载
@@ -105,7 +106,7 @@
                     }, 40);
                 },
                 multiSelect: false,
-                cacheItems: true,
+                cacheItems: false,
                 folderSelect: false
             }).on('selected.tree.amui', function (e, selected) {
                 //console.log('Select Event: ', selected);

@@ -18,16 +18,17 @@ namespace EFWCoreLib.WebApiFrame
     {
         public static bool IsRootMNode = false;//是否中间件根节点
 
+        public static List<string> PluginPath;
         public static NormalIPCManager normalIPC;
         public static bool IsDebug = false;
         public static bool IsToken = false;
         static WebApiSelfHosting webapiHost = null;
-        public static string PluginPath;
+        
         public static string MongoConnStr;
         public static void Main()
         {
             IsRootMNode = HostSettingConfig.GetValue("rootmnode") == "1" ? true : false;
-            PluginPath = AppDomain.CurrentDomain.BaseDirectory + @"\ModulePlugin";
+            //PluginPath = AppDomain.CurrentDomain.BaseDirectory + @"\ModulePlugin";
             IsDebug = HostSettingConfig.GetValue("debug") == "1" ? true : false;
             IsToken = HostSettingConfig.GetValue("token") == "1" ? true : false;
             MongoConnStr = HostSettingConfig.GetValue("mongodb_conn");

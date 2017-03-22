@@ -35,11 +35,14 @@ namespace EFWCoreLib.WebFrame.WebAPI
         private string[] GetPluginDll()
         {
             List<string> dlllist = new List<string>();
-            DirectoryInfo Dir = new DirectoryInfo(WebApiGlobal.PluginPath);
-            FileInfo[] dlls = Dir.GetFiles("*.dll", SearchOption.AllDirectories);
-            foreach(var i in dlls)
+            foreach (var p in WebApiGlobal.PluginPath)
             {
-                dlllist.Add(i.Name.Replace(".dll", ""));
+                DirectoryInfo Dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory+p);
+                FileInfo[] dlls = Dir.GetFiles("*.dll", SearchOption.AllDirectories);
+                foreach (var i in dlls)
+                {
+                    dlllist.Add(i.Name.Replace(".dll", ""));
+                }
             }
             return dlllist.ToArray();
         }

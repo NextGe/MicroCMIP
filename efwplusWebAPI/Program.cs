@@ -22,7 +22,7 @@ namespace efwplusWebAPI
         {
             try
             {
-                setprivatepath();
+                WebApiGlobal.PluginPath= setprivatepath();
 
                 Func<string, Dictionary<string, string>, string> _funcExecCmd = ExecuteCmd;
                 Action<string> _actionReceiveData = ((string data) =>
@@ -64,15 +64,19 @@ namespace efwplusWebAPI
         /// <summary>
         /// 获取或设置应用程序基目录下的目录列表
         /// </summary>
-        static void setprivatepath()
+        static List<string> setprivatepath()
         {
+            List<string> pathlist = new List<string>();
+
             //AppDomain.CurrentDomain.SetupInformation.PrivateBinPath = @"Component;ModulePlugin\Books_Wcf\dll;ModulePlugin\WcfMainUIFrame\dll";
             string privatepath = @"Component";
 
             foreach (var p in efwplus.configuration.PluginSysManage.GetAllPlugin())
             {
                 privatepath += ";" + p.path.Replace("plugin.xml", "dll");
+                pathlist.Add(p.path.Replace("plugin.xml", "dll"));
             }
+            
 
             AppDomain.CurrentDomain.SetData("PRIVATE_BINPATH", privatepath);
             AppDomain.CurrentDomain.SetData("BINPATH_PROBE_ONLY", privatepath);
@@ -80,6 +84,7 @@ namespace efwplusWebAPI
             var funsion = typeof(AppDomain).GetMethod("GetFusionContext", BindingFlags.NonPublic | BindingFlags.Instance);
             m.Invoke(null, new object[] { funsion.Invoke(AppDomain.CurrentDomain, null), "PRIVATE_BINPATH", privatepath });
 
+            return pathlist;
         }
 
         static string ExecuteCmd(string m, Dictionary<string, string> a)
