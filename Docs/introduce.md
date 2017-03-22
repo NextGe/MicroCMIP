@@ -27,7 +27,7 @@ MicroCMIP
 
 > 代码分层架构原理图
 
-![image](images/1.png)
+![image](images/15.png)
 
 #### `MicroCMIP`能做什么？
 
@@ -52,11 +52,11 @@ MicroCMIP
 
 * 启动efwplusServerCmd.exe
 
-    ![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/3C4021EF6B9C442685BEC92CDBC1EBFB/19734) 
+    ![image](images/1.png)
 
 * 启动efwplusHosting.exe
  
-    ![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/B937269A3F9A4F8699D9300F7EB5D73E/19736)
+    ![image](images/2.png)
 
 * 打开中间件监控平台
     
@@ -64,21 +64,21 @@ MicroCMIP
 
 > 日志查看
 
-![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/613A3D8F06FE4C5F81FDEF7017EFC2FC/19757)
+![image](images/3.png)
 
 > 客户端列表
 
-![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/A8CDB101E0544E8A8E34ECD724B3EB1C/19774)
+![image](images/4.png)
 
 > 配置信息
 
-![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/C7E35AD7986E4494B8CB18FE6F8A92E2/19776)
+![image](images/5.png)
 
 > 测试服务
 
 通过这个界面可以知道本中间件节点上装载了哪几个服务，以及服务的相关信息，并且可以在线测试调用这些服务，服务返回数据会输出在界面上。
 
-![image](http://note.youdao.com/yws/public/resource/e569ed963bafc504c900f522d7a9cdec/xmlnote/5B90CEB2F3D2495FA5EA332B72895599/19783)
+![image](images/6.png)
 
 
 #### 创建一个服务
