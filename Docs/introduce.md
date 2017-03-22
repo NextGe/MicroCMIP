@@ -43,7 +43,7 @@ MicroCMIP
     
     你可以从GitHub项目主页获取源代码
     
-    [打开源代码](http://note.youdao.com/)
+    [打开源代码](https://github.com/343588387/MicroCMIP)
 
 
 #### 快速启动
