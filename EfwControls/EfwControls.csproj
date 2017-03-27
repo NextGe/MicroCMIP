@@ -77,6 +77,12 @@
     <Reference Include="DevComponents.DotNetBar2, Version=11.0.0.0, Culture=neutral, PublicKeyToken=c39c3242a43eee2b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="EFWCoreLib.CoreFrame">
+      <HintPath>..\Output\EFWCoreLib.CoreFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="EFWCoreLib.WcfFrame">
+      <HintPath>..\Output\EFWCoreLib.WcfFrame.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -343,16 +349,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
-      <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
-      <Name>EFWCoreLib.CoreFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EFWCoreLib.WcfFrame\EFWCoreLib.WcfFrame.csproj">
-      <Project>{cacafdbf-9b17-403a-a3ca-c123a94e2c19}</Project>
-      <Name>EFWCoreLib.WcfFrame</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

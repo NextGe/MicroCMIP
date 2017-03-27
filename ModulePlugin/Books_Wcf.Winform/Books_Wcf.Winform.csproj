@@ -74,7 +74,19 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Books_Wcf">
+      <HintPath>..\..\Output_Client\ModulePlugin\Books_Wcf\dll\Books_Wcf.dll</HintPath>
+    </Reference>
     <Reference Include="DevComponents.DotNetBar2, Version=11.0.0.0, Culture=neutral, PublicKeyToken=c39c3242a43eee2b" />
+    <Reference Include="EFWCoreLib.CoreFrame">
+      <HintPath>..\..\Output\EFWCoreLib.CoreFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="EFWCoreLib.WcfFrame">
+      <HintPath>..\..\Output\EFWCoreLib.WcfFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="EFWCoreLib.WinformFrame">
+      <HintPath>..\..\Output\EFWCoreLib.WinformFrame.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -122,22 +134,6 @@
     <ProjectReference Include="..\..\EfwControls\EfwControls.csproj">
       <Project>{a7618987-492b-4d5d-92c2-0381ec45817f}</Project>
       <Name>EfwControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
-      <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
-      <Name>EFWCoreLib.CoreFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.WcfFrame\EFWCoreLib.WcfFrame.csproj">
-      <Project>{cacafdbf-9b17-403a-a3ca-c123a94e2c19}</Project>
-      <Name>EFWCoreLib.WcfFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
-      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
-      <Name>EFWCoreLib.WinformFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Books_Wcf\Books_Wcf.csproj">
-      <Project>{79168a48-52a6-4486-9cd1-c3e05f9bd94b}</Project>
-      <Name>Books_Wcf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

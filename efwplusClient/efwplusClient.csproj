@@ -40,6 +40,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Component\DevComponents.DotNetBar2.dll</HintPath>
     </Reference>
+    <Reference Include="EFWCoreLib.CoreFrame, Version=2.8.4.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Output\EFWCoreLib.CoreFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="EFWCoreLib.WinformFrame">
+      <HintPath>..\Output\EFWCoreLib.WinformFrame.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleUpdater">
       <HintPath>..\Component\SimpleUpdater.EXE</HintPath>
     </Reference>
@@ -79,16 +86,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
-      <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
-      <Name>EFWCoreLib.CoreFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
-      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
-      <Name>EFWCoreLib.WinformFrame</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="client.ico" />

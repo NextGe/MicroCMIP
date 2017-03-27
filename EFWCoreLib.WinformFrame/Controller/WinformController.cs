@@ -26,20 +26,6 @@ namespace EFWCoreLib.WinformFrame.Controller
     /// </summary>
     public class WinformController : AbstractController
     {
-        //实例化此控制器的菜单ID
-        //public int MenuId { get; set; }
-
-        /// <summary>
-        /// 获取页面子权限
-        /// </summary>
-        //public DataTable GetPageRight
-        //{
-        //    get
-        //    {
-        //        DataTable data = (DataTable)ExecuteFun.invoke(oleDb,"getPageRight", MenuId, LoginUserInfo.UserId);
-        //        return data;
-        //    }
-        //}
 
         protected override SysLoginRight GetUserInfo()
         {

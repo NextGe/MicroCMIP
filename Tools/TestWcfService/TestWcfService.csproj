@@ -54,7 +54,6 @@
     <Compile Include="FrmTest.Designer.cs">
       <DependentUpon>FrmTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginSysManage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmTest.resx">
@@ -87,22 +86,15 @@
     <Content Include="wcftest.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
-      <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
-      <Name>EFWCoreLib.CoreFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.WcfFrame\EFWCoreLib.WcfFrame.csproj">
-      <Project>{cacafdbf-9b17-403a-a3ca-c123a94e2c19}</Project>
-      <Name>EFWCoreLib.WcfFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
-      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
-      <Name>EFWCoreLib.WinformFrame</Name>
+    <ProjectReference Include="..\..\EFWCoreLib.ClientProxy\EFWCoreLib.ClientProxy.csproj">
+      <Project>{73682eef-9998-4e63-b737-f1a6eed5c21d}</Project>
+      <Name>EFWCoreLib.ClientProxy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)Output"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

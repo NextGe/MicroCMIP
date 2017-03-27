@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EFWCoreLib.CoreFrame.Init;
+//using EFWCoreLib.CoreFrame.Init;
 using EFWCoreLib.WcfFrame;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using System.Windows.Forms;
@@ -64,7 +64,7 @@ namespace TestWcfPerformance
                 while (num > 0)
                 {
                     //num -= 1;
-                    clientlink.Request("bookWcfController", "GetDiseaseData", null);
+                    clientlink.Request("bookWcfController", "Test", null);
                     Thread.Sleep(time);
                 }
                 clientlink.Dispose();

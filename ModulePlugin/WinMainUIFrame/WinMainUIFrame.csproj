@@ -138,10 +138,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EfwControls\EfwControls.csproj">
-      <Project>{a7618987-492b-4d5d-92c2-0381ec45817f}</Project>
-      <Name>EfwControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
       <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
       <Name>EFWCoreLib.CoreFrame</Name>

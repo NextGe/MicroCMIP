@@ -11,10 +11,14 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
 {
 
     [ServiceKnownType(typeof(DBNull))]
+#if ClientProxy
+    [ServiceContract(Namespace = "http://www.efwplus.cn/", Name = "BaseService", SessionMode = SessionMode.Required)]
+#else
     [ServiceContract(Namespace = "http://www.efwplus.cn/", Name = "BaseService", SessionMode = SessionMode.Required, CallbackContract = typeof(IDataReply))]
+#endif
     public interface IClientHandler
     {
-        #region 客户端连接
+#region 客户端连接
         /// <summary>
         /// 创建客户端
         /// </summary>
@@ -42,9 +46,9 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// </summary>
         [OperationContract]
         void MNodeState(List<MNodeObject> mnodeList);
-        #endregion
+#endregion
 
-        #region 中间件节点配置
+#region 中间件节点配置
         /// <summary>
         /// 返回服务端配置
         /// </summary>
@@ -63,9 +67,9 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns></returns>
         [OperationContract(IsOneWay = false)]
         string GetServiceConfig();
-        #endregion
+#endregion
 
-        #region 数据请求
+#region 数据请求
         /// <summary>
         /// 执行请求
         /// </summary>
@@ -123,17 +127,17 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns></returns>
         [OperationContract(IsOneWay = false)]
         string RootRemoteGetServices(string identify);
-        #endregion
+#endregion
 
-        #region 注册远程插件
+#region 注册远程插件
         /// <summary>
         /// 注册远程插件
         /// </summary>
         //[OperationContract]
         //void RegisterRemotePlugin(string ServerIdentify, string[] plugin);
-        #endregion
+#endregion
 
-        #region 分布式缓存
+#region 分布式缓存
 
         /// <summary>
         /// 获取缓存数据
@@ -142,9 +146,9 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <returns></returns>
         [OperationContract(IsOneWay = false)]
         List<CacheObject> GetDistributedCacheData(List<CacheIdentify> cacheIdList);
-        #endregion
+#endregion
 
-        #region 发布订阅
+#region 发布订阅
         /// <summary>
         /// 获取发布服务列表
         /// </summary>
@@ -164,7 +168,7 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// <param name="publishServiceName">发布服务名称</param>
         [OperationContract(IsOneWay = true)]
         void UnSubscribe(string ServerIdentify, string publishServiceName);
-        #endregion
+#endregion
     }
 
     [ServiceKnownType(typeof(System.DBNull))]
@@ -190,14 +194,14 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         string ReplyProcessRequest(HeaderParameter para, string plugin, string controller, string method, string jsondata);
 
 
-        #region 订阅通知
+#region 订阅通知
         /// <summary>
         /// 通知
         /// </summary>
         /// <param name="publishServiceName">服务名称</param>
         [OperationContract(IsOneWay = true)]
         void Notify(string publishServiceName);
-        #endregion
+#endregion
 
         /// <summary>
         /// 根节点回调执行远程命令

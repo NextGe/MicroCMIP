@@ -63,10 +63,6 @@
       <Project>{8a8f5236-e865-415a-90c5-8bce3ba7fe07}</Project>
       <Name>EFWCoreLib.WebApiFrame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
-      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
-      <Name>EFWCoreLib.WinformFrame</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
