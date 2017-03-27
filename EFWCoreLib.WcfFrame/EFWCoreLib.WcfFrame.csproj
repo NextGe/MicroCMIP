@@ -110,9 +110,12 @@
     <Compile Include="ClientProxy\ClientLinkPoolCache.cs" />
     <Compile Include="DataSerialize\CacheObject.cs" />
     <Compile Include="DataSerialize\ClientRequestData.cs" />
+    <Compile Include="DataSerialize\dwPlugin.cs" />
     <Compile Include="DataSerialize\FileTransfer.cs" />
     <Compile Include="DataSerialize\MNodeObject.cs" />
-    <Compile Include="DataSerialize\MNodeTree.cs" />
+    <Compile Include="DataSerialize\MNodePath.cs" />
+    <Compile Include="ServerManage\MNodeTree.cs" />
+    <Compile Include="DataSerialize\PublishSubscribe.cs" />
     <Compile Include="DataSerialize\SerializeType.cs" />
     <Compile Include="DataSerialize\ServerConfigObject.cs" />
     <Compile Include="DataSerialize\ServiceResponseData.cs" />

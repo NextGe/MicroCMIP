@@ -17,7 +17,11 @@ namespace EFWCoreLib.WcfFrame
         /// <summary>
         /// 业务数据服务
         /// </summary>
+#if ClientProxy
+            public BaseServiceClient WcfService { get; set; }
+#else
         public DuplexBaseServiceClient WcfService { get; set; }
+#endif
         /// <summary>
         /// 客户端回调服务
         /// </summary>

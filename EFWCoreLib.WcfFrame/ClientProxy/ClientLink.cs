@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+//using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,7 +37,35 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
-        
+        private string _beginIdenify = "";
+        /// <summary>
+        /// 开始节点标识（Client端默认为空，而中间件节点发出请求会默认当前节点）
+        /// </summary>
+        public string BeginIdentify
+        {
+            get
+            {
+                //if (_pluginName == "SuperPlugin" || _pluginName == "DataPlugin")
+                //{
+                //    return WcfGlobal.Identify;
+                //}
+                return _beginIdenify;
+            }
+            set
+            {
+                _beginIdenify = value;
+            }
+        }
+
+        private string _endIdentify = "";
+        /// <summary>
+        /// 结束节点标识（默认为空会根据配置的服务自动计算结束节点，当然也可以手动指定结束节点）
+        /// </summary>
+        public string EndIdentify
+        {
+            set { _endIdentify = value; }
+            get { return _endIdentify; }
+        }
         /// <summary>
         /// 客户端对象
         /// </summary>
@@ -64,38 +92,19 @@ namespace EFWCoreLib.WcfFrame
         //设置服务端配置读取状态
         //只要出现连接服务端中间件失败，就有可能服务端配置修改重启，就把此状态置为false
         private bool ServerConfigRequestState = false;
-        private string filebufferpath = System.Windows.Forms.Application.StartupPath + "\\FileStore\\clientbuffer\\";//文件下载存放路径
+        private string filebufferpath = AppDomain.CurrentDomain.BaseDirectory + "\\FileStore\\clientbuffer\\";//文件下载存放路径
 
+#if ClientProxy
+         private BaseServiceClient baseServiceClient;//单向通信对象
+#else
         private DuplexBaseServiceClient baseServiceClient;//双工通信对象
+#endif
         private FileServiceClient fileServiceClient = null;//文件通信对象
 
-        /// <summary>
-        /// 开始节点标识（Client端默认为空，而中间件节点发出请求会默认当前节点）
-        /// </summary>
-        private string BeginIdentify
-        {
-            get
-            {
-                if (_pluginName == "SuperPlugin" || _pluginName == "DataPlugin")
-                {
-                    return WcfGlobal.Identify;
-                }
+        
+#endregion
 
-                return "";
-            }
-        }
-        private string _endIdentify = "";
-        /// <summary>
-        /// 结束节点标识（默认为空会根据配置的服务自动计算结束节点，当然也可以手动指定结束节点）
-        /// </summary>
-        private string EndIdentify
-        {
-            set { _endIdentify = value; }
-            get { return _endIdentify; }
-        }
-        #endregion
-
-        #region 初始化
+#region 初始化
         /// <summary>
         /// 初始化通讯连接
         /// </summary>
@@ -137,12 +146,13 @@ namespace EFWCoreLib.WcfFrame
             _token = token;
         }
 
-        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token,string endidentify)
+        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token,string beginidentify,string endidentify)
         {
             _clientName = clientname;
             _pluginName = pluginname;
             _wcfendpoint = wcfendpoint;
             _token = token;
+            _beginIdenify = beginidentify;
             _endIdentify = endidentify;
         }
 
@@ -164,16 +174,20 @@ namespace EFWCoreLib.WcfFrame
             clientObj.RouterID = Guid.NewGuid().ToString();
             clientObj.PluginName = PluginName;
             clientObj.Token = _token;
-            clientObj.ReplyService = new ReplyDataCallback(this);
+           
 
-            //if (baseServiceClient == null)
+#if ClientProxy
+            baseServiceClient = new BaseServiceClient(_wcfendpoint);
+#else
+            clientObj.ReplyService = new ReplyDataCallback(this);
             baseServiceClient = new DuplexBaseServiceClient(clientObj.ReplyService, _wcfendpoint);
+#endif
             //if (fileServiceClient == null)
             fileServiceClient = new FileServiceClient(_fileendpoint);
         }
-        #endregion
+#endregion
 
-        #region IDisposable 成员
+#region IDisposable 成员
         /// <summary>
         /// 释放连接
         /// </summary>
@@ -204,9 +218,9 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
-        #endregion
+#endregion
 
-        #region 连接池属性
+#region 连接池属性
         private int index;
         /// <summary>
         /// 索引
@@ -260,9 +274,9 @@ namespace EFWCoreLib.WcfFrame
         {
             get { return baseServiceClient.State; }
         }
-        #endregion
+#endregion
 
-        #region 数据交互
+#region 数据交互
 
         /// <summary>
         /// 创建连接
@@ -351,15 +365,20 @@ namespace EFWCoreLib.WcfFrame
                     des.DesEncrypt();
                     jsondata = des.OutString;
                 }
-
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
                 string retJson = "";
-
+#if ClientProxy
+                BaseServiceClient _wcfService = clientObj.WcfService;
+                AddMessageHeader(_wcfService.InnerChannel as IContextChannel, "", requestData.Iscompressjson, requestData.Isencryptionjson, requestData.Serializetype, requestData.LoginRight, (() =>
+                {
+                    retJson = _wcfService.ProcessRequest(clientObj.ClientID, clientObj.PluginName, controller, method, jsondata);
+                }));
+#else
+                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
                 AddMessageHeader(_wcfService.InnerDuplexChannel as IContextChannel, "", requestData.Iscompressjson, requestData.Isencryptionjson, requestData.Serializetype, requestData.LoginRight, (() =>
                    {
                        retJson = _wcfService.ProcessRequest(clientObj.ClientID, clientObj.PluginName, controller, method, jsondata);
                    }));
-
+#endif
                 if (requestData.Isencryptionjson)//解密结果
                 {
                     DESEncryptor des = new DESEncryptor();
@@ -442,11 +461,16 @@ namespace EFWCoreLib.WcfFrame
                     des.DesEncrypt();
                     jsondata = des.OutString;
                 }
-
+#if ClientProxy
+                BaseServiceClient _wcfService = clientObj.WcfService;
+                IContextChannel iContextChannel = _wcfService.InnerChannel;
+#else
                 DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                IContextChannel iContextChannel = _wcfService.InnerDuplexChannel;
+#endif
                 IAsyncResult result = null;
 
-                AddMessageHeader(_wcfService.InnerDuplexChannel as IContextChannel, "", requestData.Iscompressjson, requestData.Isencryptionjson, requestData.Serializetype, requestData.LoginRight, (() =>
+                AddMessageHeader(iContextChannel as IContextChannel, "", requestData.Iscompressjson, requestData.Isencryptionjson, requestData.Serializetype, requestData.LoginRight, (() =>
                {
                    AsyncCallback callback = delegate (IAsyncResult r)
                    {
@@ -518,8 +542,8 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                return _wcfService.RootMNodeProcessRequest(key, jsonpara);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                return clientObj.WcfService.RootMNodeProcessRequest(key, jsonpara);
             }
             catch (Exception e)
             {
@@ -539,8 +563,8 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                return _wcfService.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                return clientObj.WcfService.RootRemoteCommand(ServerIdentify, eprocess, method, arg);
             }
             catch (Exception e)
             {
@@ -548,14 +572,14 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
-        public List<ServerManage.dwPlugin> RootRemoteGetServices(string identify)
+        public List<dwPlugin> RootRemoteGetServices(string identify)
         {
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                string data = _wcfService.RootRemoteGetServices(identify);
-                return JsonConvert.DeserializeObject<List<ServerManage.dwPlugin>>(data);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                string data = clientObj.WcfService.RootRemoteGetServices(identify);
+                return JsonConvert.DeserializeObject<List<dwPlugin>>(data);
             }
             catch (Exception e)
             {
@@ -570,27 +594,27 @@ namespace EFWCoreLib.WcfFrame
         {
             if (clientObj == null) return;
             string mClientID = clientObj.ClientID;
-            DuplexBaseServiceClient mWcfService = clientObj.WcfService;
+            //DuplexBaseServiceClient mWcfService = clientObj.WcfService;
             if (mClientID != null)
             {
                 try
                 {
                     //AddMessageHeader(mWcfService.InnerDuplexChannel as IContextChannel, "Quit", (() =>
                     //   {
-                    mWcfService.UnClient(mClientID);
+                    clientObj.WcfService.UnClient(mClientID);
                     //}));
 
 
                     //mChannelFactory.Close();//关闭通道
-                    mWcfService.Close();
+                    clientObj.WcfService.Close();
 
                     if (timer != null)//关闭连接必须停止心跳
                         timer.Stop();
                 }
                 catch
                 {
-                    if ((mWcfService as IDisposable) != null)
-                        (mWcfService as IDisposable).Dispose();
+                    if ((clientObj.WcfService as IDisposable) != null)
+                        (clientObj.WcfService as IDisposable).Dispose();
                 }
 
                 clientObj = null;
@@ -627,7 +651,7 @@ namespace EFWCoreLib.WcfFrame
                 }
                 if (isRequest == true)//避免死循环
                     Heartbeat();//重连之后必须再次调用心跳
-                MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "重新连接上级中间件成功！");
+                //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "重新连接上级中间件成功！");
             }
             catch
             {
@@ -642,8 +666,8 @@ namespace EFWCoreLib.WcfFrame
         /// <returns></returns>
         private bool Heartbeat()
         {
-            DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-            if (_wcfService.State == CommunicationState.Closed || _wcfService.State == CommunicationState.Faulted)
+            //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+            if (clientObj.WcfService.State == CommunicationState.Closed || clientObj.WcfService.State == CommunicationState.Faulted)
             {
                 ReConnection(false);//连接服务主机失败，重连
             }
@@ -653,11 +677,11 @@ namespace EFWCoreLib.WcfFrame
                 //string serverConfig = null;
                 // AddMessageHeader(_wcfService.InnerDuplexChannel as IContextChannel, "", (() =>
                 //{
-                ret = _wcfService.Heartbeat(clientObj.ClientID);
+                ret = clientObj.WcfService.Heartbeat(clientObj.ClientID);
                 if (ServerConfigRequestState == false)
                 {
                     //重新获取服务端配置，如：是否压缩Json、是否加密Json
-                    serverConfig = JsonConvert.DeserializeObject<ServerConfigObject>(_wcfService.GetServerConfig());
+                    serverConfig = JsonConvert.DeserializeObject<ServerConfigObject>(clientObj.WcfService.GetServerConfig());
                     ServerConfigRequestState = true;
                 }
                 //}));
@@ -686,15 +710,15 @@ namespace EFWCoreLib.WcfFrame
                 if (ret == false)//表示服务主机关闭过，丢失了clientId，必须重新创建连接
                 {
                     //ReConnection(false);//连接服务主机失败，重连
-                    _wcfService.Abort();
+                    clientObj.WcfService.Abort();
                     CreateConnection();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
+                    //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件已丢失客户端信息，重新创建客户端连接成功！");
                 }
                 return ret;
             }
             catch (Exception err)
             {
-                MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件失去连接！\n" + clientObj.PluginName + "\n" + err.Message);
+                //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "上级中间件失去连接！\n" + clientObj.PluginName + "\n" + err.Message);
                 ServerConfigRequestState = false;
                 //ReConnection(false);//连接服务主机失败，重连
                 return false;
@@ -771,28 +795,28 @@ namespace EFWCoreLib.WcfFrame
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region 测试服务程序调用
+#region 测试服务程序调用
         /// <summary>
         /// 获取所有服务插件的控制器和方法
         /// </summary>
         /// <returns></returns>
-        public List<ServerManage.dwPlugin> GetWcfServicesAllInfo()
+        public List<dwPlugin> GetWcfServicesAllInfo()
         {
-            DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-            List<ServerManage.dwPlugin> list = new List<ServerManage.dwPlugin>();
+            //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+            List<dwPlugin> list = new List<dwPlugin>();
             //AddMessageHeader(_wcfService.InnerDuplexChannel as IContextChannel, "", (() =>
             //{
-            string ret = _wcfService.GetServiceConfig();
-            list = JsonConvert.DeserializeObject<List<ServerManage.dwPlugin>>(ret);
+            string ret = clientObj.WcfService.GetServiceConfig();
+            list = JsonConvert.DeserializeObject<List<dwPlugin>>(ret);
             //}));
 
             return list;
         }
-        #endregion
+#endregion
 
-        #region 上传下载文件
+#region 上传下载文件
         /// <summary>
         /// 上传文件
         /// </summary>
@@ -1050,9 +1074,9 @@ namespace EFWCoreLib.WcfFrame
             }).BeginInvoke(file, flength, action, null, null);
         }
 
-        #endregion
+#endregion
 
-        #region 注册远程插件
+#region 注册远程插件
         /// <summary>
         /// 注册远程插件
         /// </summary>
@@ -1071,9 +1095,9 @@ namespace EFWCoreLib.WcfFrame
         //        throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
         //    }
         //}
-        #endregion 
+#endregion
 
-        #region 分布式缓存
+#region 分布式缓存
 
         /// <summary>
         /// 从服务端获取变化了的缓存数据
@@ -1085,24 +1109,24 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                return _wcfService.GetDistributedCacheData(cacheIdList);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                return clientObj.WcfService.GetDistributedCacheData(cacheIdList);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
             }
         }
-        #endregion
+#endregion
 
-        #region 订阅
-        public List<ServerManage.PublishServiceObject> GetPublishServiceList()
+#region 订阅
+        public List<PublishServiceObject> GetPublishServiceList()
         {
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                return _wcfService.GetPublishServiceList();
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                return clientObj.WcfService.GetPublishServiceList();
             }
             catch (Exception e)
             {
@@ -1114,8 +1138,8 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                _wcfService.Subscribe(WcfGlobal.Identify,publishServiceName);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                clientObj.WcfService.Subscribe(BeginIdentify,publishServiceName);
             }
             catch (Exception e)
             {
@@ -1128,15 +1152,15 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                _wcfService.UnSubscribe(WcfGlobal.Identify, publishServiceName);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                clientObj.WcfService.UnSubscribe(BeginIdentify, publishServiceName);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
             }
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// 处理中间件节点状态
@@ -1147,8 +1171,8 @@ namespace EFWCoreLib.WcfFrame
             if (clientObj == null) throw new Exception("还没有创建连接！");
             try
             {
-                DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                _wcfService.MNodeState(mnodeList);
+                //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
+                clientObj.WcfService.MNodeState(mnodeList);
             }
             catch (Exception e)
             {

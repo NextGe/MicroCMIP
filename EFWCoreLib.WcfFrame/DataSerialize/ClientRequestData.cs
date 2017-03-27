@@ -2,8 +2,6 @@
 using EFWCoreLib.CoreFrame.Business;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ProtoBuf;
-using ProtoBuf.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -138,19 +136,19 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
             }
             else if (_serializetype == SerializeType.protobuf)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    if (data is DataTable)
-                    {
-                        object obj = data;
-                        DataSerializer.Serialize(ms, (DataTable)obj);
-                    }
-                    else
-                    {
-                        Serializer.Serialize<T>(ms, data);
-                    }
-                    _listjson.Add(System.Text.Encoding.UTF8.GetString(ms.ToArray()));
-                }
+                //using (MemoryStream ms = new MemoryStream())
+                //{
+                //    if (data is DataTable)
+                //    {
+                //        object obj = data;
+                //        DataSerializer.Serialize(ms, (DataTable)obj);
+                //    }
+                //    else
+                //    {
+                //        Serializer.Serialize<T>(ms, data);
+                //    }
+                //    _listjson.Add(System.Text.Encoding.UTF8.GetString(ms.ToArray()));
+                //}
             }
             else if (_serializetype == SerializeType.fastJSON)
             {
@@ -245,20 +243,21 @@ namespace EFWCoreLib.WcfFrame.DataSerialize
             }
             else if (_serializetype == SerializeType.protobuf)
             {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(_listjson[index]);
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
+                //byte[] bytes = System.Text.Encoding.UTF8.GetBytes(_listjson[index]);
+                //using (MemoryStream ms = new MemoryStream(bytes))
+                //{
 
-                    if (typeof(T).Name == "DataTable")
-                    {
-                        Object obj = DataSerializer.DeserializeDataTable(ms);
-                        return (T)obj;
-                    }
-                    else
-                    {
-                        return Serializer.Deserialize<T>(ms);
-                    }
-                }
+                //    if (typeof(T).Name == "DataTable")
+                //    {
+                //        Object obj = DataSerializer.DeserializeDataTable(ms);
+                //        return (T)obj;
+                //    }
+                //    else
+                //    {
+                //        return Serializer.Deserialize<T>(ms);
+                //    }
+                //}
+                return default(T);
             }
             else if (_serializetype == SerializeType.fastJSON)
             {

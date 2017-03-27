@@ -37,7 +37,7 @@ MicroCMIP
 
 ### 开始使用
 
-+ [下载exe安装包](http://note.youdao.com/)
++ [下载exe安装包](Output/nginx/html/install/setup_MicroCMIP V2.8.exe)
 
 + 获取源码
     

@@ -115,33 +115,5 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         }
     }
 
-    /// <summary>
-    /// 服务插件对象
-    /// </summary>
-    public class dwPlugin
-    {
-        /// <summary>
-        /// 插件名称
-        /// </summary>
-        public string pluginname { get; set; }
-        /// <summary>
-        /// 插件内的控制器集合
-        /// </summary>
-        public List<dwController> controllerlist { get; set; }
-
-    }
-    /// <summary>
-    /// 服务控制器对象
-    /// </summary>
-    public class dwController
-    {
-        /// <summary>
-        /// 控制器名称
-        /// </summary>
-        public string controllername { get; set; }
-        /// <summary>
-        /// 控制器内的方法集合
-        /// </summary>
-        public List<string> methodlist { get; set; }
-    }
+    
 }

@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using EFWCoreLib.WcfFrame.DataSerialize;
-using EFWCoreLib.WcfFrame.ServerManage;
+//using EFWCoreLib.WcfFrame.ServerManage;
 using EFWCoreLib.WcfFrame.WcfHandler;
 
 namespace EFWCoreLib.WcfFrame.ClientProxy

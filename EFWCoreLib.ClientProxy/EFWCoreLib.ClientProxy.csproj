@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73682EEF-9998-4E63-B737-F1A6EED5C21D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EFWCoreLib.ClientProxy</RootNamespace>
+    <AssemblyName>EFWCoreLib.ClientProxy</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;ClientProxy</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="fastJSON">
+      <HintPath>..\Component\fastJSON.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Component\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Component\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Business\SysLoginRight.cs">
+      <Link>CoreFrame\SysLoginRight.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Common\DESEncryptor.cs">
+      <Link>CoreFrame\DESEncryptor.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Common\ZipComporessor.cs">
+      <Link>CoreFrame\ZipComporessor.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\BaseServiceClient.cs">
+      <Link>ClientProxy\BaseServiceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\CHDEPConnection.cs">
+      <Link>ClientProxy\CHDEPConnection.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\ClientLink.cs">
+      <Link>ClientProxy\ClientLink.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\ClientLinkManage.cs">
+      <Link>ClientProxy\ClientLinkManage.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\ClientLinkPool.cs">
+      <Link>ClientProxy\ClientLinkPool.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\ClientLinkPoolCache.cs">
+      <Link>ClientProxy\ClientLinkPoolCache.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\FileServiceClient.cs">
+      <Link>ClientProxy\FileServiceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\CacheObject.cs">
+      <Link>DataSerialize\CacheObject.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\ClientRequestData.cs">
+      <Link>DataSerialize\ClientRequestData.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\dwPlugin.cs">
+      <Link>DataSerialize\dwPlugin.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\FileTransfer.cs">
+      <Link>DataSerialize\FileTransfer.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\MNodeObject.cs">
+      <Link>DataSerialize\MNodeObject.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\MNodePath.cs">
+      <Link>DataSerialize\MNodePath.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\PublishSubscribe.cs">
+      <Link>DataSerialize\PublishSubscribe.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\SerializeType.cs">
+      <Link>DataSerialize\SerializeType.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\ServerConfigObject.cs">
+      <Link>DataSerialize\ServerConfigObject.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\DataSerialize\ServiceResponseData.cs">
+      <Link>DataSerialize\ServiceResponseData.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\SDMessageHeader\HeaderOperater.cs">
+      <Link>SDMessageHeader\HeaderOperater.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\SDMessageHeader\HeaderParameter.cs">
+      <Link>SDMessageHeader\HeaderParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\WcfHandler\Contract\IClientHandler.cs">
+      <Link>WcfHandler\Contract\IClientHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\WcfHandler\Contract\IFileHandler.cs">
+      <Link>WcfHandler\Contract\IFileHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\WcfHandler\Contract\IHttpDataHandler.cs">
+      <Link>WcfHandler\Contract\IHttpDataHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.WcfFrame\WcfHandler\Contract\IRouterHandler.cs">
+      <Link>WcfHandler\Contract\IRouterHandler.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -149,7 +149,7 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         /// 获取发布服务列表
         /// </summary>
         [OperationContract(IsOneWay = false)]
-        List<ServerManage.PublishServiceObject> GetPublishServiceList();
+        List<PublishServiceObject> GetPublishServiceList();
         /// <summary>
         /// 订阅
         /// </summary>

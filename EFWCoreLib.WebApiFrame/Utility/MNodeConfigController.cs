@@ -124,7 +124,7 @@ namespace EFWCoreLib.WebAPI.Utility
             {
                 //string data= WebApiGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusBase), "getallservices", null);
                 //List<WcfFrame.ServerManage.dwPlugin> plist = JsonConvert.DeserializeObject<List<WcfFrame.ServerManage.dwPlugin>>(data);
-                List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
+                List<dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
 
                 List<amazeuitreenode> tree = new List<amazeuitreenode>();
                 foreach (var p in plist)

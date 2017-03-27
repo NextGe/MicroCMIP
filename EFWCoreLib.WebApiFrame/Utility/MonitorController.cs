@@ -9,6 +9,7 @@ using EFWCoreLib.CoreFrame.Mongodb;
 using EFWCoreLib.CoreFrame.ProcessManage;
 using EFWCoreLib.WcfFrame;
 using EFWCoreLib.WcfFrame.DataSerialize;
+using EFWCoreLib.WcfFrame.ServerManage;
 using EFWCoreLib.WcfFrame.Utility.MonitorPlatform;
 using EFWCoreLib.WebApiFrame;
 using EFWCoreLib.WebFrame.WebAPI;
@@ -524,9 +525,9 @@ namespace EFWCoreLib.WebAPI.Utility
         [HttpGet]
         public Object GetRemoteServices(string identify)
         {
-            ClientLink link = new ClientLink(null, "Test", null, null,identify);
+            ClientLink link = new ClientLink(null, "Test", null, null,null,identify);
             link.CreateConnection();
-            List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = link.RootRemoteGetServices(identify);
+            List<dwPlugin> plist = link.RootRemoteGetServices(identify);
 
             List<amazeuitreenode> tree = new List<amazeuitreenode>();
             foreach (var p in plist)
@@ -579,7 +580,7 @@ namespace EFWCoreLib.WebAPI.Utility
                 request.LoginRight = new CoreFrame.Business.SysLoginRight(1);
                 request.SetJsonData(para);
             });
-            ClientLink link = new ClientLink(null, plugin, null, null, identify);
+            ClientLink link = new ClientLink(null, plugin, null, null,null, identify);
             link.CreateConnection();
             ServiceResponseData response = link.Request(controller, method, requestAction);
             return response.GetJsonData();

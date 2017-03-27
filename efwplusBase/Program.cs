@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EFWCoreLib.CoreFrame.Common;
 using EFWCoreLib.CoreFrame.ProcessManage;
 using EFWCoreLib.WcfFrame;
+using EFWCoreLib.WcfFrame.DataSerialize;
 using Newtonsoft.Json;
 
 namespace efwplusBase
@@ -171,7 +172,7 @@ namespace efwplusBase
                         retData = JsonConvert.SerializeObject(EFWCoreLib.WcfFrame.ServerManage.MNodeStateManage.GetMNodeTree());
                         break;
                     case "getallservices"://获取本地所有服务
-                        List<EFWCoreLib.WcfFrame.ServerManage.dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
+                        List<dwPlugin> plist = ClientLinkManage.CreateConnection("Test").GetWcfServicesAllInfo();
                         retData = JsonConvert.SerializeObject(plist);
                         break;
                     case "gettasklist"://获取任务列表

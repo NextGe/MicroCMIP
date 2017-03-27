@@ -77,7 +77,8 @@ namespace EFWCoreLib.CoreFrame.SSO
             if (WcfGlobal.IsRootMNode)
             {
                 TokenInfo existToken = TokenManager.GetToken(token);
-                existToken.ActivityTime = DateTime.Now;
+                if (existToken != null)
+                    existToken.ActivityTime = DateTime.Now;
             }
             else
             {

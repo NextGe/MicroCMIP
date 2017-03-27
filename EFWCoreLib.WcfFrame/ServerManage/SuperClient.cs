@@ -45,7 +45,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         private static void CreateSuperClient()
         {
             //就算上级中间件重启了，下级中间件创建链接的时候会重新注册本地插件
-            superClientLink = new ClientLink(WcfGlobal.HostName, "SuperPlugin");
+            superClientLink = new ClientLink(WcfGlobal.HostName, "SuperPlugin", null, null, WcfGlobal.Identify, null);
             try
             {
                 superClientLink.CreateConnection();
@@ -94,7 +94,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 Thread.Sleep(400);
                 return CreateDataClient();
             }
-
+            clientlink.BeginIdentify = WcfGlobal.Identify;
             return clientlink;
         }
         /// <summary>
