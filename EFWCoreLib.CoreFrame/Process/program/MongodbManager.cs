@@ -23,7 +23,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             Ismongodb = HostSettingConfig.GetValue("mongodb") == "1" ? true : false;
             if (Ismongodb)
             {
-                string config= String.Format(HostMongoDBConfig.GetConfig_Temp(), AppDomain.CurrentDomain.BaseDirectory);
+                string config = String.Format(HostMongoDBConfig.GetConfig_Temp(), (HostSettingConfig.GetValue("mongodb_dbpath") == "" ? AppDomain.CurrentDomain.BaseDirectory : HostSettingConfig.GetValue("mongodb_dbpath")));
                 HostMongoDBConfig.SetConfig(config);
 
                 string mongodExe = HostSettingConfig.GetValue("mongodb_binpath") + @"\mongod.exe";
