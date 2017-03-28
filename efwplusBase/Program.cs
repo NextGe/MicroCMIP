@@ -188,6 +188,9 @@ namespace efwplusBase
                     case "rootremotecommand"://远程命令
                         retData = EFWCoreLib.WcfFrame.ServerManage.DataManage.RootRemoteCommand(a["identify"], a["eprocess"], a["method"], a["arg"]);
                         break;
+                    case "createregcode"://生成注册码
+                        retData= Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(a["identify"], a["machinecode"], a["regdate"]), "kakake!@#123");
+                        break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);
                 retData = retData.Substring(0, retData.Length > 5000 ? 5000 : retData.Length);
