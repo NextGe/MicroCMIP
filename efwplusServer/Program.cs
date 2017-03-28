@@ -13,9 +13,6 @@ namespace efwplusServer
         {
             try
             {
-                ExecCmd("quitall", null);
-                ExecCmd("startall", null);
-
                 Func<string, Dictionary<string, string>, string> _funcExecCmd = ExecCmd;
                 Action<string> _actionReceiveData = ((string data) =>
                 {
@@ -23,6 +20,15 @@ namespace efwplusServer
                     Console.WriteLine(text);
                 });
                 new efwplusServerIPCManager(_funcExecCmd, _actionReceiveData);
+
+                MongodbManager.ShowMsg = _actionReceiveData;
+                NginxManager.ShowMsg = _actionReceiveData;
+                efwplusBaseManager.ShowMsg = _actionReceiveData;
+                efwplusRouteManager.ShowMsg = _actionReceiveData;
+                efwplusWebAPIManager.ShowMsg = _actionReceiveData;
+
+                ExecCmd("quitall", null);
+                ExecCmd("startall", null);
                 while (true)
                 {
                     System.Threading.Thread.Sleep(30 * 1000);

@@ -195,5 +195,70 @@ namespace _01EntityCodeMaker
                 MessageBox.Show("生成成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void btnGeneration2_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                string outpath = folderBrowserDialog.SelectedPath;
+
+                DataTable DbTableList = dsDb.Tables["DbTableList"];
+                DataTable DbColumnList = dsDb.Tables["DbColumnList"];
+                for (int i = 0; i < DbTableList.Rows.Count; i++)
+                {
+                    if (Convert.ToBoolean(DbTableList.Rows[i][0]) == true)
+                    {
+                        string tempName = DbTableList.Rows[i][1].ToString();
+                        TemplateHelper template = new TemplateHelper();
+
+                        EntityTemplateData data = new EntityTemplateData();
+                        data.AppName = txtnamespace.Text;
+                        data.ClassName = tempName;
+                        data.TableName = DbTableList.Rows[i][1].ToString();
+                        data.Property = new List<ClassProperty>();
+
+                        DataRow[] drs = DbColumnList.Select("TableName='" + data.TableName + "'");
+                        for (int k = 0; k < drs.Length; k++)
+                        {
+                            if (drs[k]["colname"].ToString().ToLower() != "workid")//过滤掉WorkId字段
+                            {
+                                ClassProperty pro = new ClassProperty();
+                                pro.varName = " _" + drs[k]["colname"].ToString().ToLower();
+                                //pro.DataKey = Convert.ToBoolean(drs[k]["_identity"]) == true ? "true" : "false";
+                                //pro.FieldName = drs[k]["colname"].ToString();
+                                //pro.IsInsert = Convert.ToBoolean(drs[k]["_identity"]) != true ? "true" : "false";
+                                //pro.IsSingleQuote = CommonHelper.GetTypeMappingIsSingleQuote("SqlServerToCS", drs[k]["typename"].ToString());
+                                //pro.Match = drs[k]["typename"].ToString() == "uniqueidentifier" ? "Custom:Guid" : "";
+                                pro.PropertyName = drs[k]["colname"].ToString();
+                                pro.remarks = drs[k]["remarks"].ToString();
+                                pro.TypeName = GetTypeMappingValue("SqlServerToCS", drs[k]["typename"].ToString());
+                                data.Property.Add(pro);
+                            }
+                        }
+
+                        template.Put("Entity", data);
+
+                        string code = template.BuildString("ViewEntity.cs");
+
+                        FileInfo file = new FileInfo(outpath + "\\" + txtnamespace.Text + "\\" + tempName + ".cs");
+                        if (!file.Directory.Exists)
+                        {
+                            file.Directory.Create();
+                        }
+                        if (!file.Exists)
+                        {
+                            //Create a file to write to.
+                            using (StreamWriter sw = new StreamWriter(file.Create(), Encoding.UTF8))
+                            {
+                                sw.Write(code);
+                            }
+                        }
+                    }
+
+                }
+                MessageBox.Show("生成成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }

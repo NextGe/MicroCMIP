@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using EFWCoreLib.WcfFrame;
-using EFWCoreLib.WcfFrame.ClientController;
+//using EFWCoreLib.WcfFrame.ClientController;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using EFWCoreLib.WcfFrame.DataSerialize;

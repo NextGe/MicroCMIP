@@ -109,7 +109,6 @@
     <Compile Include="Entity\Books.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest\TestEntity\unBooks.cs" />
-    <Compile Include="WApiController\demoController.cs" />
     <Compile Include="WcfController\bookWcfController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,10 +138,6 @@
     <ProjectReference Include="..\..\EFWCoreLib.WcfFrame\EFWCoreLib.WcfFrame.csproj">
       <Project>{cacafdbf-9b17-403a-a3ca-c123a94e2c19}</Project>
       <Name>EFWCoreLib.WcfFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EFWCoreLib.WebApiFrame\EFWCoreLib.WebApiFrame.csproj">
-      <Project>{8a8f5236-e865-415a-90c5-8bce3ba7fe07}</Project>
-      <Name>EFWCoreLib.WebApiFrame</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

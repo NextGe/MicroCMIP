@@ -10,6 +10,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusRouteManager
     {
+        public static Action<string> ShowMsg;
         private static bool Isrouter = false;
         /// <summary>
         /// 开启efwplusRoute
@@ -30,6 +31,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 pro.StartInfo.CreateNoWindow = true;
                 pro.Start();
                 //pro.WaitForExit();
+
+                ShowMsg("路由程序已启动");
             }
         }
         /// <summary>
@@ -37,6 +40,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StopRoute()
         {
+            Isrouter = HostSettingConfig.GetValue("router") == "1" ? true : false;
+            if (Isrouter == false) return;
+
             Process[] proc = Process.GetProcessesByName("efwplusRoute");//创建一个进程数组，把与此进程相关的资源关联。
             for (int i = 0; i < proc.Length; i++)
             {

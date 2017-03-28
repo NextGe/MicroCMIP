@@ -10,6 +10,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusWebAPIManager
     {
+        public static Action<string> ShowMsg;
         private static bool Iswebapi = false;
         /// <summary>
         /// 开启efwplusWebAPI
@@ -30,6 +31,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 pro.StartInfo.CreateNoWindow = true;
                 pro.Start();
                 //pro.WaitForExit();
+
+                ShowMsg("WebApi已启动");
             }
         }
         /// <summary>
@@ -37,6 +40,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StopAPI()
         {
+            Iswebapi = HostSettingConfig.GetValue("webapi") == "1" ? true : false;
+            if (Iswebapi == false) return;
+
             Process[] proc = Process.GetProcessesByName("efwplusWebAPI");//创建一个进程数组，把与此进程相关的资源关联。
             for (int i = 0; i < proc.Length; i++)
             {

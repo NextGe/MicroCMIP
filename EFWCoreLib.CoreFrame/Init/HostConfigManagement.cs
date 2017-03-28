@@ -65,8 +65,8 @@ namespace EFWCoreLib.CoreFrame.Init
         private static string routeconfig = AppGlobal.AppRootPath + "efwplusRoute.exe.config";
         private static XmlDocument xmldoc_route;
 
-        private static string webapiconfig = AppGlobal.AppRootPath + "efwplusWebAPI.exe.config";
-        private static XmlDocument xmldoc_webapi;
+        //private static string webapiconfig = AppGlobal.AppRootPath + "efwplusWebAPI.exe.config";
+        //private static XmlDocument xmldoc_webapi;
 
         private static void InitConfig()
         {
@@ -77,8 +77,8 @@ namespace EFWCoreLib.CoreFrame.Init
             xmldoc_route = new XmlDocument();
             xmldoc_route.Load(routeconfig);
 
-            xmldoc_webapi = new XmlDocument();
-            xmldoc_webapi.Load(webapiconfig);
+            //xmldoc_webapi = new XmlDocument();
+            //xmldoc_webapi.Load(webapiconfig);
         }
 
         public static string GetWcfAddress()
@@ -229,68 +229,68 @@ namespace EFWCoreLib.CoreFrame.Init
             }
         }
 
-        public static string GetWebapiAddress()
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
-            if (node != null)
-            {
-                return node.Attributes["value"].Value;
-            }
-            return null;
-        }
+        //public static string GetWebapiAddress()
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
+        //    if (node != null)
+        //    {
+        //        return node.Attributes["value"].Value;
+        //    }
+        //    return null;
+        //}
 
-        public static string GetWebapiClientBase()
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
-            if (node != null)
-            {
-                return node.Attributes["address"].Value;
-            }
-            return null;
-        }
+        //public static string GetWebapiClientBase()
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
+        //    if (node != null)
+        //    {
+        //        return node.Attributes["address"].Value;
+        //    }
+        //    return null;
+        //}
 
-        public static string GetWebapiClientFile()
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
-            if (node != null)
-            {
-                return node.Attributes["address"].Value;
-            }
-            return null;
-        }
+        //public static string GetWebapiClientFile()
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
+        //    if (node != null)
+        //    {
+        //        return node.Attributes["address"].Value;
+        //    }
+        //    return null;
+        //}
 
-        public static void SetWebapiAddress(string url)
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
-            if (node != null)
-            {
-                node.Attributes["value"].Value = url;
-            }
-        }
+        //public static void SetWebapiAddress(string url)
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("appSettings/add[@key='WebApiUri']");
+        //    if (node != null)
+        //    {
+        //        node.Attributes["value"].Value = url;
+        //    }
+        //}
 
-        public static void SetWebapiClientBase(string url)
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
-            if (node != null)
-            {
-                node.Attributes["address"].Value = url;
-            }
-        }
+        //public static void SetWebapiClientBase(string url)
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='wcfendpoint']");
+        //    if (node != null)
+        //    {
+        //        node.Attributes["address"].Value = url;
+        //    }
+        //}
 
-        public static void SetWebapiClientFile(string url)
-        {
-            if (xmldoc_webapi == null) InitConfig();
-            XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
-            if (node != null)
-            {
-                node.Attributes["address"].Value = url;
-            }
-        }
+        //public static void SetWebapiClientFile(string url)
+        //{
+        //    if (xmldoc_webapi == null) InitConfig();
+        //    XmlNode node = xmldoc_webapi.DocumentElement.SelectSingleNode("system.serviceModel/client/endpoint[@name='fileendpoint']");
+        //    if (node != null)
+        //    {
+        //        node.Attributes["address"].Value = url;
+        //    }
+        //}
 
         public static string GetUpdaterUrl()
         {

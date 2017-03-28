@@ -12,6 +12,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     /// </summary>
     public class MongodbManager
     {
+        public static Action<string> ShowMsg;
         private static bool Ismongodb = false;
         //private static System.Diagnostics.Process pro;
         /// <summary>
@@ -38,6 +39,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 pro.StartInfo.CreateNoWindow = true;
                 pro.Start();
                 //pro.WaitForExit();
+
+                ShowMsg("Mongodb已启动");
             }
         }
         /// <summary>
@@ -45,6 +48,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StopDB()
         {
+            Ismongodb = HostSettingConfig.GetValue("mongodb") == "1" ? true : false;
+            if (Ismongodb == false) return;
+
             Process[] proc = Process.GetProcessesByName("mongod");//创建一个进程数组，把与此进程相关的资源关联。
             for (int i = 0; i < proc.Length; i++)
             {

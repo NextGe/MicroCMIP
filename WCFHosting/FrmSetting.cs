@@ -53,9 +53,9 @@ namespace WCFHosting
             HostAddressConfig.SetClientWcfAddress(txtwcfurl.Text);
             HostAddressConfig.SetClientFileAddress(txtfileurl.Text);
             HostAddressConfig.SetClientLocalAddress(txtlocalurl.Text);
-            HostAddressConfig.SetWebapiAddress(txtweb.Text);
-            HostAddressConfig.SetWebapiClientBase(txtclientwcf.Text);
-            HostAddressConfig.SetWebapiClientFile(txtclientfile.Text);
+            //HostAddressConfig.SetWebapiAddress(txtweb.Text);
+            //HostAddressConfig.SetWebapiClientBase(txtclientwcf.Text);
+            //HostAddressConfig.SetWebapiClientFile(txtclientfile.Text);
             HostAddressConfig.SetUpdaterUrl(txtupdate.Text);
             HostAddressConfig.SaveConfig();
 
@@ -105,9 +105,9 @@ namespace WCFHosting
             txtwcfurl.Text = HostAddressConfig.GetClientWcfAddress();
             txtfileurl.Text = HostAddressConfig.GetClientFileAddress();
             txtlocalurl.Text = HostAddressConfig.GetClientLocalAddress();
-            txtweb.Text = HostAddressConfig.GetWebapiAddress();
-            txtclientwcf.Text = HostAddressConfig.GetWebapiClientBase();
-            txtclientfile.Text = HostAddressConfig.GetWebapiClientFile();
+            //txtweb.Text = HostAddressConfig.GetWebapiAddress();
+            //txtclientwcf.Text = HostAddressConfig.GetWebapiClientBase();
+            //txtclientfile.Text = HostAddressConfig.GetWebapiClientFile();
             txtupdate.Text = HostAddressConfig.GetUpdaterUrl();
 
             txtconnstr.Text = HostDataBaseConfig.GetConnString();

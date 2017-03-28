@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using EFWCoreLib.CoreFrame.Business.AttributeInfo;
 using EFWCoreLib.CoreFrame.Common;
-using EFWCoreLib.WcfFrame.ClientController;
+//using EFWCoreLib.WcfFrame.ClientController;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using EFWCoreLib.WcfFrame.ServerController;
 using EFWCoreLib.WcfFrame.Utility.Upgrade;

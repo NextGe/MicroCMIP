@@ -102,7 +102,6 @@
   <ItemGroup>
     <Compile Include="ClientProxy\BaseServiceClient.cs" />
     <Compile Include="ClientProxy\FileServiceClient.cs" />
-    <Compile Include="Controller\WcfClientController.cs" />
     <Compile Include="ClientProxy\CHDEPConnection.cs" />
     <Compile Include="ClientProxy\ClientLink.cs" />
     <Compile Include="ClientProxy\ClientLinkManage.cs" />
@@ -166,10 +165,6 @@
     <ProjectReference Include="..\EFWCoreLib.CoreFrame\EFWCoreLib.CoreFrame.csproj">
       <Project>{b3f41c24-1a64-4995-9398-812789014bd7}</Project>
       <Name>EFWCoreLib.CoreFrame</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj">
-      <Project>{03596414-2345-4bba-994b-90eef4dec428}</Project>
-      <Name>EFWCoreLib.WinformFrame</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

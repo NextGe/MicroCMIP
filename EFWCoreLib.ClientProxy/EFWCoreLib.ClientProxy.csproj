@@ -21,6 +21,7 @@
     <DefineConstants>TRACE;DEBUG;ClientProxy</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +49,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +60,9 @@
     </Compile>
     <Compile Include="..\EFWCoreLib.CoreFrame\Common\ZipComporessor.cs">
       <Link>CoreFrame\ZipComporessor.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Process\IPCHelper.cs">
+      <Link>CoreFrame\IPCHelper.cs</Link>
     </Compile>
     <Compile Include="..\EFWCoreLib.WcfFrame\ClientProxy\BaseServiceClient.cs">
       <Link>ClientProxy\BaseServiceClient.cs</Link>
@@ -137,9 +140,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output_Client"
-Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Component"
-Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Output_Client"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

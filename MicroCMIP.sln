@@ -7,22 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.CoreFrame", "EFW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.WcfFrame", "EFWCoreLib.WcfFrame\EFWCoreLib.WcfFrame.csproj", "{CACAFDBF-9B17-403A-A3CA-C123A94E2C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.WebFrame", "EFWCoreLib.WebFrame\EFWCoreLib.WebFrame.csproj", "{9B1989B8-07A7-46CC-B196-56A085C22DD6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.WebApiFrame", "EFWCoreLib.WebApiFrame\EFWCoreLib.WebApiFrame.csproj", "{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.TestFrame", "EFWCoreLib.TestFrame\EFWCoreLib.TestFrame.csproj", "{9A4255ED-D431-4BE9-8E47-97A6770B3329}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efwplusServer", "efwplusServer\efwplusServer.csproj", "{AC7B7A34-EE66-4983-A968-C3A4B3B713AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{212D87AD-51FE-48C1-BC54-64D6663B4B1E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{3B2AA777-F5F1-4430-B8D4-EE86F03617B6}"
-	ProjectSection(SolutionItems) = preProject
-		Output_Client\efwplusClient.exe.config = Output_Client\efwplusClient.exe.config
-		Output_Client\Config\EntLib.config = Output_Client\Config\EntLib.config
-		Output_Client\Config\pluginsys.xml = Output_Client\Config\pluginsys.xml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{2F933E85-FF97-48AA-86D9-6EAD0C067BE6}"
 	ProjectSection(SolutionItems) = preProject
@@ -54,8 +43,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efwplusBase", "efwplusBase\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efwplusRoute", "efwplusRoute\efwplusRoute.csproj", "{70558B27-A3FE-4F93-8C21-7C10EAD2A655}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efwplusWebAPI", "efwplusWebAPI\efwplusWebAPI.csproj", "{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{8AD20073-66A5-48BF-BC40-C3B76DDC1119}"
 	ProjectSection(SolutionItems) = preProject
 		Output\efwplusRoute.exe.config = Output\efwplusRoute.exe.config
@@ -65,37 +52,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mongo", "Mongo", "{CEA1DF99-7924-4391-B543-11566D571334}"
 	ProjectSection(SolutionItems) = preProject
 		Output\Config\mongo.conf = Output\Config\mongo.conf
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nginx", "Nginx", "{E0638E27-0159-4AF0-A0BA-BF9B6E5A2B39}"
-	ProjectSection(SolutionItems) = preProject
-		Output\nginx\conf\nginx.conf = Output\nginx\conf\nginx.conf
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{4746D82E-57E8-4DD6-BBCC-1162D42C3E93}"
-	ProjectSection(SolutionItems) = preProject
-		Output\efwplusWebAPI.exe.config = Output\efwplusWebAPI.exe.config
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "html", "Output\nginx\html\", "{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/html"
-		Debug.AspNetCompiler.PhysicalPath = "Output\nginx\html\"
-		Debug.AspNetCompiler.TargetPath = "..\cloudhospital\Output\nginx\html\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/html"
-		Release.AspNetCompiler.PhysicalPath = "Output\nginx\html\"
-		Release.AspNetCompiler.TargetPath = "..\cloudhospital\Output\nginx\html\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "5188"
-		SlnRelativePath = "Output\nginx\html\"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugin", "Plugin", "{0DF86357-92FE-42B9-BDD6-D0E0E50D874C}"
@@ -111,8 +67,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WcfMainUIFrame", "WcfMainUI
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.ClientProxy", "EFWCoreLib.ClientProxy\EFWCoreLib.ClientProxy.csproj", "{73682EEF-9998-4E63-B737-F1A6EED5C21D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFWCoreLib.WinformFrame", "EFWCoreLib.WinformFrame\EFWCoreLib.WinformFrame.csproj", "{03596414-2345-4BBA-994B-90EEF4DEC428}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,22 +92,6 @@ Global
 		{CACAFDBF-9B17-403A-A3CA-C123A94E2C19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CACAFDBF-9B17-403A-A3CA-C123A94E2C19}.Release|x86.ActiveCfg = Release|Any CPU
 		{CACAFDBF-9B17-403A-A3CA-C123A94E2C19}.Release|x86.Build.0 = Release|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Debug|x86.Build.0 = Debug|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Release|x86.ActiveCfg = Release|Any CPU
-		{9B1989B8-07A7-46CC-B196-56A085C22DD6}.Release|x86.Build.0 = Release|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Debug|x86.Build.0 = Debug|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Release|x86.ActiveCfg = Release|Any CPU
-		{8A8F5236-E865-415A-90C5-8BCE3BA7FE07}.Release|x86.Build.0 = Release|Any CPU
 		{9A4255ED-D431-4BE9-8E47-97A6770B3329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A4255ED-D431-4BE9-8E47-97A6770B3329}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A4255ED-D431-4BE9-8E47-97A6770B3329}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -234,22 +172,6 @@ Global
 		{70558B27-A3FE-4F93-8C21-7C10EAD2A655}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70558B27-A3FE-4F93-8C21-7C10EAD2A655}.Release|x86.ActiveCfg = Release|Any CPU
 		{70558B27-A3FE-4F93-8C21-7C10EAD2A655}.Release|x86.Build.0 = Release|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Debug|x86.Build.0 = Debug|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Release|x86.ActiveCfg = Release|Any CPU
-		{CDB7848C-5355-4DEF-BEDA-02BA2075CECC}.Release|x86.Build.0 = Release|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Debug|x86.Build.0 = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Release|x86.ActiveCfg = Debug|Any CPU
-		{DE85DA9F-A0DC-4F52-B617-CEC1A9542811}.Release|x86.Build.0 = Debug|Any CPU
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -258,20 +180,11 @@ Global
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Release|x86.ActiveCfg = Release|Any CPU
 		{73682EEF-9998-4E63-B737-F1A6EED5C21D}.Release|x86.Build.0 = Release|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Debug|x86.Build.0 = Debug|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Release|x86.ActiveCfg = Release|Any CPU
-		{03596414-2345-4BBA-994B-90EEF4DEC428}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3B2AA777-F5F1-4430-B8D4-EE86F03617B6} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{2F933E85-FF97-48AA-86D9-6EAD0C067BE6} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{D780897A-2D34-4830-B98E-EED04DFC8ACF} = {F00F794B-CA25-44B8-A0BC-706E0D570935}
 		{79168A48-52A6-4486-9CD1-C3E05F9BD94B} = {F00F794B-CA25-44B8-A0BC-706E0D570935}
@@ -280,8 +193,6 @@ Global
 		{BFB656C6-754C-4E2D-AA9E-E1CB3C1947B7} = {63F51231-566A-4212-9A11-7EE3DC2FA747}
 		{8AD20073-66A5-48BF-BC40-C3B76DDC1119} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{CEA1DF99-7924-4391-B543-11566D571334} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
-		{E0638E27-0159-4AF0-A0BA-BF9B6E5A2B39} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
-		{4746D82E-57E8-4DD6-BBCC-1162D42C3E93} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{0DF86357-92FE-42B9-BDD6-D0E0E50D874C} = {212D87AD-51FE-48C1-BC54-64D6663B4B1E}
 		{CB8A80F9-CF13-4F9E-9E1D-7E3A8B52825D} = {0DF86357-92FE-42B9-BDD6-D0E0E50D874C}
 		{60A9B25E-F177-407F-A73C-374C94D15779} = {0DF86357-92FE-42B9-BDD6-D0E0E50D874C}

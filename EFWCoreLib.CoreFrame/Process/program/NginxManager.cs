@@ -12,6 +12,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     /// </summary>
     public class NginxManager
     {
+        public static Action<string> ShowMsg;
         private static bool Isnginx = false;
         /// <summary>
         /// 开启Nginx
@@ -43,6 +44,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                     pro.StandardInput.AutoFlush = true;
                     //string output = pro.StandardOutput.ReadToEnd();
                     //pro.Close();
+
+                    ShowMsg("Nginx已启动");
                 }
             }
             catch (Exception e)
@@ -55,6 +58,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StopWeb()
         {
+            Isnginx = HostSettingConfig.GetValue("nginx") == "1" ? true : false;
+            if (Isnginx == false) return;
+
             Process[] proc;
             try
             {

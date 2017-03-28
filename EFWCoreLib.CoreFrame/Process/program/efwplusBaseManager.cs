@@ -10,6 +10,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
 {
     public class efwplusBaseManager
     {
+        public static Action<string> ShowMsg;
         private static bool Iswcfservice = false;
         /// <summary>
         /// 开启efwplusBase
@@ -31,6 +32,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 pro.Start();
                 //pro.WaitForExit();
                 //pro.StandardInput.AutoFlush = true;
+
+                ShowMsg("服务程序已启动");
             }
         }
         /// <summary>
@@ -38,6 +41,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         public static void StopBase()
         {
+            Iswcfservice = HostSettingConfig.GetValue("wcfservice") == "1" ? true : false;
+            if (Iswcfservice == false) return;
+
             Process[] proc = Process.GetProcessesByName("efwplusBase");//创建一个进程数组，把与此进程相关的资源关联。
             for (int i = 0; i < proc.Length; i++)
             {

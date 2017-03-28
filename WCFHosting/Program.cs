@@ -31,6 +31,11 @@ namespace WCFHosting
             });
             serverIPC = new efwplusServerIPCManager(_funcExecCmd, _actionReceiveData);
 
+            MongodbManager.ShowMsg = _actionReceiveData;
+            NginxManager.ShowMsg = _actionReceiveData;
+            efwplusBaseManager.ShowMsg= _actionReceiveData;
+            efwplusRouteManager.ShowMsg= _actionReceiveData;
+            efwplusWebAPIManager.ShowMsg= _actionReceiveData;
             Application.Run(host);
         }
 
