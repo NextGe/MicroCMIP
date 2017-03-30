@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinMainUIFrame", "ModulePlu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books_Wcf", "ModulePlugin\Books_Wcf\Books_Wcf.csproj", "{79168A48-52A6-4486-9CD1-C3E05F9BD94B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFHosting", "WCFHosting\WCFHosting.csproj", "{1D01D246-E368-4278-9108-7137A4C31A83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efwplusHosting", "WCFHosting\efwplusHosting.csproj", "{1D01D246-E368-4278-9108-7137A4C31A83}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{63F51231-566A-4212-9A11-7EE3DC2FA747}"
 EndProject

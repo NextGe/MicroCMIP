@@ -1,4 +1,5 @@
-﻿@echo off  
+@echo off  
+taskkill /f /im efwplusHttp.exe
 taskkill /f /im efwplusBase.exe
 taskkill /f /im efwplusRoute.exe
 taskkill /f /im efwplusWebAPI.exe

@@ -21,6 +21,7 @@ namespace efwplusServer
                 });
                 new efwplusServerIPCManager(_funcExecCmd, _actionReceiveData);
 
+                efwplusHttpManager.ShowMsg = _actionReceiveData;
                 MongodbManager.ShowMsg = _actionReceiveData;
                 NginxManager.ShowMsg = _actionReceiveData;
                 efwplusBaseManager.ShowMsg = _actionReceiveData;
@@ -47,6 +48,7 @@ namespace efwplusServer
                 switch (m)
                 {
                     case "startall":
+                        efwplusHttpManager.StartHttp();
                         MongodbManager.StartDB();
                         NginxManager.StartWeb();
                         //先启动mongodb，因为efwplusBaseManager启动时有访问mongodb数据
@@ -55,6 +57,7 @@ namespace efwplusServer
                         efwplusWebAPIManager.StartAPI();
                         break;
                     case "quitall":
+                        efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
                         efwplusWebAPIManager.StopAPI();
@@ -62,6 +65,7 @@ namespace efwplusServer
                         NginxManager.StopWeb();
                         break;
                     case "exit":
+                        efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
                         efwplusWebAPIManager.StopAPI();
