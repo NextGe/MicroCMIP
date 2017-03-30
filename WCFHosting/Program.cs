@@ -31,6 +31,7 @@ namespace WCFHosting
             });
             serverIPC = new efwplusServerIPCManager(_funcExecCmd, _actionReceiveData);
 
+            efwplusHttpManager.ShowMsg = _actionReceiveData;
             MongodbManager.ShowMsg = _actionReceiveData;
             NginxManager.ShowMsg = _actionReceiveData;
             efwplusBaseManager.ShowMsg= _actionReceiveData;
@@ -46,6 +47,7 @@ namespace WCFHosting
                 switch (m)
                 {
                     case "startall":
+                        efwplusHttpManager.StartHttp();
                         MongodbManager.StartDB();
                         NginxManager.StartWeb();
 
@@ -54,6 +56,7 @@ namespace WCFHosting
                         efwplusWebAPIManager.StartAPI();
                         break;
                     case "quitall":
+                        efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
                         efwplusWebAPIManager.StopAPI();
@@ -61,6 +64,7 @@ namespace WCFHosting
                         NginxManager.StopWeb();
                         break;
                     case "exit":
+                        efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
                         efwplusWebAPIManager.StopAPI();
@@ -75,6 +79,7 @@ namespace WCFHosting
                         MongodbManager.StopDB();
                         NginxManager.StopWeb();
 
+                        //efwplusHttpManager.StartHttp();
                         MongodbManager.StartDB();
                         NginxManager.StartWeb();
 

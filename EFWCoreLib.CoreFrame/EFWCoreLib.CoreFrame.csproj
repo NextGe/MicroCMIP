@@ -201,6 +201,7 @@
     <Compile Include="Plugin\PluginSectionHandler.cs" />
     <Compile Include="Plugin\PluginSysManage.cs" />
     <Compile Include="Process\ProcessWatcher.cs" />
+    <Compile Include="Process\program\efwplusHttpManager.cs" />
     <Compile Include="Process\program\efwplusBaseManager.cs" />
     <Compile Include="Process\program\efwplusRouteManager.cs" />
     <Compile Include="Process\program\efwplusWebAPIManager.cs" />
