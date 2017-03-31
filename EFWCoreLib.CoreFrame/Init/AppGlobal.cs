@@ -55,17 +55,17 @@ namespace EFWCoreLib.CoreFrame.Init
         /// <summary>
         /// 定制任务
         /// </summary>
-        public static List<TimingTask> taskList;
+        //public static List<TimingTask> taskList;
 
         /// <summary>
         /// 委托代码
         /// </summary>
-        public static List<FunClass> codeList;
+        //public static List<FunClass> codeList;
 
         /// <summary>
         /// 缺失的程序集dll
         /// </summary>
-        public static List<string> missingDll;
+        //public static List<string> missingDll;
 
         private static bool _isCalled = false;
 
@@ -85,40 +85,14 @@ namespace EFWCoreLib.CoreFrame.Init
                         container = ZhyContainer.CreateUnity();
                         cache = ZhyContainer.CreateCache();
                         database = FactoryDatabase.GetDatabase();
-                        taskList = new List<TimingTask>();
-                        codeList = new List<FunClass>();
-                        missingDll = new List<string>();
-
-                        
+                        //taskList = new List<TimingTask>();
+                        //codeList = new List<FunClass>();
+                         
                         //加载插件
                         AppPluginManage.LoadAllPlugin();
-                        //AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-
-                        //下面三个需要配置unity.config
-                        //初始化Web定制任务
-                        //MultiTask.Init(container, taskList);//任务                       
-                        //是否开启Web控制器请求权限认证
-                        //扩展Global，网站程序启动、停止可自定义代码
-                        //GlobalExtend.StartInit();
-                        //初始化委托代码
-                        //BaseDelegateCode.Init(container, codeList);//执行函数
-
+                         
                         _isCalled = true;
                       
-                        //IsRun = true;
-
-                        if (missingDll.Count > 0)
-                        {
-                            string msg = "缺失的程序集：";
-                            WriterLog(msg);
-                            for (int i = 0; i < missingDll.Count; i++)
-                            {
-                                msg = missingDll[i];
-                                WriterLog(msg);
-                            }
-                            //MessageBox.Show(msg, "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-
                         WriterLog("应用启动成功！");
                         WriterLog("--------------------------------");
                         //AppMain();
@@ -134,33 +108,7 @@ namespace EFWCoreLib.CoreFrame.Init
             }
         }
 
-        static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AssemblyName assemblyName = new AssemblyName(args.Name);
-            string dllname = assemblyName.Name + ".dll";
-            string dllpath = null;
-            foreach (var p in AppPluginManage.PluginDic)
-            {
-                if (p.Value.plugin.businessinfoDllList.FindIndex(x => x.name == dllname) != -1)
-                {
-                    dllpath = p.Value.assemblyPath;
-                    break;
-                }
-            }
-            if (dllpath != null)
-            {
-                FileStream fs = new FileStream(Path.Combine(dllpath, dllname), FileMode.Open, FileAccess.Read);
-                BinaryReader br = new BinaryReader(fs);
-                byte[] bFile = br.ReadBytes((int)fs.Length);
-                br.Close();
-                fs.Close();
-                return Assembly.Load(bFile);
-                //return Assembly.ReflectionOnlyLoadFrom();
-            }
-            else
-                return Assembly.ReflectionOnlyLoad(args.Name);
-        }
-
+       
         public static void AppEnd()
         {
             //GlobalExtend.EndInit();

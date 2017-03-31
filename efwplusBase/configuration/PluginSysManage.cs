@@ -49,7 +49,7 @@ namespace efwplus.configuration
                 plugin.name = n.Attributes["name"].Value;
                 plugin.title = n.Attributes["title"].Value;
                 plugin.path = n.Attributes["path"].Value;
-                plugin.isdevelopment = n.Attributes["isdevelopment"].Value;
+                //plugin.isdevelopment = n.Attributes["isdevelopment"].Value;
                 plist.Add(plugin);
             }
             return plist;
@@ -65,7 +65,7 @@ namespace efwplus.configuration
         public string name { get; set; }
         public string title { get; set; }
         public string path { get; set; }
-        public string isdevelopment { get; set; }
+        //public string isdevelopment { get; set; }
 
         public string version { get; set; }
         public string author { get; set; }

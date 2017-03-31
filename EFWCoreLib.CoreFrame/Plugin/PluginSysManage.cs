@@ -13,32 +13,20 @@ namespace EFWCoreLib.CoreFrame.Plugin
     public class PluginSysManage
     {
         private static System.Xml.XmlDocument xmlDoc = null;
-        public static string pluginsysFile = System.Windows.Forms.Application.StartupPath + "\\Config\\pluginsys.xml";
+        private static string pluginsysFile = null;
 
         private static void InitConfig()
         {
-            xmlDoc = new System.Xml.XmlDocument();
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.IgnoreComments = true;//忽略文档里面的注释
-
             pluginsysFile = AppGlobal.AppRootPath + "Config\\pluginsys.xml";
-            XmlReader reader = XmlReader.Create(pluginsysFile, settings);
-            xmlDoc.Load(reader);
-            reader.Close();
-        }
+            xmlDoc = new System.Xml.XmlDocument();
 
-        public static List<string> GetWinformPlugin()
-        {
-            if (xmlDoc == null) InitConfig();
-            List<string> plist = new List<string>();
-            XmlNodeList nl = null;
+            //XmlReaderSettings settings = new XmlReaderSettings();
+            //settings.IgnoreComments = true;//忽略文档里面的注释
+            //XmlReader reader = XmlReader.Create(pluginsysFile, settings);
+            //xmlDoc.Load(reader);
+            //reader.Close();
 
-            nl = xmlDoc.DocumentElement.SelectNodes("WinformModulePlugin/Plugin");
-            foreach (XmlNode n in nl)
-            {
-                plist.Add(n.Attributes["path"].Value);
-            }
-            return plist;
+            xmlDoc.Load(pluginsysFile);
         }
 
         /// <summary>
@@ -49,22 +37,7 @@ namespace EFWCoreLib.CoreFrame.Plugin
         {
             List<string> pflist = new List<string>();
             if (xmlDoc == null) InitConfig();
-            XmlNodeList nl = null;
-            string path = AppGlobal.AppRootPath;
-            switch (AppGlobal.appType)
-            {
-                case AppType.Web:
-                     nl = xmlDoc.DocumentElement.SelectNodes("WebModulePlugin/Plugin");
-                    break;
-                
-                case AppType.Winform:
-                    nl = xmlDoc.DocumentElement.SelectNodes("WinformModulePlugin/Plugin");
-                    break;
-                case AppType.WCF:
-                //case AppType.WCFClient:
-                    nl = xmlDoc.DocumentElement.SelectNodes("WcfModulePlugin/Plugin");
-                    break;
-            }
+            XmlNodeList nl = xmlDoc.DocumentElement.SelectNodes("WcfModulePlugin/Plugin");
             foreach (XmlNode n in nl)
             {
                 pflist.Add(n.Attributes["path"].Value);
@@ -81,22 +54,7 @@ namespace EFWCoreLib.CoreFrame.Plugin
         {
             string pluginpath = null;
             if (xmlDoc == null) InitConfig();
-            XmlNode xn = null;
-            string path = AppGlobal.AppRootPath;
-            switch (AppGlobal.appType)
-            {
-                case AppType.Web:
-                    xn = xmlDoc.DocumentElement.SelectSingleNode("WebModulePlugin/Plugin[@name=" + pluginname + "]");
-                    break;
-
-                case AppType.Winform:
-                    xn = xmlDoc.DocumentElement.SelectSingleNode("WinformModulePlugin/Plugin[@name=" + pluginname + "]");
-                    break;
-                case AppType.WCF:
-                //case AppType.WCFClient:
-                    xn = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin/Plugin[@name=" + pluginname + "]");
-                    break;
-            }
+            XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin/Plugin[@name=" + pluginname + "]");
             if (xn != null)
             {
                 pluginpath = xn.Attributes["path"].Value;
@@ -104,20 +62,49 @@ namespace EFWCoreLib.CoreFrame.Plugin
             return pluginpath;
         }
 
-        public static void GetWinformEntry(out string entryplugin, out string entrycontroller)
+        public static bool ContainPlugin(string name)
         {
             if (xmlDoc == null) InitConfig();
-
-            entryplugin = xmlDoc.DocumentElement.SelectNodes("WinformModulePlugin")[0].Attributes["EntryPlugin"].Value.ToString();
-            entrycontroller = xmlDoc.DocumentElement.SelectNodes("WinformModulePlugin")[0].Attributes["EntryController"].Value.ToString();
+            XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin/Plugin[@name='" + name + "']");
+            if (xn == null)
+                return false;
+            else
+                return true;
         }
 
-        //public static void GetWcfClientEntry(out string entryplugin, out string entrycontroller)
-        //{
-        //    if (xmlDoc == null) InitConfig();
+        public static void AddPlugin(string name, string title, string path, string version)
+        {
+            if (xmlDoc == null) InitConfig();
+            if (ContainPlugin(name) == false)
+            {
+                XmlNode root = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin");//查找   
+                XmlElement xe1 = xmlDoc.CreateElement("Plugin");//创建一个节点   
+                xe1.SetAttribute("name", name);//
+                xe1.SetAttribute("path", path);//
+                xe1.SetAttribute("title", title);//
+                xe1.SetAttribute("version", version);//版本
 
-        //    entryplugin = xmlDoc.DocumentElement.SelectNodes("WcfModulePlugin")[0].Attributes["EntryPlugin"].Value.ToString();
-        //    entrycontroller = xmlDoc.DocumentElement.SelectNodes("WcfModulePlugin")[0].Attributes["EntryController"].Value.ToString();
-        //}
+                root.AppendChild(xe1);//添加到<bookstore>节点中   
+                xmlDoc.Save(pluginsysFile);
+            }
+            else
+            {
+                XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin/Plugin[@name='" + name + "']");
+                xn.Attributes["name"].Value = name;
+                xn.Attributes["path"].Value = path;
+                xn.Attributes["title"].Value = title;
+                xn.Attributes["version"].Value = version;
+                xmlDoc.Save(pluginsysFile);
+            }
+        }
+
+        public static void RemovePlugin(string name)
+        {
+            if (xmlDoc == null) InitConfig();
+            XmlNode xn = xmlDoc.DocumentElement.SelectSingleNode("WcfModulePlugin/Plugin[@name='" + name + "']");
+            if (xn != null)
+                xn.ParentNode.RemoveChild(xn);
+            xmlDoc.Save(pluginsysFile);
+        }
     }
 }

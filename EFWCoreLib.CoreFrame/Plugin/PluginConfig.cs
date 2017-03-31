@@ -21,14 +21,12 @@ namespace EFWCoreLib.CoreFrame.Plugin
         public string defaultcachekey { get; set; }
 
         public List<baseinfoData> baseinfoDataList { get; set; }
-        public List<businessinfoDll> businessinfoDllList { get; set; }
 
         public void Load(PluginSectionHandler plugin, string plugfile)
         {
             if (plugin != null)
             {
                 if (baseinfoDataList == null) baseinfoDataList = new List<baseinfoData>();
-                if (businessinfoDllList == null) businessinfoDllList = new List<businessinfoDll>();
 
                 name = plugin.name;
                 version = plugin.version;
@@ -43,35 +41,18 @@ namespace EFWCoreLib.CoreFrame.Plugin
                     if (baseinfoDataList.FindIndex(x => x.key == data.key) == -1)
                         baseinfoDataList.Add(data);
                 }
-
-                foreach (businessinfoDll dll in plugin.businessinfo)
-                {
-                    if (businessinfoDllList.FindIndex(x => x.name == dll.name) == -1)
-                    {
-                        bool exists = false;
-                        if (plugintype.ToLower() == "winform")
-                        {
-                            //exists = new FileInfo(AppGlobal.AppRootPath + dll.name).Exists;
-                            string dllpath = new System.IO.FileInfo(plugfile).DirectoryName + "\\dll";
-                            exists = new FileInfo(dllpath + "\\" + dll.name).Exists;
-                        }
-                        else if (plugintype.ToLower() == "wcf")
-                        {
-                            string dllpath = new System.IO.FileInfo(plugfile).DirectoryName + "\\dll";
-                            exists = new FileInfo(dllpath + "\\" + dll.name).Exists;
-                        }
-                        else if (plugintype.ToLower() == "web")
-                        {
-                            exists = new FileInfo(AppGlobal.AppRootPath + "bin\\" + dll.name).Exists;
-                        }
-
-                        if (exists)
-                            businessinfoDllList.Add(dll);
-                        else//没有编译的dll记录并提示
-                            AppGlobal.missingDll.Add(dll.name);
-                    }
-                }
             }
+        }
+
+        public string GetBaseInfoValue(string key)
+        {
+            baseinfoData data= baseinfoDataList.Find(x => x.key == key);
+            if (data != null)
+            {
+                return data.value;
+            }
+
+            return null;
         }
     }
 }

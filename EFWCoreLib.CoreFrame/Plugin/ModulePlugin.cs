@@ -44,19 +44,9 @@ namespace EFWCoreLib.CoreFrame.Plugin
         public AbstractControllerHelper helper { get; set; }
 
         public AppType appType { get; set; }
-        /// <summary>
-        /// 插件程序集的路径
-        /// </summary>
-        public string assemblyPath { get; set; }
 
-        private List<Assembly> dllList=null;
-        /// <summary>
-        /// 插件所有程序集
-        /// </summary>
-        public List<Assembly> DllList
-        {
-            get { return dllList; }
-        }
+        public List<Assembly> DllList { get; set; }
+
 
         public ModulePlugin()
         {
@@ -64,31 +54,16 @@ namespace EFWCoreLib.CoreFrame.Plugin
             
         }
 
-        private void LoadDllList(string plugfile)
+        private List<Assembly> LoadDllList(string plugfile)
         {
-            //string dllpath = new System.IO.FileInfo(plugfile).DirectoryName + "\\dll";
-            dllList = new List<Assembly>();
-            foreach (businessinfoDll dll in plugin.businessinfoDllList)
+            List<Assembly> dllList = new List<Assembly>();
+            FileInfo[] dlls = (new System.IO.FileInfo(plugfile).Directory).GetFiles("*.dll", SearchOption.AllDirectories);
+            foreach (var i in dlls)
             {
-                switch (appType)
-                {
-                    case AppType.Web:
-                        dllList.Add(Assembly.Load(dll.name.Replace(".dll","")));
-                        break;
-                    default:
-                        //方式一:直接读取文件，这种方式不支持热插拔
-                        //dllList.Add(Assembly.LoadFrom(dllpath + "\\" + dll.name));
-                        dllList.Add(Assembly.Load(dll.name.Replace(".dll","")));
-                        //方式二：把dll读到内存再加载,再次加载内存会不断变大
-                        //FileStream fs = new FileStream(dllpath + "\\" + dll.name, FileMode.Open, FileAccess.Read);
-                        //BinaryReader br = new BinaryReader(fs);
-                        //byte[] bFile = br.ReadBytes((int)fs.Length);
-                        //br.Close();
-                        //fs.Close();
-                        //dllList.Add(Assembly.Load(bFile));
-                        break;
-                }
+                dllList.Add(Assembly.Load(i.Name.Replace(".dll", "")));
             }
+
+            return dllList;
         }
 
         /// <summary>
@@ -102,15 +77,6 @@ namespace EFWCoreLib.CoreFrame.Plugin
             container = ZhyContainer.CreateUnity();
             plugin = new PluginConfig();
 
-            //switch (appType)
-            //{
-            //    case AppType.WCF:
-            //        helper = new WcfFrame.ServerController.ControllerHelper();
-            //        break;
-            //}
-
-            assemblyPath = new FileInfo(plugfile).Directory.FullName + "\\dll";
-
             var fileMap = new ExeConfigurationFileMap { ExeConfigFilename = plugfile };
             System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
@@ -118,7 +84,7 @@ namespace EFWCoreLib.CoreFrame.Plugin
             if (plugininfo != null)
                 plugin.Load(plugininfo, plugfile);
 
-            LoadDllList(plugfile);//加载程序集
+            DllList = LoadDllList(plugfile);//加载程序集
 
             var unitySection = (UnityConfigurationSection)configuration.GetSection("unity");
             if (unitySection != null)
@@ -141,65 +107,18 @@ namespace EFWCoreLib.CoreFrame.Plugin
 
         public void LoadAttribute(string plugfile)
         {
-            
-            if (dllList.Count > 0)
+            if (DllList.Count > 0)
             {
-                switch (appType)
-                {
-                    case AppType.Web:
-                        EntityManager.LoadAttribute(dllList, cache, plugin.name);
-                        WebControllerManager.LoadAttribute(dllList, this);
-                        WebServicesManager.LoadAttribute(dllList, cache, plugin.name);
-                        break;
-                    case AppType.Winform:
-                    //case AppType.WCFClient:
-                        EntityManager.LoadAttribute(dllList, cache, plugin.name);
-                        WinformControllerManager.LoadAttribute(dllList, this);
-                        break;
-                    case AppType.WCF:
-                        EntityManager.LoadAttribute(dllList, cache, plugin.name);
-                        WcfControllerManager.LoadAttribute(dllList, this);
-                        break;
-                }
+                EntityManager.LoadAttribute(DllList, cache, plugin.name);
+                WcfControllerManager.LoadAttribute(DllList, this);
             }
         }
 
         public void Remove()
         {
             ICacheManager _cache = cache;
-
-            switch (AppGlobal.appType)
-            {
-                case AppType.Web:
-                    EntityManager.ClearAttributeData(_cache, plugin.name);
-                    WebControllerManager.ClearAttributeData(_cache, plugin.name);
-                    WebServicesManager.ClearAttributeData(_cache, plugin.name);
-                    break;
-                case AppType.Winform:
-                //case AppType.WCFClient:
-                    EntityManager.ClearAttributeData(_cache, plugin.name);
-                    WinformControllerManager.ClearAttributeData(_cache, plugin.name);
-                    break;
-                case AppType.WCF:
-                    EntityManager.ClearAttributeData(_cache, plugin.name);
-                    WcfControllerManager.ClearAttributeData(_cache, plugin.name);
-                    break;
-            }
+            EntityManager.ClearAttributeData(_cache, plugin.name);
+            WcfControllerManager.ClearAttributeData(_cache, plugin.name);
         }
-
-        //public Object WcfServerExecuteMethod(string controllername, string methodname, object[] paramValue, ClientRequestData requestData)
-        //{
-        //    EFWCoreLib.WcfFrame.ServerController.WcfServerController wscontroller = helper.CreateController(plugin.name, controllername) as EFWCoreLib.WcfFrame.ServerController.WcfServerController;
-        //    wscontroller.requestData = requestData;
-        //    wscontroller.responseData = new ServiceResponseData(requestData.Iscompressjson,requestData.Isencryptionjson,requestData.Serializetype);
-        //    wscontroller.BindLoginRight(requestData.LoginRight);
-        //    MethodInfo methodinfo = helper.CreateMethodInfo(plugin.name, controllername, methodname, wscontroller);
-        //    return methodinfo.Invoke(wscontroller, paramValue);
-        //}
-
-        //public Object WcfClientExecuteMethod()
-        //{
-        //    return null;
-        //}
     }
 }

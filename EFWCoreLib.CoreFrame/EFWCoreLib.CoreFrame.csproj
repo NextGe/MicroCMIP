@@ -179,10 +179,7 @@
     <Compile Include="Init\AttributeManager\WebControllerManager.cs" />
     <Compile Include="Init\AttributeManager\WebServicesManager.cs" />
     <Compile Include="Init\AttributeManager\WinformControllerManager.cs" />
-    <Compile Include="Init\ExecuteFun.cs" />
-    <Compile Include="Init\GlobalExtend.cs" />
     <Compile Include="Init\HostConfigManagement.cs" />
-    <Compile Include="Init\MultiTask.cs" />
     <Compile Include="ORM\Attribute\ColumnAttribute.cs" />
     <Compile Include="ORM\Attribute\RelationName.cs" />
     <Compile Include="ORM\Attribute\TableAttribute.cs" />
