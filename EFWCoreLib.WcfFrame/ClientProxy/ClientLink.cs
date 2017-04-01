@@ -101,10 +101,10 @@ namespace EFWCoreLib.WcfFrame
 #endif
         private FileServiceClient fileServiceClient = null;//文件通信对象
 
-        
-#endregion
 
-#region 初始化
+        #endregion
+
+        #region 初始化
         /// <summary>
         /// 初始化通讯连接
         /// </summary>
@@ -146,7 +146,7 @@ namespace EFWCoreLib.WcfFrame
             _token = token;
         }
 
-        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token,string beginidentify,string endidentify)
+        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token, string beginidentify, string endidentify)
         {
             _clientName = clientname;
             _pluginName = pluginname;
@@ -174,7 +174,7 @@ namespace EFWCoreLib.WcfFrame
             clientObj.RouterID = Guid.NewGuid().ToString();
             clientObj.PluginName = PluginName;
             clientObj.Token = _token;
-           
+
 
 #if ClientProxy
             baseServiceClient = new BaseServiceClient(_wcfendpoint);
@@ -185,9 +185,9 @@ namespace EFWCoreLib.WcfFrame
             //if (fileServiceClient == null)
             fileServiceClient = new FileServiceClient(_fileendpoint);
         }
-#endregion
+        #endregion
 
-#region IDisposable 成员
+        #region IDisposable 成员
         /// <summary>
         /// 释放连接
         /// </summary>
@@ -218,9 +218,9 @@ namespace EFWCoreLib.WcfFrame
             }
         }
 
-#endregion
+        #endregion
 
-#region 连接池属性
+        #region 连接池属性
         private int index;
         /// <summary>
         /// 索引
@@ -274,9 +274,9 @@ namespace EFWCoreLib.WcfFrame
         {
             get { return baseServiceClient.State; }
         }
-#endregion
+        #endregion
 
-#region 数据交互
+        #region 数据交互
 
         /// <summary>
         /// 创建连接
@@ -290,7 +290,7 @@ namespace EFWCoreLib.WcfFrame
             baseServiceClient.Open();
             //AddMessageHeader(baseServiceClient.InnerDuplexChannel as IContextChannel, "", (() =>
             //{
-            clientObj.ClientID = baseServiceClient.CreateClient(clientObj.ClientName,PluginName, BeginIdentify);//创建连接获取ClientID
+            clientObj.ClientID = baseServiceClient.CreateClient(clientObj.ClientName, PluginName, BeginIdentify);//创建连接获取ClientID
             if (ServerConfigRequestState == false)
             {
                 //重新获取服务端配置，如：是否压缩Json、是否加密Json
@@ -645,7 +645,7 @@ namespace EFWCoreLib.WcfFrame
                 //    }
                 //}
 
-                if(ReConnectionAction!=null)
+                if (ReConnectionAction != null)
                 {
                     ReConnectionAction();
                 }
@@ -795,9 +795,9 @@ namespace EFWCoreLib.WcfFrame
                 }
             }
         }
-#endregion
+        #endregion
 
-#region 测试服务程序调用
+        #region 测试服务程序调用
         /// <summary>
         /// 获取所有服务插件的控制器和方法
         /// </summary>
@@ -814,9 +814,9 @@ namespace EFWCoreLib.WcfFrame
 
             return list;
         }
-#endregion
+        #endregion
 
-#region 上传下载文件
+        #region 上传下载文件
         /// <summary>
         /// 上传文件
         /// </summary>
@@ -849,6 +849,45 @@ namespace EFWCoreLib.WcfFrame
 
             return UpLoadFile(uf, action);
         }
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="uf">上传文件对象</param>
+        /// <param name="action">进度条委托</param>
+        /// <returns>返回上传的结果</returns>
+        public string UpLoadFile(UpFile uf, Action<int> action)
+        {
+            if (uf == null) throw new Exception("上传文件对象不能为空！");
+
+            try
+            {
+
+                if (action != null)
+                    getupdownprogress(uf.FileStream, uf.FileSize, action);//获取进度条
+
+                UpFileResult result = new UpFileResult();
+                result = fileServiceClient.UpLoadFile(uf);
+
+                if (result.IsSuccess)
+                    return result.Message;
+                else
+                    throw new Exception("上传文件失败！");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n上传文件失败！");
+            }
+            finally
+            {
+                //if (fileServiceClient != null)
+                //{
+                //    fileServiceClient.Close();
+                //}
+            }
+        }
+
+
 
         /// <summary>
         /// 下载文件
@@ -888,59 +927,11 @@ namespace EFWCoreLib.WcfFrame
             df.FileName = filename;
             df.FileType = 0;
 
-            DownLoadFile(df, filepath, action);
-            //MemoryStream ms = DownLoadFile(df, action);
-            //FileStream  fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
-            //BinaryWriter bw = new BinaryWriter(fs);
-            //bw.Write(ms.ToArray());
-            //fs.Close();
-            //ms.Close();
-
+            FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+            DownLoadFile(df, fs, action);
             return filepath;
         }
 
-        /// <summary>
-        /// 上传文件
-        /// </summary>
-        /// <param name="uf">上传文件对象</param>
-        /// <param name="action">进度条委托</param>
-        /// <returns>返回上传的结果</returns>
-        public string UpLoadFile(UpFile uf, Action<int> action)
-        {
-            if (uf == null) throw new Exception("上传文件对象不能为空！");
-
-            try
-            {
-
-                if (action != null)
-                    getupdownprogress(uf.FileStream, uf.FileSize, action);//获取进度条
-
-                UpFileResult result = new UpFileResult();
-                result = fileServiceClient.UpLoadFile(uf);
-
-                if (result.IsSuccess)
-                    return result.Message;
-                else
-                    throw new Exception("上传文件失败！");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message + "\n上传文件失败！");
-            }
-            finally
-            {
-                //if (fileServiceClient != null)
-                //{
-                //    fileServiceClient.Close();
-                //}
-            }
-        }
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="df">下载文件对象</param>
-        /// <param name="ms">接收下载文件的内存流对象</param>
-        /// <param name="action">进度条委托</param>
         public void DownLoadFile(DownFile df, MemoryStream ms, Action<int> action)
         {
             if (df == null) throw new Exception("下载文件对象不能为空！");
@@ -984,13 +975,7 @@ namespace EFWCoreLib.WcfFrame
                 //}
             }
         }
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="df">下载文件对象</param>
-        /// <param name="filepath">存放下载文件的路径</param>
-        /// <param name="action">进度条委托</param>
-        public void DownLoadFile(DownFile df, string filepath, Action<int> action)
+        public void DownLoadFile(DownFile df, FileStream fs, Action<int> action)
         {
             if (df == null) throw new Exception("下载文件对象不能为空！");
 
@@ -1003,7 +988,7 @@ namespace EFWCoreLib.WcfFrame
 
                 if (result.IsSuccess)
                 {
-                    FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+                    //FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
 
                     int bufferlen = 4096;
                     int count = 0;
@@ -1038,6 +1023,96 @@ namespace EFWCoreLib.WcfFrame
                 //}
             }
         }
+
+        public DownFileResult RootDownLoadFile(DownFile downfile)
+        {
+            if (fileServiceClient == null) throw new Exception("还没有创建连接！");
+            return fileServiceClient.RootDownLoadFile(downfile);
+        }
+        public void RootDownLoadFile(DownFile downfile, MemoryStream ms, Action<int> action)
+        {
+            if (downfile == null) throw new Exception("下载文件对象不能为空！");
+            if (fileServiceClient == null) throw new Exception("还没有创建连接！");
+            try
+            {
+                DownFileResult result = new DownFileResult();
+
+                result = fileServiceClient.RootDownLoadFile(downfile);
+
+                if (result.IsSuccess)
+                {
+                    if (ms == null)
+                        ms = new MemoryStream();
+
+                    int bufferlen = 4096;
+                    int count = 0;
+                    byte[] buffer = new byte[bufferlen];
+
+                    if (action != null)
+                        getupdownprogress(result.FileStream, result.FileSize, action);//获取进度条
+
+
+                    while ((count = result.FileStream.Read(buffer, 0, bufferlen)) > 0)
+                    {
+                        ms.Write(buffer, 0, count);
+                    }
+                }
+                else
+                    throw new Exception("下载文件失败！");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n下载文件失败！");
+            }
+            finally
+            {
+                //if (fileServiceClient != null)
+                //{
+                //    fileServiceClient.Close();
+                //}
+            }
+        }
+        public void RootDownLoadFile(DownFile downfile, FileStream fs, Action<int> action)
+        {
+            if (downfile == null) throw new Exception("下载文件对象不能为空！");
+            if (fileServiceClient == null) throw new Exception("还没有创建连接！");
+            try
+            {
+                DownFileResult result = new DownFileResult();
+                result = fileServiceClient.RootDownLoadFile(downfile);
+
+                if (result.IsSuccess)
+                {
+                    //FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.Write);
+
+                    int bufferlen = 4096;
+                    int count = 0;
+                    byte[] buffer = new byte[bufferlen];
+
+                    if (action != null)
+                        getupdownprogress(result.FileStream, result.FileSize, action);//获取进度条
+
+
+                    while ((count = result.FileStream.Read(buffer, 0, bufferlen)) > 0)
+                    {
+                        fs.Write(buffer, 0, count);
+                    }
+
+                    //清空缓冲区
+                    fs.Flush();
+                    //关闭流
+                    fs.Close();
+                }
+                else
+                    throw new Exception("下载文件失败！");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\n连接服务主机失败！");
+            }
+        }
+
+
         private void getprogress(long filesize, long readnum, ref int progressnum)
         {
             //decimal percent = Convert.ToDecimal(100 / Convert.ToDecimal(filesize / bufferlen));
@@ -1074,9 +1149,9 @@ namespace EFWCoreLib.WcfFrame
             }).BeginInvoke(file, flength, action, null, null);
         }
 
-#endregion
+        #endregion
 
-#region 注册远程插件
+        #region 注册远程插件
         /// <summary>
         /// 注册远程插件
         /// </summary>
@@ -1095,9 +1170,9 @@ namespace EFWCoreLib.WcfFrame
         //        throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
         //    }
         //}
-#endregion
+        #endregion
 
-#region 分布式缓存
+        #region 分布式缓存
 
         /// <summary>
         /// 从服务端获取变化了的缓存数据
@@ -1117,9 +1192,9 @@ namespace EFWCoreLib.WcfFrame
                 throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
             }
         }
-#endregion
+        #endregion
 
-#region 订阅
+        #region 订阅
         public List<PublishServiceObject> GetPublishServiceList()
         {
             if (clientObj == null) throw new Exception("还没有创建连接！");
@@ -1139,7 +1214,7 @@ namespace EFWCoreLib.WcfFrame
             try
             {
                 //DuplexBaseServiceClient _wcfService = clientObj.WcfService;
-                clientObj.WcfService.Subscribe(BeginIdentify,publishServiceName);
+                clientObj.WcfService.Subscribe(BeginIdentify, publishServiceName);
             }
             catch (Exception e)
             {
@@ -1160,7 +1235,7 @@ namespace EFWCoreLib.WcfFrame
                 throw new Exception(e.Message + "\n连接服务主机失败，请联系管理员！");
             }
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// 处理中间件节点状态

@@ -20,6 +20,11 @@ namespace EFWCoreLib.WcfFrame.ClientProxy
             return this.Channel.DownLoadFile(downfile);
         }
 
+        public DownFileResult RootDownLoadFile(DownFile downfile)
+        {
+            return this.Channel.RootDownLoadFile(downfile);
+        }
+
         public UpFileResult UpLoadFile(UpFile filestream)
         {
             return this.Channel.UpLoadFile(filestream);

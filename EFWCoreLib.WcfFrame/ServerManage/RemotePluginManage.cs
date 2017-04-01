@@ -37,30 +37,30 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         public static MNodePlugin GetLocalPlugin()
         {
             MNodePlugin localPlugin = GetCachePlugin();
-            if (localPlugin == null)
-            {
-                localPlugin = new MNodePlugin();
-                localPlugin.ServerIdentify = WcfGlobal.Identify;
-                localPlugin.PathStrategy = 0;
-                localPlugin.LocalPlugin = CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList();
-                localPlugin.RemotePlugin = new List<RemotePlugin>();
-            }
-            else
-            {
-                //交集
-                if (localPlugin.LocalPlugin != null)
-                {
-                    List<string> rmPList = localPlugin.LocalPlugin.ToList();
-                    foreach (string p in localPlugin.LocalPlugin)
-                    {
-                        if (CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList().FindIndex(x => x == p) == -1)
-                        {
-                            rmPList.Remove(p);
-                        }
-                    }
-                    localPlugin.LocalPlugin = rmPList.ToList(); 
-                }
-            }
+            //if (localPlugin == null)
+            //{
+            //    localPlugin = new MNodePlugin();
+            //    localPlugin.ServerIdentify = WcfGlobal.Identify;
+            //    localPlugin.PathStrategy = 0;
+            //    localPlugin.LocalPlugin = CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList();
+            //    localPlugin.RemotePlugin = new List<RemotePlugin>();
+            //}
+            //else
+            //{
+            //    //交集
+            //    if (localPlugin.LocalPlugin != null)
+            //    {
+            //        List<string> rmPList = localPlugin.LocalPlugin.ToList();
+            //        foreach (string p in localPlugin.LocalPlugin)
+            //        {
+            //            if (CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList().FindIndex(x => x == p) == -1)
+            //            {
+            //                rmPList.Remove(p);
+            //            }
+            //        }
+            //        localPlugin.LocalPlugin = rmPList.ToList(); 
+            //    }
+            //}
             return localPlugin;
         }
 
@@ -132,6 +132,10 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 }
 
                 DistributedCacheManage.SetCache(cacheName, sync_adddata, sync_updatedata, sync_deldata);
+                if (sync_adddata.Count > 0 || sync_updatedata.Count > 0 || sync_deldata.Count > 0)
+                {
+                    UpgradeManage.UpdateUpgrade();//插件服务进行了更新
+                }
             }
         }
 
@@ -141,6 +145,8 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             //从Mongodb获取中间件节点配置的服务
             MongoHelper<MNodePService> helper = new MongoHelper<MNodePService>(WcfGlobal.MongoConnStr, MonitorPlatformManage.dbName);
             List<MNodePService> npList = helper.FindAll(null);
+            MongoHelper<PluginService> pshelper = new MongoHelper<PluginService>(WcfGlobal.MongoConnStr, MonitorPlatformManage.dbName);
+            List<PluginService> psList = pshelper.FindAll(null);
 
             List<MNodePlugin> mpList = new List<MNodePlugin>();
             foreach(var ps in npList)
@@ -157,6 +163,24 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     rp.MNodeIdentify = r.mnodeidentify;
                     mp.RemotePlugin.Add(rp);
                 }
+                mp.LocalPinfoList = new List<MNPluginInfo>();
+                foreach(string p in mp.LocalPlugin)
+                {
+                    PluginService pservice = psList.Find(x => x.pluginname == p);
+                    if (pservice != null)
+                    {
+                        MNPluginInfo pinfo = new MNPluginInfo();
+                        pinfo.pluginname = pservice.pluginname;
+                        pinfo.title = pservice.title;
+                        pinfo.versions = pservice.versions;
+                        pinfo.author = pservice.author;
+                        pinfo.introduce = pservice.introduce;
+                        pinfo.updatenotes = pservice.updatenotes;
+                        pinfo.delflag = pservice.delflag;
+                        mp.LocalPinfoList.Add(pinfo);
+                    }
+                }
+                
                 mpList.Add(mp);
             }
             return mpList;
@@ -206,6 +230,10 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// 远程插件，插件名和远程中间件标识数组
         /// </summary>
         public List<RemotePlugin> RemotePlugin { get; set; }
+        /// <summary>
+        /// 插件详细信息
+        /// </summary>
+        public List<MNPluginInfo> LocalPinfoList { get; set; }
     }
 
     /// <summary>
@@ -215,5 +243,28 @@ namespace EFWCoreLib.WcfFrame.ServerManage
     {
         public string PluginName { get; set; }
         public List<string> MNodeIdentify { get; set; }
+    }
+
+    public class MNPluginInfo
+    {
+        public string pluginname { get; set; }
+        public string title { get; set; }
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public string versions { get; set; }
+        /// <summary>
+        /// 作者
+        /// </summary>
+        public string author { get; set; }
+        /// <summary>
+        /// 介绍
+        /// </summary>
+        public string introduce { get; set; }
+        /// <summary>
+        /// 更新说明
+        /// </summary>
+        public string updatenotes { get; set; }
+        public int delflag { get; set; }
     }
 }

@@ -120,6 +120,7 @@
     <Compile Include="DataSerialize\ServiceResponseData.cs" />
     <Compile Include="MiddlewareLogHelper.cs" />
     <Compile Include="ServerManage\MNodeStateManage.cs" />
+    <Compile Include="ServerManage\UpgradeManager.cs" />
     <Compile Include="Utility\MiddlewareTask.cs" />
     <Compile Include="Controller\ModulePluginExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,9 +168,7 @@
       <Name>EFWCoreLib.CoreFrame</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utility\Nginx\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output"

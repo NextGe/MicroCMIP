@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using EFWCoreLib.WcfFrame;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using System.Windows.Forms;
+using System.IO;
 
 namespace TestWcfPerformance
 {
@@ -21,20 +22,20 @@ namespace TestWcfPerformance
         {
             try
             {
-                //TestWebClient();
+                TestWebClient();
                 //Console.Read();
                 //TestConcurrency();
 
 
                 //Application.Run(new frmClient());
 
-                Console.WriteLine("输入并发连接数(默认100)：");
-                connCount = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("输入每次请求间隔时间(默认100微秒)：");
-                time = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("#回车开始执行#");
-                Console.Read();
-                StartThread();
+                //Console.WriteLine("输入并发连接数(默认100)：");
+                //connCount = Convert.ToInt32(Console.ReadLine());
+                //Console.WriteLine("输入每次请求间隔时间(默认100微秒)：");
+                //time = Convert.ToInt32(Console.ReadLine());
+                //Console.WriteLine("#回车开始执行#");
+                //Console.Read();
+                //StartThread();
 
             }
             catch (Exception err)
@@ -89,7 +90,7 @@ namespace TestWcfPerformance
 
             //Console.WriteLine("输入请求数据条数：");
             //string num = Console.ReadLine();
-            string num = "100";
+            //string num = "100";
             begintime();
 
             //Action<ClientRequestData> requestAction = ((ClientRequestData request) =>
@@ -110,19 +111,30 @@ namespace TestWcfPerformance
 
             Console.Read();
             string s;
-            begintime();
-            s = clientlink.UpLoadFile(@"D:\DCWriter.rar", (delegate (int _num)
-            {
-                Console.WriteLine("4.文件上传进度：%" + _num);
-            }));
-            Console.WriteLine("4.文件上传时间(毫秒)：" + endtime() + "|" + s);
+
+            //begintime();
+            //s = clientlink.UpLoadFile(@"D:\trace.svclog", (delegate (int _num)
+            //{
+            //    Console.WriteLine("4.文件上传进度：%" + _num);
+            //}));
+            //Console.WriteLine("4.文件上传时间(毫秒)：" + endtime() + "|" + s);
 
             begintime();
-            s = clientlink.DownLoadFile("DCWriter.rar", (delegate (int _num)
+            //s = clientlink.DownLoadFile("636266367544280000.svclog", (delegate (int _num)
+            //{
+            //    Console.WriteLine("5.文件下载进度：%" + _num);
+            //}));
+            DownFile df = new DownFile();
+            df.clientId = Guid.NewGuid().ToString();
+            df.DownKey = Guid.NewGuid().ToString();
+            df.FileName = "636266367544280000.svclog";
+            df.FileType = 0;
+            FileStream fs = new FileStream(@"c:\1.log", FileMode.Create, FileAccess.Write);
+            clientlink.RootDownLoadFile(df, fs, (delegate (int _num)
             {
                 Console.WriteLine("5.文件下载进度：%" + _num);
             }));
-            Console.WriteLine("5.文件下载时间(毫秒)：" + endtime() + "|" + s);
+            Console.WriteLine("5.文件下载时间(毫秒)：" + endtime());
 
             begintime();
             //5.关闭连接

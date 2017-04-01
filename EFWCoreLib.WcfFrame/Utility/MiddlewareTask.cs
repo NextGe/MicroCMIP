@@ -44,7 +44,7 @@ namespace EFWCoreLib.CoreFrame.Common
             taskmanager = new TimingTaskManager();
 
             LoadTask(taskList);//加载配置的定时任务
-            WcfFrame.Utility.Upgrade.ClientUpgradeManager.LoadTask(taskList);//加载升级定时任务
+            //WcfFrame.Utility.Upgrade.ClientUpgradeManager.LoadTask(taskList);//加载升级定时任务
 
             if (taskList.Count > 0)
             {

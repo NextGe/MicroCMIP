@@ -17,6 +17,11 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
             return FileManage.DownLoadFile(downfile);
         }
 
+        public DownFileResult RootDownLoadFile(DownFile downfile)
+        {
+            return FileManage.RootDownLoadFile(downfile);
+        }
+
         public UpFileResult UpLoadFile(UpFile filestream)
         {
             return FileManage.UpLoadFile(filestream);

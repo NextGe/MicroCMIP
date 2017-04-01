@@ -16,9 +16,11 @@ namespace EFWCoreLib.WcfFrame.ServerManage
     /// </summary>
     public class FileManage
     {
-        public static string filebufferpath= AppGlobal.AppRootPath + @"FileStore\filebuffer\";//缓存文件路径
-        public static string clientupgradepath= AppGlobal.AppRootPath + @"FileStore\ClientUpgrade\";//客户端升级包路径
-        public static string serverupgradepath = AppGlobal.AppRootPath + @"FileStore\ServerUpgrade\";//服务端升级包路径
+        public static string filestorepath= AppGlobal.AppRootPath + @"FileStore\";//文件存储路径
+        //public static string clientupgradepath= AppGlobal.AppRootPath + @"FileStore\ClientUpgrade\";//客户端升级包路径
+        //public static string serverupgradepath = AppGlobal.AppRootPath + @"FileStore\ServerUpgrade\";//中间件节点升级包路径
+        //Web程序升级包
+        //服务程序升级包
 
         private static void getprogress(long filesize, long readnum, ref int progressnum)
         {
@@ -26,8 +28,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             {
                 return;
             }
-            //decimal percent = Convert.ToDecimal(100 / Convert.ToDecimal(filesize / bufferlen));
-            //progressnum = progressnum + percent > 100 ? 100 : progressnum + percent;
             decimal percent = Convert.ToDecimal(readnum) / Convert.ToDecimal(filesize) * 100;
             progressnum = Convert.ToInt32(Math.Ceiling(percent));
         }
@@ -124,12 +124,12 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// <returns></returns>
         private static UpFileResult UpLoadfilebuffer(UpFile filedata)
         {
-            if (!Directory.Exists(filebufferpath))
+            if (!Directory.Exists(filestorepath))
             {
-                Directory.CreateDirectory(filebufferpath);
+                Directory.CreateDirectory(filestorepath);
             }
             string _filename = DateTime.Now.Ticks.ToString() + filedata.FileExt;//生成唯一文件名，防止文件名相同会覆盖
-            FileStream fs = new FileStream(filebufferpath + _filename, FileMode.Create, FileAccess.Write);
+            FileStream fs = new FileStream(filestorepath + _filename, FileMode.Create, FileAccess.Write);
             using (fs)
             {
                 int bufferlen = 4096;
@@ -177,8 +177,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         private static UpFileResult UpLoadMongodb(UpFile filedata)
         {
 
-
-
             UpFileResult result = new UpFileResult();
             result.IsSuccess = true;
             result.Message = "数据上传到Mongodb成功！";
@@ -213,10 +211,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 {
                     result = DownLoadMongodb(filedata, ref ms);
                 }
-                else
-                {
-                    result = DownLoadfilebuffer(filedata, ref ms);
-                }
 
                 if (WcfGlobal.IsDebug)
                 {
@@ -244,6 +238,26 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 return result;
             }
         }
+
+        /// <summary>
+        /// 从根节点下载文件
+        /// </summary>
+        /// <param name="downfile"></param>
+        /// <returns></returns>
+        public static DownFileResult RootDownLoadFile(DownFile downfile)
+        {
+            if (WcfGlobal.IsRootMNode)
+            {
+                return DownLoadFile(downfile);
+            }
+            else
+            {
+                ShowHostMsg(Color.Green, DateTime.Now, "准备从根节点下载文件...");
+                DownFileResult dfResult = SuperClient.superClientLink.RootDownLoadFile(downfile);
+                ShowHostMsg(Color.Green, DateTime.Now, "从根节点下载文件完成");
+                return dfResult;
+            }
+        }
         /// <summary>
         /// 下载文件，从文件缓存目录
         /// </summary>
@@ -257,7 +271,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             if (ms == null)
                 ms = new MemoryStream();
 
-            string path = filebufferpath + filedata.FileName;
+            string path = filestorepath + filedata.FileName;
             if (!File.Exists(path))
             {
                 result.IsSuccess = false;
@@ -291,7 +305,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             if (ms == null)
                 ms = new MemoryStream();
 
-            string path = clientupgradepath + filedata.FileName;
+            string path = filestorepath + filedata.FileName;
             if (!File.Exists(path))
             {
                 result.IsSuccess = false;

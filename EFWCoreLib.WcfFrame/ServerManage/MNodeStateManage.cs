@@ -164,7 +164,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 SuperClient.superClientLink.MNodeState(MNodeStateManage.MNodeList);
         }
 
-
         //
         public static System.Timers.Timer timer;
         public static void StartListen()

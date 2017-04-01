@@ -31,6 +31,14 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         [OperationContract]
         DownFileResult DownLoadFile(DownFile downfile);
 
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="downfile">文件信息</param>
+        /// <returns>返回下载结果</returns>
+        [OperationContract]
+        DownFileResult RootDownLoadFile(DownFile downfile);
+
         ///// <summary>
         ///// 下载转发
         ///// </summary>
