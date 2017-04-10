@@ -225,7 +225,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 if (WcfGlobal.IsDebug)
                     ShowHostMsg(Color.Green, DateTime.Now, "客户端[" + filedata.clientId + "]下载文件完成");
 
-                //ms.Close();
+                //ms.Close();必须注释掉
                 return result;
             }
             catch (Exception err)

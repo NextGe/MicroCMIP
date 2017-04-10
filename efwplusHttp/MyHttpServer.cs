@@ -57,6 +57,8 @@ namespace efwplusHttp
                                 {
                                     FileStream fs = File.OpenRead(filepath); //待下载的文件
                                     CopyStream(fs, writer.BaseStream);
+                                    fs.Flush();
+                                    fs.Close();
                                 }
                                 else
                                 {

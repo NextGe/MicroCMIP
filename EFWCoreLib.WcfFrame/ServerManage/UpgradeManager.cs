@@ -217,7 +217,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             df.FileName = updatexml;
             df.FileType = 0;
             FileStream fs = new FileStream(AppGlobal.AppRootPath + updatexml, FileMode.Create, FileAccess.Write);
-            _clientLink.DownLoadFile(df, fs, null);
+            _clientLink.RootDownLoadFile(df, fs, null);
 
             df = new DownFile();
             df.clientId = Guid.NewGuid().ToString();
@@ -225,7 +225,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             df.FileName = updatezip;
             df.FileType = 0;
             fs = new FileStream(AppGlobal.AppRootPath + updatezip, FileMode.Create, FileAccess.Write);
-            _clientLink.DownLoadFile(df, fs, (delegate (int _num)
+            _clientLink.RootDownLoadFile(df, fs, (delegate (int _num)
             {
                 MiddlewareLogHelper.WriterLog(LogType.MidLog, true, System.Drawing.Color.Black, "升级包下载进度：%" + _num);
             }));
@@ -249,7 +249,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             df.FileType = 1;
             //MemoryStream update_ms = new MemoryStream();
             MemoryStream ms = new MemoryStream();
-            _clientLink.DownLoadFile(df, ms, null);
+            _clientLink.RootDownLoadFile(df, ms, null);
             //ms.CopyTo(update_ms);
             String str = System.Text.Encoding.Default.GetString(ms.ToArray());
             ms.Close();
