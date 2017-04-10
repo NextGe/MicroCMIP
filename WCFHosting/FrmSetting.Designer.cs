@@ -357,9 +357,9 @@
             this.ckNginx.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ckNginx.Location = new System.Drawing.Point(87, 110);
             this.ckNginx.Name = "ckNginx";
-            this.ckNginx.Size = new System.Drawing.Size(85, 21);
+            this.ckNginx.Size = new System.Drawing.Size(102, 21);
             this.ckNginx.TabIndex = 25;
-            this.ckNginx.Text = "开启Nginx";
+            this.ckNginx.Text = "开启Web程序";
             this.ckNginx.UseVisualStyleBackColor = true;
             // 
             // ckmongo
@@ -429,6 +429,7 @@
             this.ckWebapi.TabIndex = 19;
             this.ckWebapi.Text = "开启WebAPI服务";
             this.ckWebapi.UseVisualStyleBackColor = true;
+            this.ckWebapi.Visible = false;
             // 
             // ckfile
             // 
@@ -441,6 +442,7 @@
             this.ckfile.TabIndex = 18;
             this.ckfile.Text = "开启文件传输服务";
             this.ckfile.UseVisualStyleBackColor = true;
+            this.ckfile.Visible = false;
             // 
             // tabPage2
             // 

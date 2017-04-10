@@ -8,14 +8,8 @@
   </rootmnode>
   <debug value="1">
   </debug>
-  <wcfservice value="1">
-  </wcfservice>
-  <router value="1">
-  </router>
   <filetransfer value="1">
   </filetransfer>
-  <webapi value="0">
-  </webapi>
   <timingtask value="1">
   </timingtask>
   <heartbeat value="1">
@@ -38,6 +32,14 @@
   </overtime>
   <overtimetime value="1">
   </overtimetime>
+  <issaas value="1">
+  </issaas>
+  <wcfservice value="1">
+  </wcfservice>
+  <router value="1">
+  </router>
+  <webapi value="0">
+  </webapi>
   <mongodb value="1">
   </mongodb>
   <mongodb_binpath value="C:\MongoDB\Server\3.2\bin">
@@ -46,6 +48,9 @@
   </mongodb_dbpath>
   <mongodb_conn value="mongodb://localhost:27017">
   </mongodb_conn>
-  <nginx value="0">
+  <nginx value="1">
   </nginx>
+  <nginx_binpath value="D:\efwplusProject\efwplusUI\efwplusNginxHost.exe">
+  </nginx_binpath>
+  <updaterurl value="http://localhost:8810/FileStore/MNodeUpgrade/update.xml"></updaterurl>
 </root>

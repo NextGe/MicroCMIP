@@ -131,7 +131,7 @@ namespace EFWCoreLib.WcfFrame
 
                     AppGlobal.AppRootPath = System.Windows.Forms.Application.StartupPath + "\\";
                     AppGlobal.appType = AppType.WCF;
-                    AppGlobal.IsSaas = System.Configuration.ConfigurationManager.AppSettings["IsSaas"] == "true" ? true : false;
+                    AppGlobal.IsSaas = HostSettingConfig.GetValue("issaas") == "1" ? true : false;
                     AppGlobal.AppStart();
 
 

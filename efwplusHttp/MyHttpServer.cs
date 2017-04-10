@@ -40,7 +40,15 @@ namespace efwplusHttp
                             string[] upgrades = upgradeList.Split(';');
                             foreach (string u in upgrades)
                             {
-                                writer.WriteLine("<div style=\"color:black;text-align:center;font-size:10px\"><p>" + u.Split('|')[0] + "：<a href='" + u.Split('|')[1] + "' >下载</a></p></div>");
+                                string filepath = rootPath+ u.Split('|')[1];
+                                string[] files= Directory.GetFiles(filepath);
+                                string html="";
+                                foreach (string f in files)
+                                {
+                                    FileInfo file = new FileInfo(f);
+                                    html += "<a href='" + f.Replace(rootPath, "") + "' >[" + file.Name + "]</a>";
+                                }
+                                writer.WriteLine("<div style=\"color:black;text-align:left;font-size:10px\"><p>" + u.Split('|')[0] + "："+html+"</p></div>");
                             }
                             writer.WriteLine("</body></html>");
                         }

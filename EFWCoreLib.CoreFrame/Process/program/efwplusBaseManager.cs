@@ -11,16 +11,17 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class efwplusBaseManager
     {
         public static Action<string> ShowMsg;
-        private static bool Iswcfservice = false;
+        public static bool Iswcfservice = false;
+        public static string baseExe = "";
         /// <summary>
         /// 开启efwplusBase
         /// </summary>
-        public static void StartBase()
+        public static Process StartBase()
         {
             Iswcfservice = HostSettingConfig.GetValue("wcfservice") == "1" ? true : false;
             if (Iswcfservice)
             {
-                string baseExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusBase.exe";
+                baseExe = AppDomain.CurrentDomain.BaseDirectory + @"efwplusBase.exe";
 
                 System.Diagnostics.Process pro = new System.Diagnostics.Process();
                 pro.StartInfo.FileName = baseExe;
@@ -34,7 +35,10 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 //pro.StandardInput.AutoFlush = true;
 
                 ShowMsg("服务程序已启动");
+                return pro;
             }
+
+            return null;
         }
         /// <summary>
         /// 停止efwplusBase

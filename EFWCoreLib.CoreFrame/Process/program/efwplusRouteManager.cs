@@ -11,16 +11,17 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class efwplusRouteManager
     {
         public static Action<string> ShowMsg;
-        private static bool Isrouter = false;
+        public static bool Isrouter = false;
+        public static string routeExe = "";
         /// <summary>
         /// 开启efwplusRoute
         /// </summary>
-        public static void StartRoute()
+        public static Process StartRoute()
         {
             Isrouter = HostSettingConfig.GetValue("router") == "1" ? true : false;
             if (Isrouter)
             {
-                string routeExe = AppDomain.CurrentDomain.BaseDirectory + @"\efwplusRoute.exe";
+                routeExe = AppDomain.CurrentDomain.BaseDirectory + @"efwplusRoute.exe";
 
                 System.Diagnostics.Process pro = new System.Diagnostics.Process();
                 pro.StartInfo.FileName = routeExe;
@@ -33,7 +34,11 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 //pro.WaitForExit();
 
                 ShowMsg("路由程序已启动");
+
+                return pro;
             }
+
+            return null;
         }
         /// <summary>
         /// 停止efwplusBase

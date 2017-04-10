@@ -77,16 +77,20 @@ namespace WCFHosting
             //找到更新的事件.但在此实例中,找到更新会自动进行处理,所以这里并不需要操作
             //updater.UpdatesFound += new EventHandler(updater_UpdatesFound);
             //开始检查更新-这是最简单的模式.请现在 assemblyInfo.cs 中配置更新地址,参见对应的文件.
-            FSLib.App.SimpleUpdater.Updater.CheckUpdateSimple("http://localhost:8810/FileStore/MNodeUpgrade/update.xml");
+            //"http://localhost:8810/FileStore/MNodeUpgrade/update.xml"
+            FSLib.App.SimpleUpdater.Updater.CheckUpdateSimple(EFWCoreLib.CoreFrame.Init.HostSettingConfig.GetValue("updaterurl"));
         }
 
         static string ExecCmd(string m, Dictionary<string,string> a)
         {
             try
             {
+                //ProcessWatcher.OnStop();
                 switch (m)
                 {
                     case "startall":
+                        ProcessWatcher.OnStop();
+
                         efwplusHttpManager.StartHttp();
                         MongodbManager.StartDB();
                         NginxManager.StartWeb();
@@ -94,8 +98,12 @@ namespace WCFHosting
                         efwplusBaseManager.StartBase();
                         efwplusRouteManager.StartRoute();
                         efwplusWebAPIManager.StartAPI();
+
+                        ProcessWatcher.OnStart();
                         break;
                     case "quitall":
+                        ProcessWatcher.OnStop();
+
                         efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
@@ -104,6 +112,8 @@ namespace WCFHosting
                         NginxManager.StopWeb();
                         break;
                     case "exit":
+                        ProcessWatcher.OnStop();
+
                         efwplusHttpManager.StopHttp();
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
@@ -113,19 +123,23 @@ namespace WCFHosting
                         Process.GetCurrentProcess().Kill();
                         break;
                     case "restart":
+                        ProcessWatcher.OnStop();
+
                         efwplusBaseManager.StopBase();
                         efwplusRouteManager.StopRoute();
                         efwplusWebAPIManager.StopAPI();
                         MongodbManager.StopDB();
                         NginxManager.StopWeb();
 
-                        //efwplusHttpManager.StartHttp();
-                        MongodbManager.StartDB();
-                        NginxManager.StartWeb();
+                        Application.Restart();
+                        Process.GetCurrentProcess().Kill();
+                        //MongodbManager.StartDB();
+                        //NginxManager.StartWeb();
 
-                        efwplusBaseManager.StartBase();
-                        efwplusRouteManager.StartRoute();
-                        efwplusWebAPIManager.StartAPI();
+                        //efwplusBaseManager.StartBase();
+                        //efwplusRouteManager.StartRoute();
+                        //efwplusWebAPIManager.StartAPI();
+
                         break;
                     case "restartbase":
                         efwplusBaseManager.StopBase();
@@ -140,15 +154,15 @@ namespace WCFHosting
                         efwplusWebAPIManager.StartAPI();
                         break;
                     case "restartmongodb":
-                        efwplusWebAPIManager.StopAPI();
-                        efwplusWebAPIManager.StartAPI();
+                        MongodbManager.StopDB();
+                        MongodbManager.StartDB();
                         break;
                     case "restartnginx":
-                        efwplusWebAPIManager.StopAPI();
-                        efwplusWebAPIManager.StartAPI();
+                        NginxManager.StopWeb();
+                        NginxManager.StartWeb();
                         break;
                 }
-
+                //ProcessWatcher.OnStart();
                 return "succeed";
             }
             catch (Exception e)

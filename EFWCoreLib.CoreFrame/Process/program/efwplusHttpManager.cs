@@ -11,14 +11,15 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class efwplusHttpManager
     {
         public static Action<string> ShowMsg;
+        public static bool isHttp = true;
+        public static string baseExe = "";
         //private static bool Iswcfservice = false;
         /// <summary>
         /// 开启efwplusHttp
         /// </summary>
-        public static void StartHttp()
+        public static Process StartHttp()
         {
-
-            string baseExe = AppDomain.CurrentDomain.BaseDirectory + @"efwplusHttp.exe";
+            baseExe = AppDomain.CurrentDomain.BaseDirectory + @"efwplusHttp.exe";
 
             System.Diagnostics.Process pro = new System.Diagnostics.Process();
             pro.StartInfo.FileName = baseExe;
@@ -33,6 +34,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
 
             ShowMsg("Http程序已启动");
 
+            return pro;
         }
         /// <summary>
         /// 停止efwplusHttp

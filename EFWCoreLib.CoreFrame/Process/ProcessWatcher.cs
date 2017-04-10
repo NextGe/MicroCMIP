@@ -13,20 +13,74 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class ProcessWatcher
     {
         //字段
-        private string[] _processAddress;
+        private static List<ProcessObject> _processObject;
         private static object _lockerForLog = new object();
         private static string _logPath = string.Empty;
-        private List<Thread> threadList;
+        private static List<Thread> threadList;
+
+        private static List<ProcessObject> getprocessObject()
+        {
+            List<ProcessObject> processlist = new List<ProcessObject>();
+
+            if (efwplusHttpManager.isHttp)
+            {
+                ProcessObject po = new ProcessObject();
+                po.processAddress = efwplusHttpManager.baseExe;
+                po.processStart = efwplusHttpManager.StartHttp;
+
+                processlist.Add(po);
+            }
+
+            if (efwplusBaseManager.Iswcfservice)
+            {
+                ProcessObject po = new ProcessObject();
+                po.processAddress = efwplusBaseManager.baseExe;
+                po.processStart = efwplusBaseManager.StartBase;
+
+                processlist.Add(po);
+            }
+
+            if (efwplusRouteManager.Isrouter)
+            {
+                ProcessObject po = new ProcessObject();
+                po.processAddress = efwplusRouteManager.routeExe;
+                po.processStart = efwplusRouteManager.StartRoute;
+
+                processlist.Add(po);
+            }
+
+            if (MongodbManager.Ismongodb)
+            {
+                ProcessObject po = new ProcessObject();
+                po.processAddress = MongodbManager.mongodExe;
+                po.processStart = MongodbManager.StartDB;
+
+                processlist.Add(po);
+            }
+
+            if (NginxManager.Isnginx)
+            {
+                ProcessObject po = new ProcessObject();
+                po.processAddress = NginxManager.nginxExe;
+                po.processStart = NginxManager.StartWeb;
+
+                processlist.Add(po);
+            }
+
+            return processlist;
+        }
+
 
         /// <summary>
-        /// 构造函数
+        /// 启动服务
         /// </summary>
-        public ProcessWatcher(string[] processAddress)
+        /// <param name="args"></param>
+        public static void OnStart()
         {
             try
             {
                 //读取监控进程全路径
-                this._processAddress = processAddress;
+                _processObject = getprocessObject();
 
                 //创建日志目录
                 _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "efwplusWatcherLog");
@@ -39,19 +93,13 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 ProcessWatcher.SaveLog("Watcher()初始化出错！错误描述为：" + ex.Message.ToString());
             }
-        }
 
-
-        /// <summary>
-        /// 启动服务
-        /// </summary>
-        /// <param name="args"></param>
-        public void OnStart()
-        {
             try
             {
                 threadList = new List<Thread>();
-                this.StartWatch();
+                //Thread.Sleep(50000);
+                //StartWatch();
+                StartListen();
             }
             catch (Exception ex)
             {
@@ -59,11 +107,35 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             }
         }
 
+        static System.Timers.Timer timer;
+        //
+        static void StartListen()
+        {
+            timer = new System.Timers.Timer();
+            timer.Interval = 5000;//10s
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+            timer.Start();
+        }
+
+        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                timer.Enabled = false;
+                StartWatch();
+                //timer.Enabled = true;
+            }
+            catch
+            {
+                //timer.Enabled = true;
+            }
+        }
+
 
         /// <summary>
         /// 停止服务
         /// </summary>
-        public void OnStop()
+        public static void OnStop()
         {
             try
             {
@@ -85,20 +157,17 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// <summary>
         /// 开始监控
         /// </summary>
-        private void StartWatch()
+        private static void StartWatch()
         {
-            if (this._processAddress != null)
+            if (_processObject != null)
             {
-                if (this._processAddress.Length > 0)
+                if (_processObject.Count > 0)
                 {
-                    foreach (string str in _processAddress)
+                    foreach (var p in _processObject)
                     {
-                        if (str.Trim() != "")
+                        if (File.Exists(p.processAddress.Trim()))
                         {
-                            if (File.Exists(str.Trim()))
-                            {
-                                this.ScanProcessList(str.Trim());
-                            }
+                            ScanProcessList(p.processAddress.Trim(), p.processStart);
                         }
                     }
                 }
@@ -112,7 +181,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// 如果不一致，说明进程尚未启动
         /// </summary>
         /// <param name="strAddress"></param>
-        private void ScanProcessList(string address)
+        private static void ScanProcessList(string address,Func<Process> start)
         {
             Process[] arrayProcess = Process.GetProcesses();
             foreach (Process p in arrayProcess)
@@ -122,10 +191,10 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 {
                     try
                     {
-                        if (this.FormatPath(address) == this.FormatPath(p.MainModule.FileName.ToString()))
+                        if (FormatPath(address) == FormatPath(p.MainModule.FileName.ToString()))
                         {
                             //进程已启动
-                            this.WatchProcess(p, address);
+                            WatchProcess(p, start);
                             return;
                         }
                     }
@@ -138,11 +207,14 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             }
 
             //进程尚未启动
-            Process process = new Process();
-            process.StartInfo.WorkingDirectory = new FileInfo(address).DirectoryName;
-            process.StartInfo.FileName = address;
-            process.Start();
-            this.WatchProcess(process, address);
+            //Process process = new Process();
+            //process.StartInfo.WorkingDirectory = new FileInfo(address).DirectoryName;
+            //process.StartInfo.FileName = address;
+            //process.StartInfo.UseShellExecute = false;
+            //process.StartInfo.CreateNoWindow = true;
+            //process.Start();
+
+            WatchProcess(start(), start);
         }
 
 
@@ -151,9 +223,9 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         /// <param name="p"></param>
         /// <param name="address"></param>
-        private void WatchProcess(Process process, string address)
+        private static void WatchProcess(Process process,Func<Process> start)
         {
-            ProcessRestart objProcessRestart = new ProcessRestart(process, address);
+            ProcessRestart objProcessRestart = new ProcessRestart(process, start);
             Thread thread = new Thread(new ThreadStart(objProcessRestart.RestartProcess));
             thread.Start();
 
@@ -169,7 +241,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private string FormatPath(string path)
+        private static string FormatPath(string path)
         {
             return path.ToLower().Trim().TrimEnd('\\');
         }
@@ -202,12 +274,17 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
 
     }
 
+    public class ProcessObject
+    {
+        public string processAddress { get; set; }
+        public Func<Process> processStart { get; set; }
+    }
 
     public class ProcessRestart
     {
         //字段
         private Process _process;
-        private string _address;
+        private Func<Process> _start;
 
 
         /// <summary>
@@ -222,10 +299,10 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
         /// </summary>
         /// <param name="process"></param>
         /// <param name="address"></param>
-        public ProcessRestart(Process process, string address)
+        public ProcessRestart(Process process, Func<Process> start)
         {
             this._process = process;
-            this._address = address;
+            this._start = start;
         }
 
 
@@ -239,9 +316,10 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 while (true)
                 {
                     this._process.WaitForExit();
-                    this._process.Close();    //释放已退出进程的句柄
-                    this._process.StartInfo.FileName = this._address;
-                    this._process.Start();
+                    //this._process.Close();    //释放已退出进程的句柄
+                    //this._process.StartInfo.FileName = this._address;
+                    //this._process.Start();
+                    this._process = this._start();
 
                     Thread.Sleep(1000);
                 }

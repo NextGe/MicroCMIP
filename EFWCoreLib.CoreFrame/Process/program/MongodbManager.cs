@@ -13,12 +13,12 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class MongodbManager
     {
         public static Action<string> ShowMsg;
-        private static bool Ismongodb = false;
-        //private static System.Diagnostics.Process pro;
+        public static bool Ismongodb = false;
+        public static string mongodExe = "";
         /// <summary>
         /// 开启Mongodb
         /// </summary>
-        public static void StartDB()
+        public static Process StartDB()
         {
             Ismongodb = HostSettingConfig.GetValue("mongodb") == "1" ? true : false;
             if (Ismongodb)
@@ -26,7 +26,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 string config = String.Format(HostMongoDBConfig.GetConfig_Temp(), (HostSettingConfig.GetValue("mongodb_dbpath") == "" ? AppDomain.CurrentDomain.BaseDirectory : HostSettingConfig.GetValue("mongodb_dbpath")));
                 HostMongoDBConfig.SetConfig(config);
 
-                string mongodExe = HostSettingConfig.GetValue("mongodb_binpath") + @"\mongod.exe";
+                mongodExe = HostSettingConfig.GetValue("mongodb_binpath") + @"\mongod.exe";
                 string mongoConf = AppDomain.CurrentDomain.BaseDirectory + @"Config\mongo.conf";
 
                 System.Diagnostics.Process pro = new System.Diagnostics.Process();
@@ -41,7 +41,11 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 //pro.WaitForExit();
 
                 ShowMsg("Mongodb已启动");
+
+                return pro;
             }
+
+            return null;
         }
         /// <summary>
         /// 停止Mongodb

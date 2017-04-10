@@ -13,40 +13,56 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
     public class NginxManager
     {
         public static Action<string> ShowMsg;
-        private static bool Isnginx = false;
+        public static bool Isnginx = false;
+        public static string nginxExe = "";
         /// <summary>
         /// 开启Nginx
         /// </summary>
-        public static void StartWeb()
+        public static Process StartWeb()
         {
             try
             {
                 Isnginx = HostSettingConfig.GetValue("nginx") == "1" ? true : false;
                 if (Isnginx)
                 {
-                    string nginxExe = AppDomain.CurrentDomain.BaseDirectory + @"\nginx\nginx.exe";
+                    nginxExe = HostSettingConfig.GetValue("nginx_binpath");
                     System.IO.FileInfo file = new System.IO.FileInfo(nginxExe);
 
+                    //System.Diagnostics.Process pro = new System.Diagnostics.Process();
+                    //pro.StartInfo.FileName = "cmd.exe";
+                    ////pro.StartInfo.Arguments = "--config " + mongoConf;
+                    //pro.StartInfo.UseShellExecute = false;
+                    //pro.StartInfo.RedirectStandardInput = true;
+                    //pro.StartInfo.RedirectStandardOutput = true;
+                    //pro.StartInfo.RedirectStandardError = true;
+                    //pro.StartInfo.CreateNoWindow = true;
+                    //pro.Start();
+                    ////pro.WaitForExit();
+                    //pro.StandardInput.WriteLine("cd " + file.Directory.Root);
+                    //pro.StandardInput.WriteLine("cd " + file.DirectoryName);
+                    //pro.StandardInput.WriteLine("start " + file.Name);
+                    //pro.StandardInput.WriteLine("exit");
+                    //pro.StandardInput.AutoFlush = true;
+                    ////string output = pro.StandardOutput.ReadToEnd();
+                    ////pro.Close();
+
                     System.Diagnostics.Process pro = new System.Diagnostics.Process();
-                    pro.StartInfo.FileName = "cmd.exe";
-                    //pro.StartInfo.Arguments = "--config " + mongoConf;
+                    pro.StartInfo.FileName = nginxExe;
                     pro.StartInfo.UseShellExecute = false;
-                    pro.StartInfo.RedirectStandardInput = true;
-                    pro.StartInfo.RedirectStandardOutput = true;
-                    pro.StartInfo.RedirectStandardError = true;
-                    pro.StartInfo.CreateNoWindow = true;
+                    //pro.StartInfo.RedirectStandardInput = true;
+                    //pro.StartInfo.RedirectStandardOutput = true;
+                    //pro.StartInfo.RedirectStandardError = true;
+                    //pro.StartInfo.CreateNoWindow = true;
                     pro.Start();
                     //pro.WaitForExit();
-                    pro.StandardInput.WriteLine("cd " + file.Directory.Root);
-                    pro.StandardInput.WriteLine("cd " + file.DirectoryName);
-                    pro.StandardInput.WriteLine("start " + file.Name);
-                    pro.StandardInput.WriteLine("exit");
-                    pro.StandardInput.AutoFlush = true;
-                    //string output = pro.StandardOutput.ReadToEnd();
-                    //pro.Close();
+                    //pro.StandardInput.AutoFlush = true;
 
-                    ShowMsg("Nginx已启动");
+                    ShowMsg("Web程序已启动");
+
+                    return pro;
                 }
+
+                return null;
             }
             catch (Exception e)
             {
@@ -75,6 +91,16 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 //杀两次，因为nginx自带守护进程
                 proc = Process.GetProcessesByName("nginx");//创建一个进程数组，把与此进程相关的资源关联。
+                for (int i = 0; i < proc.Length; i++)
+                {
+                    proc[i].Kill();  //逐个结束进程.
+                }
+            }
+            catch { }
+
+            try
+            {
+                proc = Process.GetProcessesByName("efwplusNginxHost");//创建一个进程数组，把与此进程相关的资源关联。
                 for (int i = 0; i < proc.Length; i++)
                 {
                     proc[i].Kill();  //逐个结束进程.
