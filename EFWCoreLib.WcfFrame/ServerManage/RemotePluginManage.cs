@@ -37,14 +37,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         public static MNodePlugin GetLocalPlugin()
         {
             MNodePlugin localPlugin = GetCachePlugin();
-            //if (localPlugin == null)
-            //{
-            //    localPlugin = new MNodePlugin();
-            //    localPlugin.ServerIdentify = WcfGlobal.Identify;
-            //    localPlugin.PathStrategy = 0;
-            //    localPlugin.LocalPlugin = CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList();
-            //    localPlugin.RemotePlugin = new List<RemotePlugin>();
-            //}
+            if (localPlugin == null)
+            {
+                localPlugin = new MNodePlugin();
+                localPlugin.ServerIdentify = WcfGlobal.Identify;
+                localPlugin.PathStrategy = 0;
+                localPlugin.LocalPlugin = CoreFrame.Init.AppPluginManage.PluginDic.Keys.ToList();
+                localPlugin.RemotePlugin = new List<RemotePlugin>();
+            }
             //else
             //{
             //    //交集

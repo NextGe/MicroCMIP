@@ -98,8 +98,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 threadList = new List<Thread>();
                 //Thread.Sleep(50000);
-                //StartWatch();
-                StartListen();
+                StartWatch();
+                //StartListen();
             }
             catch (Exception ex)
             {
