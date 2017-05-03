@@ -143,19 +143,28 @@ namespace EFWCoreLib.CoreFrame.DbProvider
             {
                 case DatabaseType.Oracle:
                     //string strsql = "SELECT Test_SQL.nextval FROM dual";SELECT  @@IDENTITY
+                    string[] sql = commandtext.Split(';');
+                    if (sql.Length != 2)
+                        throw new Exception("Sql语句有误");
+
+                    commandtext = sql[0];
+                    string IDENTITY = sql[1];
+
                     if (isInTransaction)
                     {
                         command = database.GetSqlStringCommand(commandtext);
                         command.Connection = connection;
                         command.Transaction = transaction;
+                        database.ExecuteNonQuery(command,transaction);
                         //command.CommandType = CommandType.Text;
-                        //command.CommandText = command.CommandText + ";SELECT  @@IDENTITY";
+                        command.CommandText = IDENTITY;
                         return Convert.ToInt32(database.ExecuteScalar(command, transaction));
                     }
                     else
                     {
                         command = database.GetSqlStringCommand(commandtext);
-                        //command.CommandText = command.CommandText + ";SELECT  @@IDENTITY";
+                        database.ExecuteNonQuery(command);
+                        command.CommandText = IDENTITY;
                         return Convert.ToInt32(database.ExecuteScalar(command));
                     }
                 case DatabaseType.SqlServer2005:
@@ -193,7 +202,7 @@ namespace EFWCoreLib.CoreFrame.DbProvider
 
             if (isInTransaction)
             {
-                command = new SqlCommand(commandtext);
+                command = database.GetSqlStringCommand(commandtext);
                 command.Connection = connection;
                 command.Transaction = transaction;
                 //command.CommandType = CommandType.Text;

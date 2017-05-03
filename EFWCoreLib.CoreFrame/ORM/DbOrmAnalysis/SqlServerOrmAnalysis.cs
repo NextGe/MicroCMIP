@@ -175,7 +175,9 @@ namespace EFWCoreLib.CoreFrame.Orm
                 {
 
                     ColumnAttributeInfo columnAttributeInfo = columnAttributeCollection[i];
-
+                    //自定义SQL查询列getmodel()中查询显示不了
+                    if (columnAttributeInfo.DataKey == false && columnAttributeInfo.IsInsert == false)
+                        continue;
                     fields += (fields == "" ? "" : ",") + columnAttributeInfo.FieldName + " as " + columnAttributeInfo.PropertyName;
 
                     if (columnAttributeInfo.DataKey == true)

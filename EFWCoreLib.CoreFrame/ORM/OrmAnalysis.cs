@@ -398,7 +398,7 @@ namespace EFWCoreLib.CoreFrame.Orm
 
                 where = JoinWhere(tableAttribute.IsGB, strWhere);
                 strsql = "select {0} from {1} {2}";
-                strsql = string.Format(strsql, fields, tableAttribute.TableName + " as T1", where);
+                strsql = string.Format(strsql, fields, tableAttribute.TableName + " T1", where);
 
                 if (pageInfo != null)
                 {

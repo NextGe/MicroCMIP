@@ -1571,12 +1571,12 @@ this IDbConnection cnn, string sql, object param, IDbTransaction transaction, in
                 {
                     object val = func(reader);
 
-                    if (val is EFWCoreLib.CoreFrame.Business.AbstractEntity)
-                    {
-                        EFWCoreLib.CoreFrame.Plugin.ModulePlugin mp = EFWCoreLib.CoreFrame.Init.AppPluginManage.PluginDic[pluginname];
-                        if (mp != null)
-                            (val as EFWCoreLib.CoreFrame.Business.AbstractEntity).BindDb(mp.database, mp.container, mp.cache, mp.plugin.name);
-                    }
+                    //if (val is EFWCoreLib.CoreFrame.Business.AbstractEntity)
+                    //{
+                    //    EFWCoreLib.CoreFrame.Plugin.ModulePlugin mp = EFWCoreLib.CoreFrame.Init.AppPluginManage.PluginDic[pluginname];
+                    //    if (mp != null)
+                    //        (val as EFWCoreLib.CoreFrame.Business.AbstractEntity).BindDb(mp.database, mp.container, mp.cache, mp.plugin.name);
+                    //}
 
 					if (val == null || val is T) {
                        

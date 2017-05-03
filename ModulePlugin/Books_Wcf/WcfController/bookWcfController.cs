@@ -28,26 +28,39 @@ namespace Books_Wcf.WcfController
         [WCFMethod]
         public ServiceResponseData GetBooks()
         {
-            DataTable dt = NewDao<IBookDao>().GetBooks("", 0);
+            //DataTable dt = NewDao<IBookDao>().GetBooks("", 0);
+            //responseData.AddData(dt);
+
+            DataTable dt = oleDb.GetDataTable(@"select * from BOOKS t");
             responseData.AddData(dt);
             return responseData;
         }
         [WCFMethod]
         public ServiceResponseData Test()
         {
-            DataTable dt = oleDb.GetDataTable(@"SELECT 
-	            bg.GroupId,
-	            Name,
-	            DelFlag,
-	            Admin,
-	            Everyone,
-	            bg.Memo,
-	            Property AS Pro,
-	            bg.WorkId,
-	            ISNULL(bgu.Id,0) AS bFlag
-            FROM BaseGroup bg
-            LEFT JOIN BaseGroupUser bgu ON bg.GroupId = bgu.GroupId AND bgu.WorkId = 1 AND bgu.UserId = 202
-            WHERE bg.WorkId = 1");
+            //测试Oracle数据库
+            //1.实体新增
+            Books booknew = NewObject<Books>();
+            booknew.BookName = "人月神话";
+            booknew.BuyPrice = 20.10M;
+            booknew.BuyDate = DateTime.Now;
+            booknew.Flag = 0;
+            booknew.save();
+            //2.实体更新
+            booknew.Flag = 1;
+            booknew.save();
+            //3.实体获取
+            booknew = NewObject<Books>().getmodel(booknew.Id) as Books;
+            //4.实体删除
+            booknew.Id = 0;
+            booknew.save();
+            NewObject<Books>().delete(booknew.Id);
+            //5.GetList
+            responseData.AddData(NewObject<Books>().getlist<Books>());
+            //6.Query<T>
+            responseData.AddData(oleDb.Query<Books>("select * from BOOKS t", String.Empty).ToList());
+            //7.DataTable
+            DataTable dt = oleDb.GetDataTable(@"select * from BOOKS t");
             responseData.AddData(dt);
             return responseData;
         }

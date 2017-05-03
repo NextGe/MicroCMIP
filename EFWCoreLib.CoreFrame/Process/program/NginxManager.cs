@@ -52,7 +52,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                     //pro.StartInfo.RedirectStandardInput = true;
                     //pro.StartInfo.RedirectStandardOutput = true;
                     //pro.StartInfo.RedirectStandardError = true;
-                    //pro.StartInfo.CreateNoWindow = true;
+                    pro.StartInfo.CreateNoWindow = true;
+                    pro.StartInfo.WorkingDirectory = file.DirectoryName;
                     pro.Start();
                     //pro.WaitForExit();
                     //pro.StandardInput.AutoFlush = true;

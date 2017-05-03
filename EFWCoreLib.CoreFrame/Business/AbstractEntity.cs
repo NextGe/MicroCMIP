@@ -73,11 +73,12 @@ namespace EFWCoreLib.CoreFrame.Business
             System.Collections.Hashtable filedValue = new System.Collections.Hashtable();
             for (int index = 0; index < dataReader.FieldCount; index++)
             {
-                filedValue.Add(dataReader.GetName(index), dataReader[index]);
+                filedValue.Add(dataReader.GetName(index).ToUpper(), dataReader[index]);
             }
             foreach (System.Reflection.PropertyInfo property in type.GetProperties())
             {
-                SetEntityValue(property.Name, obj, filedValue[property.Name]);
+                if (filedValue.ContainsKey(property.Name.ToUpper()))
+                    SetEntityValue(property.Name, obj, filedValue[property.Name.ToUpper()]);
             }
             ((IbindDb)obj).BindDb(GetDb(), GetUnityContainer(),GetCache(),GetPluginName());
             return obj;
