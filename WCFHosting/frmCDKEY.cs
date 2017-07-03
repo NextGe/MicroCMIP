@@ -21,10 +21,10 @@ namespace WCFHosting
 
         private void txtCode_TextChanged(object sender, EventArgs e)
         {
-            if (txtCode.Text.Trim() == "kakake!@#123")
-            {
-                txtCode.Text = Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(null, txtcpu.Text.Trim(), null), "kakake!@#123");
-            }
+            //if (txtCode.Text.Trim() == "kakake!@#123")
+            //{
+            //    txtCode.Text = Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(null, txtcpu.Text.Trim(), null), "kakake!@#123");
+            //}
         }
 
         private void btnOk_Click(object sender, EventArgs e)

@@ -91,6 +91,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -159,6 +160,7 @@
     <Compile Include="WcfHandler\Contract\IFileHandler.cs" />
     <Compile Include="WcfHandler\Contract\IRouterHandler.cs" />
     <Compile Include="WcfHandler\FileService.cs" />
+    <Compile Include="WcfHandler\HttpService.cs" />
     <Compile Include="WcfHandler\RouterBaseService.cs" />
     <Compile Include="WcfHandler\RouterFileService.cs" />
   </ItemGroup>
@@ -172,8 +174,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output"
-Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Component"
-Copy "$(TargetPath)" "D:\efwplusProject\cloudhospital\Output"
+Copy "$(TargetPath)" "$(SolutionDir)..\MicroCMIP_Reactor"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -60,8 +60,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)Output"
-Copy "$(TargetDir)\$(TargetFileName)" "D:\efwplusProject\cloudhospital\Component"
-Copy "$(TargetDir)\$(TargetFileName)" "D:\efwplusProject\cloudhospital\Output"</PostBuildEvent>
+Copy "$(TargetPath)" "$(SolutionDir)..\MicroCMIP_Reactor"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

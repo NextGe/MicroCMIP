@@ -42,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,12 +76,19 @@
     <ApplicationIcon>entity.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NPOI">
+      <HintPath>..\..\Component\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="NVelocity">
       <HintPath>..\..\Component\NVelocity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\Component\System.Data.SQLite.DLL</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -96,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityTemplateData.cs" />
+    <Compile Include="ExcelHelper.cs" />
     <Compile Include="FrmEntityMaker.cs">
       <SubType>Form</SubType>
     </Compile>

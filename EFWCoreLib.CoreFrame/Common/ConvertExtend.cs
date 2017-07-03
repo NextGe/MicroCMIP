@@ -9,10 +9,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Collections;
 using System.Data;
-using EFWCoreLib.CoreFrame.DbProvider;
-using Microsoft.Practices.Unity;
-using EFWCoreLib.CoreFrame.Business;
-using Microsoft.Practices.EnterpriseLibrary.Caching;
 
 namespace EFWCoreLib.CoreFrame.Common
 {

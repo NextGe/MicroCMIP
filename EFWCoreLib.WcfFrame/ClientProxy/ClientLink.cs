@@ -83,7 +83,7 @@ namespace EFWCoreLib.WcfFrame
         #region 变量
         private string _clientName;//客户端名称
         private string _pluginName;//插件名称
-        private string _token;//令牌
+        //private string _token;//令牌
         private string _wcfendpoint = "wcfendpoint";//服务地址
         private string _fileendpoint = "fileendpoint";//文件服务地址
         private ClientObject clientObj;//平台连接对象
@@ -138,20 +138,20 @@ namespace EFWCoreLib.WcfFrame
             _wcfendpoint = wcfendpoint;
         }
 
-        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token)
-        {
-            _clientName = clientname;
-            _pluginName = pluginname;
-            _wcfendpoint = wcfendpoint;
-            _token = token;
-        }
+        //public ClientLink(string clientname, string pluginname, string wcfendpoint, string token)
+        //{
+        //    _clientName = clientname;
+        //    _pluginName = pluginname;
+        //    _wcfendpoint = wcfendpoint;
+        //    //_token = token;
+        //}
 
-        public ClientLink(string clientname, string pluginname, string wcfendpoint, string token, string beginidentify, string endidentify)
+        public ClientLink(string clientname, string pluginname, string wcfendpoint, /*string token,*/ string beginidentify, string endidentify)
         {
             _clientName = clientname;
             _pluginName = pluginname;
             _wcfendpoint = wcfendpoint;
-            _token = token;
+            //_token = token;
             _beginIdenify = beginidentify;
             _endIdentify = endidentify;
         }
@@ -173,7 +173,7 @@ namespace EFWCoreLib.WcfFrame
             clientObj.ClientName = _clientName;
             clientObj.RouterID = Guid.NewGuid().ToString();
             clientObj.PluginName = PluginName;
-            clientObj.Token = _token;
+            //clientObj.Token = _token;
 
 
 #if ClientProxy
@@ -758,7 +758,7 @@ namespace EFWCoreLib.WcfFrame
                 para.replyidentify = null;
                 para.beginidentify = BeginIdentify;
                 para.endidentify = EndIdentify;
-                para.token = clientObj.Token;
+                para.token = loginright.token; //clientObj.Token;
                 para.iscompressjson = iscompressjson;
                 para.isencryptionjson = isencryptionjson;
                 para.serializetype = serializetype;

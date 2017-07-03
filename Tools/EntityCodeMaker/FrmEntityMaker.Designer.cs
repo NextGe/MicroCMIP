@@ -39,11 +39,12 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnGeneration2 = new System.Windows.Forms.Button();
             this.btnGeneration = new System.Windows.Forms.Button();
             this.txtnamespace = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.btnGeneration2 = new System.Windows.Forms.Button();
+            this.btnGeneration3 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTable)).BeginInit();
             this.panel1.SuspendLayout();
@@ -58,7 +59,7 @@
             this.panel2.Controls.Add(this.DbcontionStr);
             this.panel2.Controls.Add(this.btnGetTableList);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 486);
+            this.panel2.Location = new System.Drawing.Point(0, 429);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(553, 88);
             this.panel2.TabIndex = 5;
@@ -123,12 +124,12 @@
             this.Column1,
             this.Column2});
             this.gridTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridTable.Location = new System.Drawing.Point(0, 37);
+            this.gridTable.Location = new System.Drawing.Point(0, 57);
             this.gridTable.Name = "gridTable";
             this.gridTable.ReadOnly = true;
             this.gridTable.RowTemplate.Height = 23;
             this.gridTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTable.Size = new System.Drawing.Size(553, 449);
+            this.gridTable.Size = new System.Drawing.Size(553, 372);
             this.gridTable.TabIndex = 0;
             this.gridTable.Click += new System.EventHandler(this.gridTable_Click);
             // 
@@ -147,11 +148,12 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(553, 486);
+            this.panel1.Size = new System.Drawing.Size(553, 429);
             this.panel1.TabIndex = 4;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnGeneration3);
             this.panel3.Controls.Add(this.btnGeneration2);
             this.panel3.Controls.Add(this.btnGeneration);
             this.panel3.Controls.Add(this.txtnamespace);
@@ -159,13 +161,24 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(553, 37);
+            this.panel3.Size = new System.Drawing.Size(553, 57);
             this.panel3.TabIndex = 1;
+            // 
+            // btnGeneration2
+            // 
+            this.btnGeneration2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGeneration2.Location = new System.Drawing.Point(162, 28);
+            this.btnGeneration2.Name = "btnGeneration2";
+            this.btnGeneration2.Size = new System.Drawing.Size(89, 23);
+            this.btnGeneration2.TabIndex = 3;
+            this.btnGeneration2.Text = "生成前台实体";
+            this.btnGeneration2.UseVisualStyleBackColor = true;
+            this.btnGeneration2.Click += new System.EventHandler(this.btnGeneration2_Click);
             // 
             // btnGeneration
             // 
             this.btnGeneration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGeneration.Location = new System.Drawing.Point(362, 4);
+            this.btnGeneration.Location = new System.Drawing.Point(63, 28);
             this.btnGeneration.Name = "btnGeneration";
             this.btnGeneration.Size = new System.Drawing.Size(93, 23);
             this.btnGeneration.TabIndex = 2;
@@ -179,7 +192,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtnamespace.Location = new System.Drawing.Point(63, 6);
             this.txtnamespace.Name = "txtnamespace";
-            this.txtnamespace.Size = new System.Drawing.Size(293, 21);
+            this.txtnamespace.Size = new System.Drawing.Size(478, 21);
             this.txtnamespace.TabIndex = 1;
             // 
             // label2
@@ -191,22 +204,22 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "命名空间";
             // 
-            // btnGeneration2
+            // btnGeneration3
             // 
-            this.btnGeneration2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGeneration2.Location = new System.Drawing.Point(461, 4);
-            this.btnGeneration2.Name = "btnGeneration2";
-            this.btnGeneration2.Size = new System.Drawing.Size(89, 23);
-            this.btnGeneration2.TabIndex = 3;
-            this.btnGeneration2.Text = "生成前台实体";
-            this.btnGeneration2.UseVisualStyleBackColor = true;
-            this.btnGeneration2.Click += new System.EventHandler(this.btnGeneration2_Click);
+            this.btnGeneration3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGeneration3.Location = new System.Drawing.Point(257, 28);
+            this.btnGeneration3.Name = "btnGeneration3";
+            this.btnGeneration3.Size = new System.Drawing.Size(89, 23);
+            this.btnGeneration3.TabIndex = 4;
+            this.btnGeneration3.Text = "生成接口文档";
+            this.btnGeneration3.UseVisualStyleBackColor = true;
+            this.btnGeneration3.Click += new System.EventHandler(this.btnGeneration3_Click);
             // 
             // FrmEntityMaker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 574);
+            this.ClientSize = new System.Drawing.Size(553, 517);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -241,6 +254,7 @@
         private System.Windows.Forms.Button btnGeneration;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Button btnGeneration2;
+        private System.Windows.Forms.Button btnGeneration3;
     }
 }
 

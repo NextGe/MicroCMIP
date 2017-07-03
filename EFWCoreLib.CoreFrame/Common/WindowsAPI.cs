@@ -25,5 +25,27 @@ namespace EFWCoreLib.CoreFrame.Common
         [DllImport("user32.dll", EntryPoint = "GetTopWindow", CharSet = CharSet.Ansi)]
         public static extern IntPtr GetTopWindow(IntPtr hWnd);
         #endregion
+
+        [DllImport("kernel32.dll")]
+        public static extern int CreateWaitableTimer(int lpTimerAttributes, bool bManualReset, int lpTimerName);
+
+
+        [DllImport("kernel32.dll")]
+        public static extern bool SetWaitableTimer(int hTimer, ref long pDueTime,
+            int lPeriod, int pfnCompletionRoutine, // TimerCompleteDelegate  
+            int lpArgToCompletionRoutine, bool fResume);
+
+
+        [DllImport("user32.dll")]
+        public static extern bool MsgWaitForMultipleObjects(uint nCount, ref int pHandles,
+            bool bWaitAll, int dwMilliseconds, uint dwWakeMask);
+
+
+        [DllImport("kernel32.dll")]
+        public static extern bool CloseHandle(int hObject);
+
+
+        public const int NULL = 0;
+        public const int QS_TIMER = 0x10;
     }
 }

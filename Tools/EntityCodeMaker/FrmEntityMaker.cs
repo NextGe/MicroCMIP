@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using System.IO;
 using CodeMaker.Action.Manager;
 using System.Xml;
+using System.Configuration;
+using System.Data.SQLite;
 
 namespace _01EntityCodeMaker
 {
@@ -259,6 +261,72 @@ namespace _01EntityCodeMaker
                 }
                 MessageBox.Show("生成成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+        //生成接口文档
+        private void btnGeneration3_Click(object sender, EventArgs e)
+        {
+
+            string ConnectionStringSqlite = ConfigurationManager.ConnectionStrings["SQLiteDB"].ConnectionString;
+
+            SQLiteConnection conn = null;
+            try
+            {
+                conn = new SQLiteConnection(ConnectionStringSqlite);
+                conn.Open();
+
+                string content = @"
+-  {0}
+
+|属性|类型|说明|
+|:----    |:-------    |:--- |
+{1}
+";
+                DataTable DbTableList = dsDb.Tables["DbTableList"];
+                DataTable DbColumnList = dsDb.Tables["DbColumnList"];
+                for (int i = 0; i < DbTableList.Rows.Count; i++)
+                {
+                    if (Convert.ToBoolean(DbTableList.Rows[i][0]) == true)
+                    {
+                        string tempName = DbTableList.Rows[i][1].ToString();
+
+                        StringBuilder fields = new StringBuilder();
+
+                        DataRow[] drs = DbColumnList.Select("TableName='" + tempName + "'");
+                        for (int k = 0; k < drs.Length; k++)
+                        {
+                            if (drs[k]["colname"].ToString().ToLower() != "workid")//过滤掉WorkId字段
+                            {
+                                fields.AppendLine("|" + drs[k]["colname"].ToString()+ "|" + GetTypeMappingValue("SqlServerToCS", drs[k]["typename"].ToString())+ "|" + drs[k]["remarks"].ToString() + "|");
+                            }
+                        }
+
+                        string sql = "insert into page(author_uid,author_username,item_id,page_title,page_content) values(@author_uid,@author_username,@item_id,@page_title,@page_content)";
+                        SQLiteParameter[] parameter = {
+                    new SQLiteParameter("@author_uid", 2)
+                  , new SQLiteParameter("@author_username", "kakake")
+                  , new SQLiteParameter("@item_id", 1)
+                  //, new SQLiteParameter("@cat_id", 0)
+                  , new SQLiteParameter("@page_title", tempName)
+                  , new SQLiteParameter("@page_content", string.Format(content,tempName,fields.ToString()))
+                };
+                        SQLiteCommand cmd = new SQLiteCommand(sql, conn);
+                        cmd.Parameters.AddRange(parameter);
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+
+                }
+
+                MessageBox.Show("生成成功！");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            
         }
     }
 }

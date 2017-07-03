@@ -122,8 +122,10 @@
     <Compile Include="ObjectModel\UserLogin\User.cs" />
     <Compile Include="ObjectModel\UserLogin\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WcfController\CashPaymentController.cs" />
     <Compile Include="WcfController\EmpUserController.cs" />
     <Compile Include="WcfController\LoginController.cs" />
+    <Compile Include="WcfController\ReportController.cs" />
     <Compile Include="WcfController\RightController.cs" />
     <Compile Include="WcfController\TestWCFController.cs" />
   </ItemGroup>
@@ -151,7 +153,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)Output\ModulePlugin\WcfMainUIFrame\dll\"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)Output\ModulePlugin\WcfMainUIFrame\dll\"
+Copy "$(TargetPath)" "$(SolutionDir)..\MicroCMIP_Reactor"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

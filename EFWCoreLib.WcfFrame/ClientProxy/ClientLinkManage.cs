@@ -22,7 +22,7 @@ namespace EFWCoreLib.WcfFrame
         /// <summary>
         /// 登陆后缓存令牌
         /// </summary>
-        public static string Token = null;//
+        //public static string Token = null;//
 
         /// <summary>
         /// 缓存的客户连接
@@ -43,7 +43,7 @@ namespace EFWCoreLib.WcfFrame
                         return ClientLinkDic[pluginname];
                     }
 
-                    link = new ClientLink(null, pluginname,null,Token);
+                    link = new ClientLink(null, pluginname,null);
                     ClientLinkDic.Add(pluginname, link);
                 }
                 link.CreateConnection();
@@ -67,7 +67,7 @@ namespace EFWCoreLib.WcfFrame
                         return ClientLinkDic[pluginname];
                     }
 
-                    link = new ClientLink(null, pluginname, wcfendpoint,Token);
+                    link = new ClientLink(null, pluginname, wcfendpoint);
                     ClientLinkDic.Add(pluginname, link);
                 }
                 link.CreateConnection();

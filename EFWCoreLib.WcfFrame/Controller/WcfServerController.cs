@@ -97,14 +97,14 @@ namespace EFWCoreLib.WcfFrame.ServerController
                 if (clientlink == null && !pool.IsPoolFull)
                 {
                     //装入连接池
-                    bool flag = pool.AddPool(wcfpluginname, out clientlink, out index);
+                    bool flag = pool.AddPool(wcfpluginname, "localendpoint", out clientlink, out index);
                 }
 
                 //如果当前契约无空闲连接，并且队列已满，并且非当前契约有空闲，则踢掉一个非当前契约
                 if (clientlink == null && pool.IsPoolFull && pool.GetFreePoolNums(wcfpluginname) == 0 && pool.GetUsedPoolNums(wcfpluginname) != 500)
                 {
                     //创建新连接
-                    pool.RemovePoolOneNotAt(wcfpluginname, out clientlink, out index);
+                    pool.RemovePoolOneNotAt(wcfpluginname, "localendpoint", out clientlink,  out index);
                 }
 
                 if (clientlink != null)

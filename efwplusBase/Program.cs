@@ -189,7 +189,7 @@ namespace efwplusBase
                         retData = EFWCoreLib.WcfFrame.ServerManage.DataManage.RootRemoteCommand(a["identify"], a["eprocess"], a["method"], a["arg"]);
                         break;
                     case "createregcode"://生成注册码
-                        retData= Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(a["identify"], a["machinecode"], a["regdate"]), "kakake!@#123");
+                        retData= Encryption.EncryPW(TimeCDKEY.CreatSerialNumber(a["identify"], a["machinecode"], a["regdate"]), "kakake888");
                         break;
                 }
                 ShowMsg(Color.Black, DateTime.Now, "efwplusBase命令执行完成：" + m);

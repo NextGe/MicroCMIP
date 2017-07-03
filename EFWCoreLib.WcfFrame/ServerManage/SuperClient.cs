@@ -45,7 +45,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         private static void CreateSuperClient()
         {
             //就算上级中间件重启了，下级中间件创建链接的时候会重新注册本地插件
-            superClientLink = new ClientLink(WcfGlobal.HostName, "SuperPlugin", null, null, WcfGlobal.Identify, null);
+            superClientLink = new ClientLink(WcfGlobal.HostName, "SuperPlugin", null, WcfGlobal.Identify, null);
             try
             {
                 superClientLink.CreateConnection();
@@ -156,14 +156,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 if (clientlink == null && !pool.IsPoolFull && pool.GetOpeningNums(wcfpluginname) <= 100)
                 {
                     //装入连接池
-                    bool flag = pool.AddPool(wcfpluginname, out clientlink, out index);
+                    bool flag = pool.AddPool(wcfpluginname,null, out clientlink, out index);
                 }
 
                 //如果当前契约无空闲连接，并且队列已满，并且非当前契约有空闲，则踢掉一个非当前契约
                 if (clientlink == null && pool.IsPoolFull && pool.GetFreePoolNums(wcfpluginname) == 0 && pool.GetUsedPoolNums(wcfpluginname) != 500)
                 {
                     //创建新连接
-                    pool.RemovePoolOneNotAt(wcfpluginname, out clientlink, out index);
+                    pool.RemovePoolOneNotAt(wcfpluginname, null, out clientlink, out index);
                 }
 
                 if (clientlink != null)

@@ -214,7 +214,7 @@ ModelManifest.xml
 Docs/
 Upgrade/
 Component/
-Output_Client/
+Reactor/
 
 # Output/
 Output/*.dll
@@ -247,3 +247,4 @@ Output/nginx/temp/
 /Output/zh-Hans/SvcConfigEditor_4.0.chm
 /Output/nginx/html/install/setup_CloudHISClientV2.0.exe
 /Output/nginx/nginx.exe
+/efwplusUI

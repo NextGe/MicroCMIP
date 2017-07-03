@@ -64,7 +64,7 @@ namespace WinMainUIFrame.WcfController
                         //单点登录注册
                         Guid token = Guid.Empty;
                         //SsoHelper.SignIn(usercode, new UserInfo() { UserId = usercode,  EmpId = right.EmpId, UserName = right.EmpName,  DeptId = right.DeptId, DeptName = right.DeptName, WorkId = right.WorkId, WorkName = right.WorkName, IsAdmin=right.IsAdmin }, out token);
-                        right.token = token;
+                        right.token = token.ToString();
 
                         responseData.AddData(right.EmpName);
                         responseData.AddData(right.DeptName);
@@ -115,42 +115,32 @@ namespace WinMainUIFrame.WcfController
             responseData.AddData(b);
             return responseData;
         }
-         [WCFMethod]
-         public ServiceResponseData GetNotReadMessages()
-         {
-             List<BaseMessage> listmsg;
-             string strsql = @"select * from BaseMessage where (Limittime>getdate()) and MessageType in (
-																		select Code from BaseMessageType a where  (select count(1) from BaseGroupUser  where GroupId in (a.ReceiveGroup) and userId={0})>0
-																		)
-                                and (id not in (select messageid from BaseMessageRead where userid={0})) 
-                                and (ReceiveWork={2} or ReceiveWork=0)
-                                and (ReceiveDept={1} or ReceiveDept=0)
-                                and (ReceiveUser={0} or ReceiveUser=0)";
-             strsql = string.Format(strsql, LoginUserInfo.UserId, LoginUserInfo.DeptId, LoginUserInfo.WorkId);
+        [WCFMethod]
+        public ServiceResponseData GetNotReadMessages()
+        {
+            int EmpId = requestData.GetData<int>(0);
 
-             DataTable dt = oleDb.GetDataTable(strsql);
-             if (dt.Rows.Count > 0)
-                 listmsg = ConvertExtend.ToList<BaseMessage>(dt);
-             else
-                 listmsg = new List<BaseMessage>();
+            string strsql = @"SELECT a.Id,b.MessageTypeCode,b.MessageTitle,b.MessageContent FROM BaseMessageRead a
+                                LEFT JOIN BaseMessage b ON a.MessageId=b.Id
+                                WHERE a.EmpId={0} AND IsRead=0 AND GETDATE()< DATEADD(DAY,b.Limittime,a.SendTime)";
+            strsql = string.Format(strsql, EmpId);
 
+            List<BaseMessage> listmsg = oleDb.Query<BaseMessage>(strsql, string.Empty).ToList();
 
             responseData.AddData(listmsg);
             return responseData;
         }
-         [WCFMethod]
-         public ServiceResponseData MessageRead()
-         {
-             int messageId = requestData.GetData<int>(0);
-
-            string strsql = "select count(*) from BaseMessageRead where messageid={0} and userid={1}";
-             strsql = string.Format(strsql, messageId, LoginUserInfo.UserId);
-             if (Convert.ToInt32(oleDb.GetDataResult(strsql)) == 0)
-             {
-                 strsql = "insert into BaseMessageRead(messageid,userid,readtime) values(" + messageId + "," + LoginUserInfo.UserId + ",'" + DateTime.Now.Date.ToString() + "')";
-                 oleDb.DoCommand(strsql);
-             }
-
+        [WCFMethod]
+        public ServiceResponseData MessageRead()
+        {
+            int[] Ids = requestData.GetData<int[]>(0);
+            string strsql = "";
+            if(Ids.Length>0)
+            {
+                strsql = @"UPDATE BaseMessageRead SET IsRead=1 WHERE Id IN ({0})";
+                strsql = string.Format(strsql, string.Join(",", Ids));
+                oleDb.DoCommand(strsql);
+            }
 
             responseData.AddData(true);
             return responseData;

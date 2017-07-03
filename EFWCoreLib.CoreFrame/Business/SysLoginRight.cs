@@ -82,6 +82,6 @@ namespace EFWCoreLib.CoreFrame.Business
             set { _isAdmin = value; }
         }
         [DataMember]
-        public Guid token { get; set; }
+        public string token { get; set; }
     }
 }

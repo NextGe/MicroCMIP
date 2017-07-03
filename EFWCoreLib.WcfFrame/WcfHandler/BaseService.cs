@@ -14,7 +14,7 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
     /// 基础服务
     /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false, ValidateMustUnderstand = false, IncludeExceptionDetailInFaults = false)]
-    public class BaseService : IClientHandler, IHttpDataHandler
+    public class BaseService : IClientHandler
     {
         //string ns = "http://www.efwplus.cn/";
         public string CreateClient(string clientName, string plugin, string replyidentify)
@@ -72,11 +72,6 @@ namespace EFWCoreLib.WcfFrame.WcfHandler
         {
             HeaderParameter para = HeaderOperater.GetHeaderValue(OperationContext.Current.RequestContext.RequestMessage);
             return DataManage.ProcessRequest(clientId, plugin, controller, method, jsondata, para);
-        }
-
-        public string ProcessHttpRequest(string token, string plugin, string controller, string method, string jsondata)
-        {
-            throw new NotImplementedException();
         }
 
         public List<CacheObject> GetDistributedCacheData(List<CacheIdentify> cacheIdList)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFWCoreLib.CoreFrame.Common;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -98,6 +99,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 threadList = new List<Thread>();
                 //Thread.Sleep(50000);
+                UsDelay(5 * 1000);//5s
                 StartWatch();
                 //StartListen();
             }
@@ -214,9 +216,19 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             //process.StartInfo.CreateNoWindow = true;
             //process.Start();
 
+            
+
             WatchProcess(start(), start);
         }
 
+        private static void UsDelay(int us)
+        {
+            long duetime = -10 * us;
+            int hWaitTimer = WindowsAPI.CreateWaitableTimer(WindowsAPI.NULL, true, WindowsAPI.NULL);
+            WindowsAPI.SetWaitableTimer(hWaitTimer, ref duetime, 0, WindowsAPI.NULL, WindowsAPI.NULL, false);
+            while (WindowsAPI.MsgWaitForMultipleObjects(1, ref hWaitTimer, false, Timeout.Infinite, WindowsAPI.QS_TIMER)) ;
+            WindowsAPI.CloseHandle(hWaitTimer);
+        }
 
         /// <summary>
         /// 监听进程

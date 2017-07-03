@@ -126,8 +126,8 @@ namespace EFWCoreLib.CoreFrame.Common
         #region 构造函数
         public DESEncryptor()
         {
-            this.EncryptKey = "kakakeka";
-            this.DecryptKey = "kakakeka";
+            this.EncryptKey = "kakake888";
+            this.DecryptKey = "kakake888";
         }
         #endregion
 

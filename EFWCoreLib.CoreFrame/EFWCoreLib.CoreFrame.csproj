@@ -148,6 +148,7 @@
     <Compile Include="Common\ExtendMethod.cs" />
     <Compile Include="Mongodb\MongoHelper.cs" />
     <Compile Include="Process\AutoRun.cs" />
+    <Compile Include="Process\Encryption.cs" />
     <Compile Include="Process\IPCHelper.cs" />
     <Compile Include="Common\SpellAndWbCode.cs" />
     <Compile Include="Common\TemplateHelper.cs" />
@@ -245,8 +246,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)Output"
-Copy "$(TargetDir)\$(TargetFileName)" "D:\efwplusProject\cloudhospital\Component"
-Copy "$(TargetDir)\$(TargetFileName)" "D:\efwplusProject\cloudhospital\Output"</PostBuildEvent>
+Copy "$(TargetPath)" "$(SolutionDir)..\MicroCMIP_Reactor"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

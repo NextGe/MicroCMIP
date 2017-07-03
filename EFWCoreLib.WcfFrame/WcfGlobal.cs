@@ -14,6 +14,7 @@ using EFWCoreLib.WcfFrame.ServerManage;
 using EFWCoreLib.WcfFrame.Utility;
 using EFWCoreLib.WcfFrame.Utility.Mongodb;
 using EFWCoreLib.WcfFrame.WcfHandler;
+using System.ServiceModel.Web;
 
 namespace EFWCoreLib.WcfFrame
 {
@@ -40,6 +41,7 @@ namespace EFWCoreLib.WcfFrame
 
         static ServiceHost mAppHost = null;
         static ServiceHost mFileHost = null;
+        static WebServiceHost mHttpHost = null;
         static ServiceHost mRouterHost = null;
         static ServiceHost mFileRouterHost = null;
 
@@ -68,6 +70,7 @@ namespace EFWCoreLib.WcfFrame
 
             WcfGlobal.Run(StartType.BaseService);
             WcfGlobal.Run(StartType.FileService);
+            WcfGlobal.Run(StartType.HttpService);
             WcfGlobal.Run(StartType.SuperClient);
             WcfGlobal.Run(StartType.PublishService);//发布订阅
             WcfGlobal.Run(StartType.DistributedCache);//分布式缓存
@@ -94,6 +97,7 @@ namespace EFWCoreLib.WcfFrame
             WcfGlobal.Quit(StartType.SuperClient);
             WcfGlobal.Quit(StartType.BaseService);
             WcfGlobal.Quit(StartType.FileService);
+            WcfGlobal.Quit(StartType.HttpService);
 
             WcfGlobal.Quit(StartType.DistributedCache);
             WcfGlobal.Quit(StartType.Upgrade);
@@ -151,6 +155,16 @@ namespace EFWCoreLib.WcfFrame
                     mFileHost.Open();
 
                     MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "文件服务启动完成");
+                    break;
+                case StartType.HttpService:
+                    //初始化连接池,默认10分钟清理连接
+                    ClientLinkPoolCache.Init(true, 200, 30, 600, "httpserver", 30);
+                    AppGlobal.AppRootPath = System.Windows.Forms.Application.StartupPath + "\\";
+
+                    mHttpHost = new WebServiceHost(typeof(HttpService));
+                    mHttpHost.Open();
+
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "Http服务启动完成");
                     break;
                 case StartType.RouterBaseService:
                     mRouterHost = new ServiceHost(typeof(RouterBaseService));
@@ -237,6 +251,21 @@ namespace EFWCoreLib.WcfFrame
                     {
                         if (mFileHost != null)
                             mFileHost.Abort();
+                    }
+                    break;
+                case StartType.HttpService:
+                    try
+                    {
+                        if (mHttpHost != null)
+                        {
+                            mHttpHost.Close();
+                            MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "Http服务已关闭！");
+                        }
+                    }
+                    catch
+                    {
+                        if (mHttpHost != null)
+                            mHttpHost.Abort();
                     }
                     break;
                 case StartType.RouterBaseService:
@@ -445,6 +474,7 @@ namespace EFWCoreLib.WcfFrame
     {
         BaseService,
         FileService,
+        HttpService,
         MiddlewareTask,
         SuperClient,
         PublishService,

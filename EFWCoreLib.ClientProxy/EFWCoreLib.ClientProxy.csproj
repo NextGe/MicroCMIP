@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,11 +56,17 @@
     <Compile Include="..\EFWCoreLib.CoreFrame\Business\SysLoginRight.cs">
       <Link>CoreFrame\SysLoginRight.cs</Link>
     </Compile>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Common\ConvertExtend.cs">
+      <Link>CoreFrame\ConvertExtend.cs</Link>
+    </Compile>
     <Compile Include="..\EFWCoreLib.CoreFrame\Common\DESEncryptor.cs">
       <Link>CoreFrame\DESEncryptor.cs</Link>
     </Compile>
     <Compile Include="..\EFWCoreLib.CoreFrame\Common\ZipComporessor.cs">
       <Link>CoreFrame\ZipComporessor.cs</Link>
+    </Compile>
+    <Compile Include="..\EFWCoreLib.CoreFrame\Process\Encryption.cs">
+      <Link>CoreFrame\Encryption.cs</Link>
     </Compile>
     <Compile Include="..\EFWCoreLib.CoreFrame\Process\IPCHelper.cs">
       <Link>CoreFrame\IPCHelper.cs</Link>
@@ -141,7 +148,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)Output"
-Copy "$(TargetPath)" "$(SolutionDir)Output\Tools"</PostBuildEvent>
+Copy "$(TargetPath)" "$(SolutionDir)Output\Tools"
+Copy "$(TargetPath)" "$(SolutionDir)..\MicroCMIP_Reactor"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

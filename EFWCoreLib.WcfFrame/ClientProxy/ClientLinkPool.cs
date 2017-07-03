@@ -248,7 +248,7 @@ namespace EFWCoreLib.WcfFrame
         /// <param name="clientlink">连接</param>
         /// <param name="Index">返回的连接池索引</param>
         /// <returns></returns>
-        public bool AddPool(string pluginname, out ClientLink clientlink, out int? Index)
+        public bool AddPool(string pluginname, string endpoint, out ClientLink clientlink, out int? Index)
         {
             //做一次清理
             //if (isReap)
@@ -267,8 +267,11 @@ namespace EFWCoreLib.WcfFrame
 
                     if (poollist.Count < this.wcfMaxPoolSize)
                     {
-                        clientlink = new ClientLink(pluginname);
-                        
+                        if (string.IsNullOrEmpty(endpoint))
+                            clientlink = new ClientLink(pluginname);
+                        else
+                            clientlink = new ClientLink(null, pluginname, endpoint, null, null);
+
                         index = index >= Int32.MaxValue ? 1 : index + 1;
                         Index = index;
                         clientlink.Index = index;
@@ -405,7 +408,7 @@ namespace EFWCoreLib.WcfFrame
         /// 踢掉一个非当前契约的空闲连接
         /// </summary>
         /// <returns></returns>
-        public bool RemovePoolOneNotAt(string pluginname, out ClientLink clientlink, out int? Index)
+        public bool RemovePoolOneNotAt(string pluginname,string endpoint, out ClientLink clientlink, out int? Index)
         {
             bool flag = false;
             Index = null;
@@ -438,7 +441,10 @@ namespace EFWCoreLib.WcfFrame
                 //增加一个连接到池子
                 if (poollist.Count < this.wcfMaxPoolSize)
                 {
-                    clientlink = new ClientLink(pluginname);
+                    if (string.IsNullOrEmpty(endpoint))
+                        clientlink = new ClientLink(pluginname);
+                    else
+                        clientlink = new ClientLink(null, pluginname, endpoint, null, null);
                     clientlink.CreateConnection();
                     index = index >= Int32.MaxValue ? 1 : index + 1;
                     Index = index;

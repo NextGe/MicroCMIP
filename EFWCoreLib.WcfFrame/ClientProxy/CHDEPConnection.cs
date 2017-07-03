@@ -45,6 +45,6 @@ namespace EFWCoreLib.WcfFrame
         /// <summary>
         /// 客户端令牌
         /// </summary>
-        public string Token { get; set; }
+        //public string Token { get; set; }
     }
 }
