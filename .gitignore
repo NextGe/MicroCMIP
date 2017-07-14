@@ -248,3 +248,5 @@ Output/nginx/temp/
 /Output/nginx/html/install/setup_CloudHISClientV2.0.exe
 /Output/nginx/nginx.exe
 /efwplusUI
+/Output/PythonLib
+/Output/Tools

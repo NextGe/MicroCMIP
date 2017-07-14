@@ -40,14 +40,18 @@ namespace efwplusBase
                 normalIPC=new NormalIPCManager(IPCType.efwplusBase,_funcExecCmd, _actionReceiveData);
                 WcfGlobal.normalIPC = normalIPC;
                 btnStart();
+                
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message+err.StackTrace);
+            }
+            finally
+            {
                 while (true)
                 {
                     System.Threading.Thread.Sleep(30 * 1000);
                 }
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
             }
         }
 
@@ -104,7 +108,7 @@ namespace efwplusBase
         static void setprivatepath()
         {
             //AppDomain.CurrentDomain.SetupInformation.PrivateBinPath = @"Component;ModulePlugin\Books_Wcf\dll;ModulePlugin\WcfMainUIFrame\dll";
-            string privatepath = @"Component";
+            string privatepath = @"Component;ModulePlugin";
 
             foreach (var p in efwplus.configuration.PluginSysManage.GetAllPlugin())
             {

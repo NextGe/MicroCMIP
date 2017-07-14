@@ -48,9 +48,10 @@
   </mongodb_dbpath>
   <mongodb_conn value="mongodb://localhost:27017">
   </mongodb_conn>
-  <nginx value="1">
+  <nginx value="0">
   </nginx>
-  <nginx_binpath value="D:\efwplusProject\MicroCMIP\efwplusUI\efwplusNginxHost.exe">
+  <nginx_binpath value="D:\efwplusProject\efwplusUI\efwplusNginxHost.exe">
   </nginx_binpath>
+  <autoupdater value="1"></autoupdater>
   <updaterurl value="http://localhost:8810/FileStore/MNodeUpgrade/update.xml"></updaterurl>
 </root>

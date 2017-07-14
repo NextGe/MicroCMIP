@@ -18,7 +18,7 @@ namespace WCFHosting
         Func<string, Dictionary<string,string>, string> ExecCmd;
         long timeCount = 0;//运行次数
 
-        HostState RunState
+        public HostState RunState
         {
             set
             {

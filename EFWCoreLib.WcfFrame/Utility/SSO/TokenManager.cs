@@ -91,7 +91,9 @@ namespace EFWCoreLib.CoreFrame.SSO
             {
                 existToken = tokenList.Find(x => x.tokenId.ToString() == token);
             }
-            catch { }
+            catch (Exception err){
+                CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message+err.StackTrace);
+            }
             return existToken;
         }
 
@@ -109,7 +111,7 @@ namespace EFWCoreLib.CoreFrame.SSO
                     }
                 }
             }
-            catch { }
+            catch (Exception err){ CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message+err.StackTrace); }
         }
     }
 }

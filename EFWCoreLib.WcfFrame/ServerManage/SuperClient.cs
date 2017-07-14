@@ -34,6 +34,8 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     SubscriberManager.ReSubscribeAll();//重新订阅
                 });
             }
+
+
         }
 
         public static void Stop()

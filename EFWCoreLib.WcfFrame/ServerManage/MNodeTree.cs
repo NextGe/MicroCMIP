@@ -30,57 +30,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             }
         }
         private List<MNodeObject> _allMNodeList;
-        /// <summary>
-        /// 所有中间件节点
-        /// </summary>
-        public List<MNodeObject> AllMNodeList
-        {
-            get { return _allMNodeList; }
-            set { _allMNodeList = value; }
-        }
-
-        /// <summary>
-        /// 从Mongodb中加载中间件列表
-        /// 从运行中加载中间件节点状态
-        /// </summary>
-        /// <param name="data">key为中间件标识，value为中间件名称</param>
-        public void LoadMongodbAndState(Dictionary<string, string> nodelist_db, List<MNodeObject> nodelist_run)
-        {
-            //初始化
-            _allMNodeList = new List<MNodeObject>();
-            if (nodelist_db == null) return;
-            //新增节点
-            foreach (var n in nodelist_db)
-            {
-                if (_allMNodeList.FindIndex(x => x.ServerIdentify == n.Key) == -1)
-                {
-                    MNodeObject mnodeobj = new MNodeObject();
-                    mnodeobj.ServerIdentify = n.Key;
-                    mnodeobj.ServerName = n.Value;
-                    mnodeobj.IsConnect = false;//默认未开启
-                    if (WcfGlobal.IsRootMNode == true && WcfGlobal.Identify == n.Key)//根节点
-                    {
-                        mnodeobj.PointToMNode = n.Key;
-                        mnodeobj.IsConnect = true;//根节点默认开启
-                    }
-                    else
-                        mnodeobj.PointToMNode = null;
-                    _allMNodeList.Add(mnodeobj);
-                }
-            }
-
-            if (nodelist_run == null) return;
-            //设置节点的状态
-            foreach (var n in _allMNodeList)
-            {
-                MNodeObject mnodeobj = nodelist_run.Find(x => x.ServerIdentify == n.ServerIdentify);
-                if (mnodeobj != null)
-                {
-                    n.IsConnect = mnodeobj.IsConnect;
-                    n.PointToMNode = mnodeobj.PointToMNode;
-                }
-            }
-        }
 
         /// <summary>
         /// 从缓存中加载中间件树
@@ -103,59 +52,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     }
                 }
             }
-        }
-        /// <summary>
-        /// 同步节点到分布式缓存
-        /// </summary>
-        public void SyncToCache()
-        {
-            Dictionary<string, string> sync_adddata = new Dictionary<string, string>();//需要同步的数据
-            Dictionary<string, string> sync_updatedata = new Dictionary<string, string>();//需要同步的数据
-            List<string> sync_deldata = new List<string>();//需要同步的数据
-
-            CacheObject cobj = DistributedCacheManage.GetLocalCache(cacheName);
-            if (cobj != null)
-            {
-                List<CacheData> cdatalist = cobj.cacheValue;
-                //新增的
-                foreach (var n in _allMNodeList)
-                {
-                    if (cdatalist.FindIndex(x => x.key == n.ServerIdentify && x.deleteflag==false) == -1)
-                    {
-                        sync_adddata.Add(n.ServerIdentify, JsonConvert.SerializeObject(n));
-                    }
-                }
-                //删除的
-                foreach (var o in cdatalist)
-                {
-                    if (o.deleteflag==false && _allMNodeList.FindIndex(x => x.ServerIdentify == o.key) == -1)
-                    {
-                        sync_deldata.Add(o.key);
-                    }
-                }
-
-                //更新的
-                foreach (var o in cdatalist)
-                {
-                    MNodeObject o1 = JsonConvert.DeserializeObject<MNodeObject>(o.value);
-                    MNodeObject o2 = _allMNodeList.Find(x => x.ServerIdentify == o.key);
-                    if(o2!=null && o1.IsConnect!=o2.IsConnect)
-                    {
-                        sync_updatedata.Add(o.key, JsonConvert.SerializeObject(o2));
-                    }
-                }
-
-            }
-            else
-            {
-                //新增的
-                foreach (var n in _allMNodeList)
-                {
-                    sync_adddata.Add(n.ServerIdentify, JsonConvert.SerializeObject(n));
-                }
-            }
-
-            DistributedCacheManage.SetCache(cacheName, sync_adddata,sync_updatedata, sync_deldata);
         }
 
         /// <summary>

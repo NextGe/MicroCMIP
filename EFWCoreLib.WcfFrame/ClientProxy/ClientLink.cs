@@ -758,7 +758,7 @@ namespace EFWCoreLib.WcfFrame
                 para.replyidentify = null;
                 para.beginidentify = BeginIdentify;
                 para.endidentify = EndIdentify;
-                para.token = loginright.token; //clientObj.Token;
+                para.token = loginright != null ? loginright.token : null; //clientObj.Token;
                 para.iscompressjson = iscompressjson;
                 para.isencryptionjson = isencryptionjson;
                 para.serializetype = serializetype;

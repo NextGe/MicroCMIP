@@ -12,7 +12,7 @@ using EFWCoreLib.CoreFrame.ProcessManage;
 using EFWCoreLib.WcfFrame.DataSerialize;
 using EFWCoreLib.WcfFrame.ServerManage;
 using EFWCoreLib.WcfFrame.Utility;
-using EFWCoreLib.WcfFrame.Utility.Mongodb;
+//using EFWCoreLib.WcfFrame.Utility.Mongodb;
 using EFWCoreLib.WcfFrame.WcfHandler;
 using System.ServiceModel.Web;
 
@@ -50,7 +50,7 @@ namespace EFWCoreLib.WcfFrame
             if (IsStartBase == true) return;
             IsStartBase = true;//设置为开启
 
-            SetUpPluginUpgrade();
+            //SetUpPluginUpgrade();
 
             IsRootMNode = HostSettingConfig.GetValue("rootmnode") == "1" ? true : false;
             IsDebug = HostSettingConfig.GetValue("debug") == "1" ? true : false;
@@ -72,11 +72,6 @@ namespace EFWCoreLib.WcfFrame
             WcfGlobal.Run(StartType.FileService);
             WcfGlobal.Run(StartType.HttpService);
             WcfGlobal.Run(StartType.SuperClient);
-            WcfGlobal.Run(StartType.PublishService);//发布订阅
-            WcfGlobal.Run(StartType.DistributedCache);//分布式缓存
-            WcfGlobal.Run(StartType.Upgrade);//升级包
-            WcfGlobal.Run(StartType.MNodeState);//节点状态
-            WcfGlobal.Run(StartType.RemotePlugin);//远程插件
             WcfGlobal.Run(StartType.MiddlewareTask);//定时任务
 
             CoreFrame.SSO.SsoHelper.Start();//单点登录启动
@@ -92,17 +87,12 @@ namespace EFWCoreLib.WcfFrame
             MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "正在准备关闭中间件服务，请等待...");
             ClientLinkManage.UnAllConnection();//关闭所有连接
 
-            WcfGlobal.Quit(StartType.PublishService);
             WcfGlobal.Quit(StartType.MiddlewareTask);
             WcfGlobal.Quit(StartType.SuperClient);
             WcfGlobal.Quit(StartType.BaseService);
             WcfGlobal.Quit(StartType.FileService);
             WcfGlobal.Quit(StartType.HttpService);
 
-            WcfGlobal.Quit(StartType.DistributedCache);
-            WcfGlobal.Quit(StartType.Upgrade);
-            //WcfGlobal.Quit(StartType.MongoDB);
-            //WcfGlobal.Quit(StartType.Nginx);
         }
 
         public static void MainRoute()
@@ -182,34 +172,25 @@ namespace EFWCoreLib.WcfFrame
                 case StartType.SuperClient:
                     SuperClient.Start();
                     MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "超级客户端启动完成");
+
+                    PublisherManage.Start();
+                    SubscriberManager.Start();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "发布订阅启动完成");
+
+                    DistributedCacheManage.Start();
+                    DistributedCacheClient.Start();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "分布式缓存启动完成");
+
+                    UpgradeManage.Start();
+                    UpgradeClient.Start();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "升级包管理启动完成");
+
+                    MonitorTirggerManage.Start();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "监视触发器启动完成");
                     break;
                 case StartType.MiddlewareTask:
                     MiddlewareTask.StartTask();//开启定时任务
                     MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "定时任务启动完成");
-                    break;
-                case StartType.PublishService://订阅
-                    PublisherManage.Start();
-                    SubscriberManager.Start();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "发布订阅启动完成");
-                    break;
-                case StartType.MNodeState://中间件节点状态处理
-                    MNodeStateManage.Start();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "节点状态监控启动完成");
-                    break;
-                case StartType.DistributedCache:
-                    DistributedCacheManage.Start();
-                    DistributedCacheClient.Start();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "分布式缓存启动完成");
-                    break;
-                case StartType.RemotePlugin:
-                    RemotePluginManage.Start();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "远程插件启动完成");
-                    break;
-
-                case StartType.Upgrade:
-                    UpgradeManage.Start();
-                    UpgradeClient.Start();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Blue, "升级包管理启动完成");
                     break;
             }
 
@@ -299,20 +280,19 @@ namespace EFWCoreLib.WcfFrame
                     }
                     break;
                 case StartType.SuperClient:
+
+
+                    UpgradeManage.Stop();
+                    UpgradeClient.Stop();
+                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "升级包服务已停止");
+
                     SuperClient.Stop();
                     MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, "超级客户端已关闭！");
+
                     break;
                 case StartType.MiddlewareTask:
                     MiddlewareTask.StopTask();//停止任务
                     MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, "定时任务已停止！");
-                    break;
-                case StartType.PublishService://订阅
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "订阅服务已停止");
-                    break;
-                case StartType.Upgrade://升级包
-                    UpgradeManage.Stop();
-                    UpgradeClient.Stop();
-                    MiddlewareLogHelper.WriterLog(LogType.MidLog, true, Color.Red, "升级包服务已停止");
                     break;
             }
         }
@@ -388,86 +368,7 @@ namespace EFWCoreLib.WcfFrame
             HostRunConfigInfo.LoadConfigInfo(Identify, psAction, pubsAction, subsAction, taskAction);
             #endregion
         }
-        //安装插件升级包
-        private static void SetUpPluginUpgrade()
-        {
-            string pufile = AppGlobal.AppRootPath + WcfGlobal.pluginUpgradeFile;
-            if (File.Exists(pufile) == true)
-            {
-                List<string> addplugin = new List<string>();//新增插件
-                List<string> updateplugin = new List<string>();//更新插件
-                List<string> deleteplugin = new List<string>();//删除插件
-
-                using (StreamReader sr = new StreamReader(pufile))
-                {
-                    string addrow = sr.ReadLine();
-                    addplugin = addrow.Split(':')[1].Split(',').ToList();
-
-                    string updaterow = sr.ReadLine();
-                    updateplugin = updaterow.Split(':')[1].Split(',').ToList();
-
-                    string deleterow = sr.ReadLine();
-                    deleteplugin = deleterow.Split(':')[1].Split(',').ToList();
-                }
-
-                //删除
-                File.Delete(pufile);
-
-                foreach (string p in addplugin)
-                {
-                    if (p.Trim() != "")
-                    {
-                        string path = AppGlobal.AppRootPath + "ModulePlugin\\" + p;
-                        //删除本地插件
-                        if (Directory.Exists(path))
-                        {
-                            Directory.Delete(path, true);
-                        }
-                        //解压插件包
-                        string zipfile = AppGlobal.AppRootPath + @"FileStore\PluginUpgrade\" + p + ".zip";
-                        FastZipHelper.decompress(AppGlobal.AppRootPath + "ModulePlugin\\" + p, zipfile);
-                        //修改pluginsys.xml配置文件
-                        AppPluginManage.AddPlugin("ModulePlugin\\" + p + "\\plugin.xml");
-                    }
-                }
-
-                foreach (string p in updateplugin)
-                {
-                    if (p.Trim() != "")
-                    {
-                        string path = AppGlobal.AppRootPath + "ModulePlugin\\" + p;
-                        //删除本地插件
-                        if (Directory.Exists(path))
-                        {
-                            Directory.Delete(path, true);
-                        }
-                        //解压插件包
-                        string zipfile = AppGlobal.AppRootPath + @"FileStore\PluginUpgrade\" + p + ".zip";
-                        FastZipHelper.decompress(AppGlobal.AppRootPath + "ModulePlugin\\" + p, zipfile);
-                        //修改pluginsys.xml配置文件
-                        AppPluginManage.RemovePlugin(p);
-                        AppPluginManage.AddPlugin("ModulePlugin\\" + p + "\\plugin.xml");
-                    }
-                }
-
-                foreach (string p in deleteplugin)
-                {
-                    if (p.Trim() != "")
-                    {
-                        string path = AppGlobal.AppRootPath + "ModulePlugin\\" + p;
-                        //删除本地插件
-                        if (Directory.Exists(path))
-                        {
-                            Directory.Delete(path, true);
-                        }
-                        //修改pluginsys.xml配置文件
-                        AppPluginManage.RemovePlugin(p);
-                    }
-                }
-
-                
-            }
-        }
+        
     }
 
     public enum StartType
@@ -477,11 +378,6 @@ namespace EFWCoreLib.WcfFrame
         HttpService,
         MiddlewareTask,
         SuperClient,
-        PublishService,
-        DistributedCache,
-        Upgrade,
-        MNodeState,
-        RemotePlugin,
         RouterBaseService,
         RouterFileService
     }

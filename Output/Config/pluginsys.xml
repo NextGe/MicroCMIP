@@ -3,5 +3,6 @@
   <WcfModulePlugin>
     <Plugin name="MainFrame.Service" path="ModulePlugin/WcfMainUIFrame/plugin.xml" title="主框架服务插件" version="1.0" />
     <Plugin name="Books.Service" path="ModulePlugin/Books_Wcf/plugin.xml" title="Books服务插件" version="1.0" />
+    <Plugin name="Adapter.Service" path="ModulePlugin/AdapterService/plugin.xml" title="适配器服务插件" version="1.0" />
   </WcfModulePlugin>
 </pluginsys>

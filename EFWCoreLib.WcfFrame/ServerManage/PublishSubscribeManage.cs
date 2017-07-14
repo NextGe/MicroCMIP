@@ -124,7 +124,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             List<Subscriber> list = subscriberList.FindAll(x => x.publishServiceName == publishServiceName);
             foreach (var item in list)
             {
-                item.callback.Notify(publishServiceName);
+                try
+                {
+                    item.callback.Notify(publishServiceName);
+                }
+                catch
+                {
+                    //subscriberList.Remove(item);
+                }
             }
             ShowHostMsg(Color.Blue, DateTime.Now, "向所有订阅者发送了“" + publishServiceName + "”服务通知！");
         }
@@ -136,7 +143,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             if (sub != null)
             {
-                sub.callback.Notify(sub.publishServiceName);
+                try
+                {
+                    sub.callback.Notify(sub.publishServiceName);
+                }
+                catch
+                {
+                    //subscriberList.Remove(sub);
+                }
                 ShowHostMsg(Color.Blue, DateTime.Now, "向订阅者[" + sub.ServerIdentify + "]发送了“" + sub.publishServiceName + "”服务通知！");
             }
         }
@@ -194,31 +208,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             psoList = new List<PublishServiceObject>();
             ssoList = new List<SubscribeServiceObject>();
 
-           
-
-            //if (psoList != null)
-            //{
-            //    Dictionary<string, bool> _subDic = LoadXML();
-            //    foreach (var item in psoList)
-            //    {
-            //        SubscribeServiceObject ps = new SubscribeServiceObject();
-            //        ps.whether = _subDic.ContainsKey(item.publishServiceName) ? _subDic[item.publishServiceName] : false;
-            //        ps.publishServiceName = item.publishServiceName;
-            //        ps.explain = item.explain;
-            //        ps.IsSub = false;
-            //        ssoList.Add(ps);
-            //    }
-            //}
-
-            ////开始订阅
-            //foreach (var i in ssoList)
-            //{
-            //    if (i.whether)
-            //    {
-            //        ServerManage.SuperClient.clientLink.Subscribe(i.publishServiceName);
-            //        i.IsSub = true;
-            //    }
-            //}
         }
 
         /// <summary>
@@ -309,104 +298,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             }
         }
 
-
-        /*
-        /// <summary>
-        /// 客户端执行订阅服务
-        /// </summary>
-        /// <param name="_clientLink"></param>
-        private static void ProcessPublishService(string publishServiceName, ClientLink _clientLink)
-        {
-            switch (publishServiceName)
-            {
-                case "DistributedCache"://分布式缓存服务
-                    List<CacheIdentify> ciList = DistributedCacheClient.GetCacheIdentifyList();
-                    List<CacheObject> coList = _clientLink.GetDistributedCacheData(ciList);
-                    if (coList.Count > 0)
-                    {
-                        DistributedCacheClient.SetCacheObjectList(coList);
-                    }
-                    break;
-                case "RemotePlugin"://远程插件服务
-                    RemotePluginClient.RegisterRemotePlugin();
-                    break;
-                case "UpgradeClient"://客户端升级
-                    ClientUpgradeManager.DownLoadUpgrade();
-                    break;
-                case "UpgradeServer"://中间件升级
-                    break;
-                case "MongodbSync"://同步Mongodb数据
-                    break;
-                case "MiddlewareMonitor"://中间件集群监控服务
-                    break;
-                case "MiddlewareCmd"://中间件命令服务
-                    break;
-                default:
-                    //PublishServiceObject pso = psoList.Find(x => x.publishServiceName == publishServiceName);
-                    //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, System.Drawing.Color.Blue, string.Format("正在执行服务{0}/{1}/{2}/{3}", pso.pluginname, pso.controller, pso.method, pso.argument));
-                    //ServiceResponseData retjson = InvokeWcfService(
-                    //    pso.pluginname
-                    //    , pso.controller
-                    //    , pso.method
-                    //    , (ClientRequestData request) =>
-                    //    {
-                    //        request.SetJsonData(pso.argument);
-                    //    });
-                    //string txtResult = retjson.GetJsonData();
-                    //MiddlewareLogHelper.WriterLog(LogType.MidLog, true, System.Drawing.Color.Blue, string.Format("服务执行完成，返回结果：{0}", txtResult));
-                    break;
-            }
-
-            ShowHostMsg(Color.Blue, DateTime.Now, "执行“" + publishServiceName + "”订阅服务成功！");
-        }
-
-        /// <summary>
-        /// 手动执行发布服务
-        /// </summary>
-        /// <param name="psname">服务名称</param>
-        public static void ExecPublishService(string psname)
-        {
-            ProcessPublishService(psname, SuperClient.clientLink);
-        }
-
         
-        private static Dictionary<string, bool> LoadXML()
-        {
-            Dictionary<string, bool> _subDic = new Dictionary<string, bool>();
-            try
-            {
-                XmlDocument xmlDoc = new System.Xml.XmlDocument();
-                xmlDoc.Load(publishSubscibefile);
-
-                XmlNodeList subservicelist = xmlDoc.DocumentElement.SelectNodes("Subscibe/service");
-                foreach (XmlNode xe in subservicelist)
-                {
-                    _subDic.Add(xe.Attributes["servicename"].Value, xe.Attributes["switch"].Value == "1" ? true : false);
-                }
-            }
-            catch (Exception e)
-            {
-                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, "加载定时任务配置文件错误！");
-                MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, e.Message);
-            }
-
-            return _subDic;
-        }
-
-        private static ServiceResponseData InvokeWcfService(string wcfpluginname, string wcfcontroller, string wcfmethod, Action<ClientRequestData> requestAction)
-        {
-            ClientLink wcfClientLink = ClientLinkManage.CreateConnection(wcfpluginname);
-            //绑定LoginRight
-            Action<ClientRequestData> _requestAction = ((ClientRequestData request) =>
-            {
-                request.LoginRight = new EFWCoreLib.CoreFrame.Business.SysLoginRight();
-                if (requestAction != null)
-                    requestAction(request);
-            });
-            ServiceResponseData retData = wcfClientLink.Request(wcfcontroller, wcfmethod, _requestAction);
-            return retData;
-        }
-            */
 
         private static void ShowHostMsg(Color clr, DateTime time, string text)
         {

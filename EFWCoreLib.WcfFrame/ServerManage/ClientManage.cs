@@ -208,7 +208,11 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 }
                 timer.Enabled = true;
             }
-            catch { timer.Enabled = true; }
+            catch (Exception err)
+            {
+                CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message+err.StackTrace);
+                timer.Enabled = true;
+            }
         }
         #endregion
 

@@ -9,8 +9,22 @@ namespace efwplusHttp
     {
         static void Main(string[] args)
         {
-            MyHttpServer.ShowMsg = ShowMsg;
-            MyHttpServer.Listen();
+            try
+            {
+                MyHttpServer.ShowMsg = ShowMsg;
+                MyHttpServer.Listen();
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message+err.StackTrace);
+            }
+            finally
+            {
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(30 * 1000);
+                }
+            }
         }
 
         static void ShowMsg(string msg)

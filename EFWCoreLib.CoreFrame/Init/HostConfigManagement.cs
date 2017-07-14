@@ -26,12 +26,16 @@ namespace EFWCoreLib.CoreFrame.Init
         public static string GetValue(string keyname)
         {
             if (xmlDoc == null) InitConfig();
+            if (xmlDoc.DocumentElement.SelectNodes(keyname).Count == 0)
+                return "";
             return xmlDoc.DocumentElement.SelectNodes(keyname)[0].Attributes["value"].Value.ToString();
         }
 
         public static string GetValue(string keyname, string attrname)
         {
             if (xmlDoc == null) InitConfig();
+            if (xmlDoc.DocumentElement.SelectNodes(keyname).Count == 0)
+                return "";
             return xmlDoc.DocumentElement.SelectNodes(keyname)[0].Attributes[attrname].Value.ToString();
         }
 

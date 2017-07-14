@@ -21,26 +21,42 @@ namespace WCFHosting
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Updater();//升级
-            StartListen();
+            setprivatepath();
+            //Updater();//升级
+            //StartListen();
 
             host = new FrmHosting(ExecCmd);
 
-            Func<string, Dictionary<string,string>, string> _funcExecCmd = ExecCmd;
-            Action<string> _actionReceiveData = ((string data) =>
-            {
-                string text = ("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] : " + data);
-                host.showmsg(text);
-            });
+            Func<string, Dictionary<string, string>, string> _funcExecCmd = ExecCmd;
+            Action<string> _actionReceiveData = showmsg;
             serverIPC = new efwplusServerIPCManager(_funcExecCmd, _actionReceiveData);
 
             efwplusHttpManager.ShowMsg = _actionReceiveData;
             MongodbManager.ShowMsg = _actionReceiveData;
             NginxManager.ShowMsg = _actionReceiveData;
-            efwplusBaseManager.ShowMsg= _actionReceiveData;
-            efwplusRouteManager.ShowMsg= _actionReceiveData;
-            efwplusWebAPIManager.ShowMsg= _actionReceiveData;
+            efwplusBaseManager.ShowMsg = _actionReceiveData;
+            efwplusRouteManager.ShowMsg = _actionReceiveData;
+            efwplusWebAPIManager.ShowMsg = _actionReceiveData;
             Application.Run(host);
+        }
+
+        static void showmsg(string data)
+        {
+            string text = ("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] : " + data);
+            host.showmsg(text);
+        }
+
+        static void setprivatepath()
+        {
+            //AppDomain.CurrentDomain.SetupInformation.PrivateBinPath = @"Component;ModulePlugin\Books_Wcf\dll;ModulePlugin\WcfMainUIFrame\dll";
+            string privatepath = @"Component";
+
+            AppDomain.CurrentDomain.SetData("PRIVATE_BINPATH", privatepath);
+            AppDomain.CurrentDomain.SetData("BINPATH_PROBE_ONLY", privatepath);
+            var m = typeof(AppDomainSetup).GetMethod("UpdateContextProperty", BindingFlags.NonPublic | BindingFlags.Static);
+            var funsion = typeof(AppDomain).GetMethod("GetFusionContext", BindingFlags.NonPublic | BindingFlags.Instance);
+            m.Invoke(null, new object[] { funsion.Invoke(AppDomain.CurrentDomain, null), "PRIVATE_BINPATH", privatepath });
+
         }
 
         static System.Timers.Timer timer;
@@ -81,7 +97,7 @@ namespace WCFHosting
             FSLib.App.SimpleUpdater.Updater.CheckUpdateSimple(EFWCoreLib.CoreFrame.Init.HostSettingConfig.GetValue("updaterurl"));
         }
 
-        static string ExecCmd(string m, Dictionary<string,string> a)
+        static string ExecCmd(string m, Dictionary<string, string> a)
         {
             try
             {
@@ -161,12 +177,38 @@ namespace WCFHosting
                         NginxManager.StopWeb();
                         NginxManager.StartWeb();
                         break;
+                    case "upgradeplugin"://升级插件
+                        if (EFWCoreLib.CoreFrame.Init.HostSettingConfig.GetValue("autoupdater") == "1")//是否启动自动升级程序
+                        {
+                            showmsg("准备升级插件...");
+                            ExecCmd("quitall", null);
+                            try
+                            {
+                                efwplusHosting.UpgradeProgram.SetUpPluginUpgrade();
+                            }
+                            catch (Exception err)
+                            {
+                                showmsg("升级插件失败！" + err.Message+err.StackTrace);
+                                showmsg("程序服务未启动.");
+                                //Process.GetCurrentProcess().Kill();
+                                host.RunState = HostState.NoOpen;
+                            }
+
+                            showmsg("升级插件完成,正在启动服务...");
+                            ExecCmd("startall", null);
+                        }
+                        else
+                        {
+                            showmsg("自动升级插件没有开启!");
+                        }
+                        break;
                 }
                 //ProcessWatcher.OnStart();
                 return "succeed";
             }
             catch (Exception e)
             {
+                showmsg(e.Message + e.StackTrace);
                 return e.Message;
             }
         }

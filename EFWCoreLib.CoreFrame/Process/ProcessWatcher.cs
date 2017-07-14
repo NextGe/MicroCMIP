@@ -84,7 +84,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
                 _processObject = getprocessObject();
 
                 //创建日志目录
-                _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "efwplusWatcherLog");
+                _logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ServerLog\\WatcherLog");
                 if (!Directory.Exists(_logPath))
                 {
                     Directory.CreateDirectory(_logPath);
@@ -99,7 +99,8 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 threadList = new List<Thread>();
                 //Thread.Sleep(50000);
-                UsDelay(5 * 1000);//5s
+                //UsDelay(5 * 1000);//5s
+                Delay(10);
                 StartWatch();
                 //StartListen();
             }
@@ -107,6 +108,25 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             {
                 SaveLog("OnStart() 出错，错误描述：" + ex.Message.ToString());
             }
+        }
+
+        /// <summary>
+        /// 延时函数
+        /// </summary>
+        /// <param name="delayTime">需要延时多少秒</param>
+        /// <returns></returns>
+        static bool Delay(int delayTime)
+        {
+            DateTime now = DateTime.Now;
+            int s;
+            do
+            {
+                TimeSpan spand = DateTime.Now - now;
+                s = spand.Seconds;
+                System.Windows.Forms.Application.DoEvents();
+            }
+            while (s < delayTime);
+            return true;
         }
 
         static System.Timers.Timer timer;

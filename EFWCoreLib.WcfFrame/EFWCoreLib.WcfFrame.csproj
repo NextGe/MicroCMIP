@@ -121,7 +121,9 @@
     <Compile Include="DataSerialize\ServiceResponseData.cs" />
     <Compile Include="MiddlewareLogHelper.cs" />
     <Compile Include="ServerManage\MNodeStateManage.cs" />
+    <Compile Include="ServerManage\MonitorTirggerManage.cs" />
     <Compile Include="ServerManage\UpgradeManager.cs" />
+    <Compile Include="Utility\AdapterScriptHelper.cs" />
     <Compile Include="Utility\MiddlewareTask.cs" />
     <Compile Include="Controller\ModulePluginExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

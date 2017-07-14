@@ -405,7 +405,8 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                     case "sso_signout":
                     case "sso_useractivity":
                         return SsoHelper.ForwardData(key, jsonpara);
-
+                    case "adapter_getscript":
+                        return Utility.AdapterScriptHelper.ForwardData(key, jsonpara);
                 }
                 return null;
             }

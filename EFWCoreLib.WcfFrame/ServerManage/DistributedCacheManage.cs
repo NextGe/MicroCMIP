@@ -76,7 +76,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// <param name="cacheName"></param>
         /// <param name="key"></param>
         /// <param name="value">Json字符串</param>
-        public static void SetCache(string cacheName, string key, string value,bool IsTrigger)
+        public static void SetCache(string cacheName, string key, string value, bool IsTrigger)
         {
             lock (LocalCache)
             {
@@ -124,6 +124,16 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 //PublishServiceManage.SendNotify("DistributedCache");//订阅服务发送通知
                 if (IsTrigger && CacheChangeEvent != null)
                 {
+
+                    //调试
+                    //CacheObject co = LocalCache.GetData(cacheName) as CacheObject;
+
+                    //foreach (var n in co.cacheValue)
+                    //{
+                    //    CoreFrame.Common.MiddlewareLogHelper.WriterLog(n.key);
+                    //    CoreFrame.Common.MiddlewareLogHelper.WriterLog(n.value);
+                    //}
+
                     CacheChangeEvent();
                 }
             }
@@ -217,6 +227,24 @@ namespace EFWCoreLib.WcfFrame.ServerManage
 
         public static List<CacheObject> GetCacheObjectList(List<CacheIdentify> ciList)
         {
+            //CoreFrame.Common.MiddlewareLogHelper.WriterLog(Newtonsoft.Json.JsonConvert.SerializeObject(ciList));
+            ////调试
+            //foreach (var i in ciList)
+            //{
+            //    if (i.cachename == "mnodeplugin")
+            //    {
+            //        //参数
+            //        CoreFrame.Common.MiddlewareLogHelper.WriterLog(Newtonsoft.Json.JsonConvert.SerializeObject(i));
+            //        //本地
+            //        CacheIdentify ci = GetCacheIdentify("mnodeplugin");
+            //        CoreFrame.Common.MiddlewareLogHelper.WriterLog(Newtonsoft.Json.JsonConvert.SerializeObject(ci));
+            //        //比较
+            //        ci = CompareCache(i);
+            //        CoreFrame.Common.MiddlewareLogHelper.WriterLog(Newtonsoft.Json.JsonConvert.SerializeObject(ci));
+            //    }
+            //}
+
+
             List<CacheObject> coList = new List<CacheObject>();
             //有变动的缓存对象
             foreach (var ci in ciList)
@@ -297,7 +325,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 _co.cacheValue = new List<CacheData>();
                 foreach (var kt in identify.keytimestamps)
                 {
-                    CacheData cd = co.cacheValue.Find(x => x.timestamp == kt.Value);
+                    CacheData cd = co.cacheValue.Find(x =>(x.timestamp == kt.Value && x.key==kt.Key));
                     if (cd != null)
                         _co.cacheValue.Add(cd);
                 }
@@ -385,6 +413,19 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 List<CacheObject> coList = _clientLink.GetDistributedCacheData(ciList);//比对上级中间件缓存，返回差异的缓存对象
                 if (coList.Count > 0)
                 {
+                    //调试
+                    //foreach (var i in coList)
+                    //{
+                    //    if(i.cachename== "mnodeplugin")
+                    //    {
+                    //        foreach(var n in i.cacheValue)
+                    //        {
+                    //            CoreFrame.Common.MiddlewareLogHelper.WriterLog(n.key);
+                    //            CoreFrame.Common.MiddlewareLogHelper.WriterLog(n.value);
+                    //        }
+                    //    }
+                    //}
+
                     DistributedCacheClient.SetCacheObjectList(coList);//将差异的缓存对象同步到本节点中间件
                 }
             });

@@ -40,7 +40,10 @@ namespace EFWCoreLib.CoreFrame.Common
                 hostwcfMsg(clr, DateTime.Now, text);
             }
         }
-
+        public static void WriterLog(LogType logType, string text)
+        {
+            WriterLog(LogType.PythonLog, true, Color.Black, text);
+        }
 
         public static void WriterLog(string text)
         {
@@ -105,6 +108,9 @@ namespace EFWCoreLib.CoreFrame.Common
                 LogNameDic.Add(LogType.MILog, getLogName(LogType.MILog));
                 LogSbDic.Add(LogType.MILog, new StringBuilder());
 
+                LogNameDic.Add(LogType.PythonLog, getLogName(LogType.PythonLog));
+                LogSbDic.Add(LogType.PythonLog,new StringBuilder());
+
                 timer = new System.Timers.Timer();
                 timer.Interval = 1000;
                 timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
@@ -146,6 +152,9 @@ namespace EFWCoreLib.CoreFrame.Common
                 case LogType.TimingTaskLog:
                     logName = "TimingTaskLog";
                     break;
+                case LogType.PythonLog:
+                    logName = "PythonLog";
+                    break;
                 default:
                     logName = "MidLog";
                     break;
@@ -178,6 +187,10 @@ namespace EFWCoreLib.CoreFrame.Common
         /// <summary>
         /// 定时任务日志
         /// </summary>
-        TimingTaskLog
+        TimingTaskLog,
+        /// <summary>
+        /// Python脚本执行日志
+        /// </summary>
+        PythonLog
     }
 }

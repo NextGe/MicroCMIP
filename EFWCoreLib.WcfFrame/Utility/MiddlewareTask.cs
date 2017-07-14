@@ -171,7 +171,7 @@ namespace EFWCoreLib.CoreFrame.Common
                 catch (Exception err)
                 {
                     MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, string.Format("任务【{0}】执行出错！", taskConfig.taskname));
-                    MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, err.Message);
+                    MiddlewareLogHelper.WriterLog(LogType.TimingTaskLog, true, System.Drawing.Color.Red, err.Message + err.StackTrace);
                 }
             }
         } 

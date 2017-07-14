@@ -32,7 +32,7 @@ namespace EFWCoreLib.CoreFrame.ProcessManage
             //pro.WaitForExit();
             //pro.StandardInput.AutoFlush = true;
 
-            ShowMsg("Http程序已启动");
+            ShowMsg("升级程序已启动");
 
             return pro;
         }

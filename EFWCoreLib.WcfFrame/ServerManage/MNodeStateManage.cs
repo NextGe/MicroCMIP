@@ -44,45 +44,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         }
 
         /// <summary>
-        /// 开始
-        /// </summary>
-        public static void Start()
-        {
-            if (MNodeStateClient.timer == null)
-                MNodeStateClient.StartListen();
-            else
-                MNodeStateClient.timer.Start();
-
-            if (MNodeStateManage.timer == null)
-                MNodeStateManage.StartListen();
-            else
-                MNodeStateManage.timer.Start();
-        }
-
-        /// <summary>
-        /// 2.将节点状态通知到所有子节点
-        /// </summary>
-        private static void SyncMNodeTree()
-        {
-            if (WcfGlobal.IsRootMNode)
-            {
-                //从Mongodb获取中间件节点
-                MongoHelper<MidNode> helper = new MongoHelper<MidNode>(WcfGlobal.MongoConnStr, MonitorPlatformManage.dbName);
-                List<MidNode> Nlist = helper.FindAll(null);
-                Dictionary<string, string> Ndic = new Dictionary<string, string>();
-                foreach (var n in Nlist)
-                {
-                    //未停用
-                    if (string.IsNullOrEmpty(n.identify) == false && n.delflag==0)
-                        Ndic.Add(n.identify, n.nodename);
-                }
-
-                MNodeTree mtree = new MNodeTree();
-                mtree.LoadMongodbAndState(Ndic, MNodeStateManage.MNodeList);//?
-                mtree.SyncToCache();
-            }
-        }
-        /// <summary>
         /// 从缓存中获取中间件树
         /// </summary>
         /// <returns></returns>
@@ -93,29 +54,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             return mtree;
         }
 
-        //
-        public static System.Timers.Timer timer;
-        public static void StartListen()
-        {
-            timer = new System.Timers.Timer();
-            timer.Interval = 5000;//1s
-            //timer.Elapsed -= new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Start();
-        }
-
-        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            try
-            {
-                timer.Enabled = false;
-                SyncMNodeTree();
-                timer.Enabled = true;
-            }
-            catch {
-                timer.Enabled = true;
-            }
-        }
     }
 
     /// <summary>
@@ -164,29 +102,5 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 SuperClient.superClientLink.MNodeState(MNodeStateManage.MNodeList);
         }
 
-        //
-        public static System.Timers.Timer timer;
-        public static void StartListen()
-        {
-            timer = new System.Timers.Timer();
-            timer.Interval = 4000;//4s
-            //timer.Elapsed -= new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Start();
-        }
-
-        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            try
-            {
-                timer.Enabled = false;
-                GetSubMNodeState();//第一步，获取下级中间件节点状态
-                SendMNodeStateToSup();//第二步，发送中间件节点状态到上级节点
-                timer.Enabled = true;
-            }
-            catch {
-                timer.Enabled = true;
-            }
-        }
     }
 }
