@@ -72,6 +72,18 @@ namespace EFWCoreLib.CoreFrame.Plugin
                 return true;
         }
 
+        public static void AddPlugin(string pluginfile)
+        {
+            string filepath = AppGlobal.AppRootPath + pluginfile;//转为绝对路径
+            if (System.IO.File.Exists(filepath))
+            {
+                XmlDocument xml_plugin = new System.Xml.XmlDocument();
+                xml_plugin.Load(filepath);
+                XmlNode node_plugin= xml_plugin.DocumentElement.SelectSingleNode("plugin");
+                AddPlugin(node_plugin.Attributes["name"].Value, node_plugin.Attributes["title"].Value, pluginfile, node_plugin.Attributes["version"].Value);
+            }
+        }
+
         public static void AddPlugin(string name, string title, string path, string version)
         {
             if (xmlDoc == null) InitConfig();

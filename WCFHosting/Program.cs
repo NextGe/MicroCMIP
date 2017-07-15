@@ -191,7 +191,7 @@ namespace WCFHosting
                                 showmsg("升级插件失败！" + err.Message+err.StackTrace);
                                 showmsg("程序服务未启动.");
                                 //Process.GetCurrentProcess().Kill();
-                                host.RunState = HostState.NoOpen;
+                                //host.RunState = HostState.NoOpen;
                             }
 
                             showmsg("升级插件完成,正在启动服务...");

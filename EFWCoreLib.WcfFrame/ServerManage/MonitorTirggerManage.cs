@@ -306,9 +306,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         /// </summary>
         static void MonitorUpgrade()
         {
-            if (WcfGlobal.IsRootMNode)
+            //if (WcfGlobal.IsRootMNode)
+            //{
+            //    UpgradeManage.UpdateUpgrade();
+            //}
+
+            if (WcfGlobal.IsRootMNode == false)
             {
-                UpgradeManage.UpdateUpgrade();
+                UpgradeClient.DownLoadPlugin(SuperClient.superClientLink);
             }
         }
     }

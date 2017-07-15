@@ -193,24 +193,41 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 timer.Enabled = false;
                 lock (syncObj)
                 {
+                    List<string> clientidlist = new List<string>();
+
                     foreach (ClientInfo client in ClientDic.Values)
                     {
                         if (client.startTime.AddSeconds(HeartbeatTime * 10) < DateTime.Now)//断开10秒就置为断开
                         {
-                            DisConnectionClient(client.clientId);
+                            clientidlist.Add(client.clientId);
                         }
+                    }
 
+                    foreach (string c in clientidlist)
+                    {
+                        DisConnectionClient(c);
+                    }
+
+                    clientidlist = new List<string>();
+
+                    foreach (ClientInfo client in ClientDic.Values)
+                    {
                         if (client.startTime.AddSeconds(HeartbeatTime * 20) < DateTime.Now)//断开10分钟直接移除客户端
                         {
-                            RemoveClient(client.clientId);
+                            clientidlist.Add(client.clientId);
                         }
+                    }
+
+                    foreach (string c in clientidlist)
+                    {
+                        RemoveClient(c);
                     }
                 }
                 timer.Enabled = true;
             }
             catch (Exception err)
             {
-                CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message+err.StackTrace);
+                CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message + err.StackTrace);
                 timer.Enabled = true;
             }
         }

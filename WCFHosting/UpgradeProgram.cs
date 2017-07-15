@@ -1,5 +1,6 @@
 ﻿using EFWCoreLib.CoreFrame.Common;
 using EFWCoreLib.CoreFrame.Init;
+using EFWCoreLib.CoreFrame.Plugin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,9 +54,10 @@ namespace efwplusHosting
                         }
                         //解压插件包
                         string zipfile = rootpath + @"FileStore\PluginUpgrade\" + p + ".zip";
-                        FastZipHelper.decompress(rootpath + "ModulePlugin\\" + p, zipfile);
+                        FastZipHelper.decompress(rootpath + "ModulePlugin\\", zipfile);
                         //修改pluginsys.xml配置文件
-                        AppPluginManage.AddPlugin("ModulePlugin\\" + p + "\\plugin.xml");
+                        string pluginfile = "ModulePlugin\\" + p + "\\plugin.xml";
+                        PluginSysManage.AddPlugin(pluginfile);
                     }
                 }
 
@@ -71,10 +73,11 @@ namespace efwplusHosting
                         }
                         //解压插件包
                         string zipfile = rootpath + @"FileStore\PluginUpgrade\" + p + ".zip";
-                        FastZipHelper.decompress(rootpath + "ModulePlugin\\" + p, zipfile);
+                        FastZipHelper.decompress(rootpath + "ModulePlugin\\", zipfile);
                         //修改pluginsys.xml配置文件
-                        AppPluginManage.RemovePlugin(p);
-                        AppPluginManage.AddPlugin("ModulePlugin\\" + p + "\\plugin.xml");
+                        string pluginfile = "ModulePlugin\\" + p + "\\plugin.xml";
+                        PluginSysManage.RemovePlugin(p);
+                        PluginSysManage.AddPlugin(pluginfile);
                     }
                 }
 
@@ -83,13 +86,14 @@ namespace efwplusHosting
                     if (p.Trim() != "")
                     {
                         string path = rootpath + "ModulePlugin\\" + p;
+                        //修改pluginsys.xml配置文件
+                        PluginSysManage.RemovePlugin(p);
                         //删除本地插件
                         if (Directory.Exists(path))
                         {
                             Directory.Delete(path, true);
                         }
-                        //修改pluginsys.xml配置文件
-                        AppPluginManage.RemovePlugin(p);
+                        
                     }
                 }
             }

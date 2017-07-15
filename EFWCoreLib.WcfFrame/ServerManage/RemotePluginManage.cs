@@ -49,7 +49,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 if (data != null)
                 {
                     //调试
-                    CoreFrame.Common.MiddlewareLogHelper.WriterLog(data.value);
+                    //CoreFrame.Common.MiddlewareLogHelper.WriterLog(data.value);
                     return JsonConvert.DeserializeObject<MNodePlugin>(data.value);
                 }
             }

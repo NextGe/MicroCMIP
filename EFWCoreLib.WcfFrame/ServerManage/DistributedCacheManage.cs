@@ -325,7 +325,7 @@ namespace EFWCoreLib.WcfFrame.ServerManage
                 _co.cacheValue = new List<CacheData>();
                 foreach (var kt in identify.keytimestamps)
                 {
-                    CacheData cd = co.cacheValue.Find(x =>(x.timestamp == kt.Value && x.key==kt.Key));
+                    CacheData cd = co.cacheValue.Find(x =>(x.timestamp == kt.Value && x.key==kt.Key));//这个bug找了一晚
                     if (cd != null)
                         _co.cacheValue.Add(cd);
                 }

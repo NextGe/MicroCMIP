@@ -98,17 +98,14 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             ssObject.publishServiceName = publishServiceName;
             ssObject.ProcessService = ((ClientLink _clientLink) =>
             {
-                if (EFWCoreLib.CoreFrame.Init.HostSettingConfig.GetValue("autoupdater") == "1")//是否启动自动升级程序
-                {
-                    //DownLoadUpgrade(clientupgrade + "update.xml", clientupgrade + "update.zip", _clientLink);
-                    //DownLoadUpgrade(webupgrade + "update.xml", webupgrade + "update.zip", _clientLink);
-                    //DownLoadUpgrade(mnodeupgrade + "update.xml", mnodeupgrade + "update.zip", _clientLink);
-                    //下载插件
-                    DownLoadPlugin(_clientLink);
 
+                //DownLoadUpgrade(clientupgrade + "update.xml", clientupgrade + "update.zip", _clientLink);
+                //DownLoadUpgrade(webupgrade + "update.xml", webupgrade + "update.zip", _clientLink);
+                //DownLoadUpgrade(mnodeupgrade + "update.xml", mnodeupgrade + "update.zip", _clientLink);
+                //下载插件
+                //DownLoadPlugin(_clientLink);
 
-                    UpgradeManage.UpdateUpgrade();//通知下级中间件升级
-                }
+                //UpgradeManage.UpdateUpgrade();//通知下级中间件升级
             });
             SubscriberManager.Subscribe(ssObject);
         }
@@ -123,78 +120,82 @@ namespace EFWCoreLib.WcfFrame.ServerManage
         {
             try
             {
-                //1.节点新增了本地插件
-                //2.节点本地插件更新了版本
-                //3.节点本地插件卸载
-                MNodePlugin mnplugin = RemotePluginManage.GetLocalPlugin();
-                if (mnplugin == null ||mnplugin.LocalPinfoList==null)
+                if (EFWCoreLib.CoreFrame.Init.HostSettingConfig.GetValue("autoupdater") == "1")//是否启动自动升级程序
                 {
-                    return;
-                }
-                List<string> addplugin = new List<string>();//新增插件
-                List<string> updateplugin = new List<string>();//更新插件
-                List<string> deleteplugin = new List<string>();//删除插件
-
-                //本地插件新增
-                foreach (string p in mnplugin.LocalPlugin)
-                {
-                    if (AppPluginManage.PluginDic.Keys.ToList().FindIndex(x => x == p) == -1)
+                    //1.节点新增了本地插件
+                    //2.节点本地插件更新了版本
+                    //3.节点本地插件卸载
+                    MNodePlugin mnplugin = RemotePluginManage.GetLocalPlugin();
+                    if (mnplugin == null || mnplugin.LocalPinfoList == null)
                     {
-                        //新增插件
-                        addplugin.Add(p);
+                        return;
                     }
-                }
-                //本地插件更新
-                foreach (string p in mnplugin.LocalPlugin)
-                {
-                    if (AppPluginManage.PluginDic.ContainsKey(p))
+                    List<string> addplugin = new List<string>();//新增插件
+                    List<string> updateplugin = new List<string>();//更新插件
+                    List<string> deleteplugin = new List<string>();//删除插件
+
+                    //本地插件新增
+                    foreach (string p in mnplugin.LocalPlugin)
                     {
-                        //版本比较，是对比中心与本地插件的版本号
-                        Version local = new Version(AppPluginManage.PluginDic[p].plugin.version);
-                        Version remote = new Version(mnplugin.LocalPinfoList.Find(x => x.pluginname == p).versions);
-                        int tm = local.CompareTo(remote);
-                        if (tm < 0)//本地版本小
+                        if (AppPluginManage.PluginDic.Keys.ToList().FindIndex(x => x == p) == -1)
                         {
-                            updateplugin.Add(p);
-                            //downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
-                            //下载之后触发安装，重启基础服务
+                            //新增插件
+                            addplugin.Add(p);
                         }
                     }
-                }
-                //本地插件卸载
-                foreach (var p in AppPluginManage.PluginDic)
-                {
-                    if (mnplugin.LocalPlugin.FindIndex(x => x == p.Key) == -1)
+                    //本地插件更新
+                    foreach (string p in mnplugin.LocalPlugin)
                     {
-                        //已移除插件
-                        deleteplugin.Add(p.Key);
+                        if (AppPluginManage.PluginDic.ContainsKey(p))
+                        {
+                            //版本比较，是对比中心与本地插件的版本号
+                            Version local = new Version(AppPluginManage.PluginDic[p].plugin.version);
+                            Version remote = new Version(mnplugin.LocalPinfoList.Find(x => x.pluginname == p).versions);
+                            int tm = local.CompareTo(remote);
+                            if (tm < 0)//本地版本小
+                            {
+                                updateplugin.Add(p);
+                                //downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
+                                //下载之后触发安装，重启基础服务
+                            }
+                        }
                     }
-                }
-
-                //下载插件包
-                foreach (string p in addplugin)
-                {
-                    downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
-                }
-
-                foreach (string p in updateplugin)
-                {
-                    downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
-                }
-
-                //重启服务
-                if (addplugin.Count > 0 || updateplugin.Count > 0 || deleteplugin.Count > 0)
-                {
-                    using (StreamWriter sw = new StreamWriter(AppGlobal.AppRootPath + WcfGlobal.pluginUpgradeFile, false))
+                    //本地插件卸载
+                    foreach (var p in AppPluginManage.PluginDic)
                     {
-                        sw.WriteLine("addplugin:" + string.Join(",", addplugin));
-                        sw.WriteLine("updateplugin:" + string.Join(",", updateplugin));
-                        sw.WriteLine("deleteplugin:" + string.Join(",", deleteplugin));
+                        if (mnplugin.LocalPlugin.FindIndex(x => x == p.Key) == -1)
+                        {
+                            //已移除插件
+                            deleteplugin.Add(p.Key);
+                        }
                     }
-                    WcfGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusServer), "upgradeplugin", null);
+
+                    //下载插件包
+                    foreach (string p in addplugin)
+                    {
+                        downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
+                    }
+
+                    foreach (string p in updateplugin)
+                    {
+                        downloadRemotePlugin(pluginupgrade + p + ".zip", _clientLink);
+                    }
+
+                    //重启服务
+                    if (addplugin.Count > 0 || updateplugin.Count > 0 || deleteplugin.Count > 0)
+                    {
+                        using (StreamWriter sw = new StreamWriter(AppGlobal.AppRootPath + WcfGlobal.pluginUpgradeFile, false))
+                        {
+                            sw.WriteLine("addplugin:" + string.Join(",", addplugin));
+                            sw.WriteLine("updateplugin:" + string.Join(",", updateplugin));
+                            sw.WriteLine("deleteplugin:" + string.Join(",", deleteplugin));
+                        }
+                        WcfGlobal.normalIPC.CallCmd(IPCName.GetProcessName(IPCType.efwplusServer), "upgradeplugin", null);
+                    }
                 }
             }
-            catch(Exception err) {
+            catch (Exception err)
+            {
                 CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message + err.StackTrace);
             }
         }
@@ -303,11 +304,6 @@ namespace EFWCoreLib.WcfFrame.ServerManage
             }
             catch (Exception err){
                 CoreFrame.Common.MiddlewareLogHelper.WriterLog(err.Message+err.StackTrace);
-            }
-            finally
-            {
-                fs.Close();
-                fs.Dispose();
             }
         }
 
